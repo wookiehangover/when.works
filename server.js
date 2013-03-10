@@ -18,6 +18,7 @@ var authom = require('./lib/authom');
 var app = express();
 
 var lessMiddleware = require('./lib/process-less')(config.less);
+var requireMiddleware = require('./lib/process-require');
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -31,16 +32,17 @@ app.configure(function(){
   app.use(express.session({ store: new RedisStore() }));
   app.use(app.router);
 
+
   // frontend application
+  app.use(requireMiddleware);
   app.use('/app', express.directory(path.join(__dirname, 'app')));
   app.use('/app', express.static(path.join(__dirname, 'app')));
 
-  app.use('/css', lessMiddleware);
   app.use(express.static(path.join(__dirname, 'public')));
-
 });
 
 app.configure('development', function(){
+  app.use('/css', lessMiddleware);
   app.use(express.errorHandler());
 });
 
