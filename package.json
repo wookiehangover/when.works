@@ -1,0 +1,27 @@
+{
+  "name": "untaken2",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "server.js",
+  "dependencies": {
+    "express": "3.1.0",
+    "ejs": "*",
+    "less-middleware": "*",
+    "authom": "~0.4.8"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-requirejs": "~0.3.2",
+    "grunt-mocha": "~0.2.2"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test",
+    "start": "node server.js"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD"
+}

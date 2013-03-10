@@ -1,0 +1,8 @@
+<h2>Select a Calendar</h2>
+<select>
+<% collection.forEach(function(model){ %>
+  <option value="<%= model.get('id') %>">
+    <%= model.get('summary') %>
+  </option>
+<% }); %>
+</select>

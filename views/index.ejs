@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Untaken for Google Calendar</title>
+    <link rel='stylesheet' href='/css/untaken.css' />
+  </head>
+  <body>
+    <div id="main" class="container">
+      <div class="page-header">
+        <h1>Untaken <small>You're Probably Not Available</small></h1>
+      </div>
+
+      <section class="row">
+        <div class="span3">
+          <% if( user ){ %>
+            <h2><%= user.data.name %></h2>
+            <img src="<%= user.data.picture %>">
+            <p><%= user.data.email %></p>
+          <% } else { %>
+            <h2><a href="/auth/google">Login with your Google Account</h2>
+          <%} %>
+        </div>
+
+        <div class="span8 offset1 calendars">
+          <div class="picker"></div>
+          <div class="availability"></div>
+        </div>
+
+      </section>
+
+
+    </div>
+
+  <% if( user ){ %>
+    <script data-main="/app/config.js" src="app/components/requirejs/require.js"></script>
+  <% } %>
+  </body>
+</html>
