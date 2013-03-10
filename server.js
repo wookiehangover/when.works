@@ -51,8 +51,13 @@ app.get('/me', user.me);
 app.get('/auth/:service', authom.app);
 
 app.get('/logout', function(req, res){
-  req.session = null;
-  res.redirect('/');
+  req.session.destroy(function(err){
+    if(err){
+      console.log(err);
+      return res.error(500);
+    }
+    res.redirect('/');
+  });
 });
 
 

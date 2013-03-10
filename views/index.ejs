@@ -16,6 +16,7 @@
             <h2><%= user.data.name %></h2>
             <img src="<%= user.data.picture %>">
             <p><%= user.data.email %></p>
+            <a href="/logout" class="pull-right small">Logout</a>
           <% } else { %>
             <h2><a href="/auth/google">Login with your Google Account</h2>
           <%} %>
@@ -25,9 +26,7 @@
           <div class="picker"></div>
           <div class="availability"></div>
         </div>
-
       </section>
-
 
     </div>
 
