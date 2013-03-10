@@ -10,7 +10,7 @@ exports.me = function(req, res){
     return res.json({ error: 'Forbidden' }, 403);
   }
 
-  var presented_user = _.omit( user.data, 'id' );
+  var presentedUser = _.omit( user.data, 'id' );
 
-  res.json(presented_user);
+  res.json(presentedUser);
 };
