@@ -1,3 +1,6 @@
-<pre>
-  <%= JSON.stringify( collection.toJSON(), '', '  ') %>
-</pre>
+<ul class=unstyled>
+<% collection.getUntaken().forEach(function( time ){ %>
+  <li><%= time %></li>
+<% }) %>
+</ul>
+
