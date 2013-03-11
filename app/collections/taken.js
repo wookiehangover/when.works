@@ -34,7 +34,7 @@ define(function(require, exports, module){
     },
 
     getUntaken: function(){
-      return this.map(function(model, i, list){
+      var ret = this.map(function(model, i, list){
         var start = moment( model.get('start') ).local();
         var end   = moment( model.get('end') ).local();
         var next, nextEnd;
@@ -69,6 +69,12 @@ define(function(require, exports, module){
 
         return timeblock;
       }, this);
+
+      if( ret.length === 0 ){
+        ret = ["You're the jerk that doesn't have anything scheduled.", "Good for you."];
+      }
+
+      return ret;
     }
   });
 });
