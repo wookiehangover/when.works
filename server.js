@@ -29,9 +29,8 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser( config.secret ));
-  app.use(express.session({ store: new RedisStore() }));
+  app.use(express.session({ store: new RedisStore( config.redis ) }));
   app.use(app.router);
-
 
   // frontend application
   app.use(requireMiddleware);
