@@ -13,7 +13,8 @@ define(function(require, exports, module){
       var query = $.param({
         calendar: this.config.get('calendar'),
         timeMin: moment( this.config.get('timeMin') ).format(),
-        timeMax: moment( this.config.get('timeMax') ).format()
+        // we need to add an extra day here, to account for the range returned by the gCal API
+        timeMax: moment( this.config.get('timeMax') ).add('days', 1).format()
       });
 
       return '/untaken?'+ query;
