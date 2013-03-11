@@ -9,11 +9,10 @@ define(function(require, exports, module){
   module.exports = Backbone.Collection.extend({
     url: function(){
 
-      console.log(this.config.toJSON() )
       var query = $.param({
         calendar: this.config.get('calendar'),
         timeMin: moment( this.config.get('timeMin') ).format(),
-        // we need to add an extra day here, to account for the range returned by the gCal API
+        // add extra time to account for the range returned by the gCal API
         timeMax: moment( this.config.get('timeMax') ).add('days', 1).format()
       });
 
@@ -38,12 +37,13 @@ define(function(require, exports, module){
       return this.map(function(model, i, list){
         var start = moment( model.get('start') ).local();
         var end   = moment( model.get('end') ).local();
+        var next, nextEnd;
 
         if( i + 1 === this.length ){
           next = end;
         } else {
-          var next  = moment( this.at(i + 1).get('start') ).local();
-          var nextEnd = moment( this.at(i + 1).get('end') ).local()
+          next  = moment( this.at(i + 1).get('start') ).local();
+          nextEnd = moment( this.at(i + 1).get('end') ).local();
         }
 
         var dayStart = start.startOf('day').add('hours', START_TIME);
@@ -53,6 +53,10 @@ define(function(require, exports, module){
 
         var ending = next.date() === beginning.date() ?
           next : start.startOf('day').add('hours', END_TIME);
+
+        if( beginning === ending ){
+          ending = start.startOf('day').add('hours', END_TIME);
+        }
 
         var beginningFormat = beginning.minutes() === 0 ? 'h' : 'h:mm';
         var endFormat = ending.minutes() === 0 ? 'ha' : 'h:mma';
