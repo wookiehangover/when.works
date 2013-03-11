@@ -1,8 +1,12 @@
-<h2>Select a Calendar</h2>
-<select>
+<h4>Select a Calendar:</h4>
+<select name="calendar">
+  <option></option>
 <% collection.forEach(function(model){ %>
   <option value="<%= model.get('id') %>">
     <%= model.get('summary') %>
   </option>
 <% }); %>
 </select>
+<h4>Choose some dates:</h4>
+<input type=text name="timeMin" class="datepicker" placeholder="Start Date" value="10 March, 2013"/>
+<input type=text name="timeMax" class="datepicker" placeholder="End Date"/>
