@@ -3,10 +3,13 @@ define(function(require, exports, module){
   var Backbone = require('backbone');
 
   module.exports = Backbone.View.extend({
-    el: $('.calendars > .availability'),
+    el: $('.calendars .availability'),
 
     initialize: function(params){
-      this.collection.dfd.done( this.render.bind(this) );
+      if( !this.collection ){
+        throw new Error('You must pass a model collection');
+      }
+      this.listenTo( this.collection, 'sync', this.render, this);
     },
 
     template: require('tpl!templates/availability.ejs'),

@@ -15,11 +15,12 @@ define(function(require, exports, module){
     initialize: function(){
       var untaken = window.untaken = this;
 
+      this.config = new Backbone.Model();
       this.user = new User();
       this.calendars = new Calendars();
-      this.availability = new Availability();
+      this.availability = new Availability({ config: this.config });
 
-      this.picker = new PickerView({ collection: this.calendars });
+      this.picker = new PickerView({ collection: this.calendars, model: this.config });
       this.output = new AvailabilityView({ collection: this.availability });
     }
   });

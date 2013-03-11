@@ -1,4 +1,5 @@
 define(function(require, exports, module){
+  var $ = require('jquery');
   var moment = require('moment');
   var Backbone = require('backbone');
 
@@ -6,14 +7,30 @@ define(function(require, exports, module){
   var END_TIME   = '18';
 
   module.exports = Backbone.Collection.extend({
-    url: '/untaken',
+    url: function(){
 
-    initialize: function(){
-      this.dfd = this.fetch();
+      console.log(this.config.toJSON() )
+      var query = $.param({
+        calendar: this.config.get('calendar'),
+        timeMin: moment( this.config.get('timeMin') ).format(),
+        timeMax: moment( this.config.get('timeMax') ).format()
+      });
+
+      return '/untaken?'+ query;
+    },
+
+    initialize: function(params){
+      this.config = params.config;
+
+      this.config.on('change', function(model){
+        if( model.get('timeMax') && model.get('timeMin') && model.get('calendar') ){
+          this.fetch();
+        }
+      }, this);
     },
 
     parse: function( obj ){
-      return obj.calendars['sam@quickleft.com'].busy;
+      return obj.calendars[ this.config.get('calendar') ].busy;
     },
 
     getUntaken: function(){
@@ -46,7 +63,6 @@ define(function(require, exports, module){
         var timeblock = beginning.format('dddd M/D - '+ beginningFormat +' to ') + ending.format(endFormat);
 
         return timeblock;
-
       }, this);
     }
   });
