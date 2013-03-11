@@ -35,6 +35,7 @@ app.configure(function(){
 
   // frontend application
   app.use(requireMiddleware);
+  app.use('/css', lessMiddleware);
   app.use('/app', express.directory(path.join(__dirname, 'app')));
   app.use('/app', express.static(path.join(__dirname, 'app')));
 
@@ -42,7 +43,6 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use('/css', lessMiddleware);
   app.use(express.errorHandler());
 });
 
