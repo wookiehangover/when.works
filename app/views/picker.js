@@ -16,7 +16,9 @@ define(function(require, exports, module){
       if( !this.collection || !this.model ){
         throw new Error('You must pass a model and a collection');
       }
-      this.listenTo( this.collection, 'reset', this.render, this);
+      this.listenTo( this.collection, 'reset', this.render);
+
+      this.listenTo( this.model, 'change:calendar', this.updateCalendar);
 
       this.collection.dfd.done( this.render.bind(this) );
     },
@@ -28,7 +30,9 @@ define(function(require, exports, module){
     updateConfig: function(e){
       var $elem = $(e.currentTarget);
 
-      this.model.set( $elem.attr('name'), $elem.val() );
+      var name = $elem.attr('name');
+
+      this.model.set( name, $elem.val() );
     },
 
     updateAllConfigs: function(e){
@@ -68,6 +72,24 @@ define(function(require, exports, module){
 
       this.updateAllConfigs();
 
+    },
+
+    updateCalendar: function(){
+      var query = $.param({
+        showTitle: 0,
+        showNav: 0,
+        showPrint: 0,
+        showTabs: 0,
+        showCalendars: 0,
+        mode: 'WEEK',
+        height: 400,
+        wkst: 1,
+        src: this.model.get('calendar')
+      });
+
+      var url = 'http://www.google.com/calendar/embed?'+ query;
+      $('#calendar-embed').hide().attr('src', url).delay(1000).fadeIn();
     }
+
   });
 });
