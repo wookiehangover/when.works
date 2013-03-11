@@ -8,7 +8,8 @@
     "bootstrap": "~2.3.1",
     "backbone": "~0.9.10",
     "lodash": "~1.0.1",
-    "moment": "~2.0.0"
+    "moment": "~2.0.0",
+    "pickadate": "~2.1.4"
   },
   "devDependencies": {}
 }
