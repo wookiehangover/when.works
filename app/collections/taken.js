@@ -36,14 +36,6 @@ define(function(require, exports, module){
         var ending = next.date() === beginning.date() ?
           next : start.startOf('day').add('hours', END_TIME);
 
-        console.log('start    : %s', start.format('M/D h:mma'));
-        console.log('end      : %s', end.format('M/D h:mma'));
-        console.log('next     : %s', next.format('M/D h:mma'));
-        console.log('beginning: %s', beginning.format('M/D h:mma'));
-        console.log('ending   : %s', ending.format('M/D h:mma'));
-
-        console.log('\n')
-
         var beginningFormat = beginning.minutes() === 0 ? 'h' : 'h:mm';
         var endFormat = ending.minutes() === 0 ? 'ha' : 'h:mma';
 
