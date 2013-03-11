@@ -41,12 +41,17 @@ exports.freebusy = function(req, res){
 
   var url = 'https://www.googleapis.com/calendar/v3/freeBusy';
 
+  if( !req.query.timeMin || !req.query.timeMax || !req.query.calendar ){
+    res.json({ error: 'Missing required fields' },412);
+    return;
+  }
+
   var postBody = {
-    timeMin: moment().format(),
-    timeMax: moment().add(1, 'week').format(),
+    timeMin: moment( req.query.timeMin ).format(),
+    timeMax: moment( req.query.timeMax ).format(),
     items: [
       {
-        id: 'sam@quickleft.com'
+        id: req.query.calendar
       }
     ]
   };
