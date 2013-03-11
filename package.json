@@ -1,13 +1,18 @@
 {
-  "name": "untaken2",
-  "version": "0.0.0",
-  "description": "ERROR: No README.md file found!",
+  "name": "untaken",
+  "version": "0.0.1",
+  "description": "take back your calendar or whatever",
   "main": "server.js",
   "dependencies": {
     "express": "3.1.0",
     "ejs": "*",
-    "less-middleware": "*",
-    "authom": "~0.4.8"
+    "authom": "~0.4.8",
+    "connect-redis": "~1.4.5",
+    "moment": "~2.0.0",
+    "config": "~0.4.21",
+    "lodash": "~1.0.1",
+    "request": "~2.14.0",
+    "less": "~1.3.3"
   },
   "devDependencies": {
     "grunt": "~0.4.0",
@@ -27,5 +32,9 @@
   },
   "repository": "",
   "author": "",
-  "license": "BSD"
+  "license": "BSD",
+  "subdomain": "untaken",
+  "engines": {
+    "node": "0.8.x"
+  }
 }
