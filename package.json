@@ -1,6 +1,6 @@
 {
   "name": "untaken",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "take back your calendar or whatever",
   "main": "server.js",
   "dependencies": {
