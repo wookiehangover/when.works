@@ -14,3 +14,13 @@ exports.me = function(req, res){
 
   res.json(presentedUser);
 };
+
+exports.logout = function(req, res){
+  req.session.destroy(function(err){
+    if(err){
+      console.log(err);
+      return res.error(500);
+    }
+    res.redirect('/');
+  });
+};
