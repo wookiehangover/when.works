@@ -10,6 +10,10 @@ var responseHandler = exports.responseHandler = function(err, resp, body){
   this.json( body );
 };
 
+/*
+ * GET proxy to Google Calendars list API
+ */
+
 exports.calendars = function(req, res){
   var user = req.session.user;
 
@@ -32,6 +36,9 @@ exports.calendars = function(req, res){
   request( params, responseHandler.bind(res) );
 };
 
+/*
+ * GET proxy to Google Calendars freebusy API
+ */
 exports.freebusy = function(req, res){
   var user = req.session.user;
 
@@ -46,6 +53,11 @@ exports.freebusy = function(req, res){
     return;
   }
 
+  // Takes the following query parameters:
+  //
+  //  calendar - `string`
+  //  timeMin  - `date` (or anything remotely date-like)
+  //  timeMax  - `date`
   var postBody = {
     timeMin: moment( req.query.timeMin ).format(),
     timeMax: moment( req.query.timeMax ).format(),
