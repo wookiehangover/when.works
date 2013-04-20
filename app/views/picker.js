@@ -34,8 +34,8 @@ define(function(require, exports, module){
       var $elem = $(e.currentTarget);
       var name = $elem.attr('name');
 
-      if( $elem.is('select[name="calendar"]') && $elem.val() ){
-        cookie.set('calendar', $elem.val());
+      if( $elem.is('select') && $elem.val() ){
+        cookie.set(name, $elem.val());
       }
       this.model.set(name, $elem.val());
     },
@@ -58,8 +58,18 @@ define(function(require, exports, module){
       this.$el.html( this.template(this) );
       this.setCalendarFromCookie();
       this.renderDatePicker();
+      this.setStartAndEnd();
       this.setTimezone();
       this.updateAllConfigs();
+    },
+
+    setStartAndEnd: function(){
+      _.each(['start', 'end'], function(value){
+        var c = cookie.get(value);
+        if( c ){
+          this.$('select[name="'+ value +'"]').val( c );
+        }
+      }, this);
     },
 
     setTimezone: function(){
@@ -80,7 +90,6 @@ define(function(require, exports, module){
 
       if( zoneValue.length ){
         this.$('select[name="timezone"]').val(zoneValue[0]);
-        this.model.set('timezone', zoneValue[0]);
       }
     },
 
@@ -88,7 +97,6 @@ define(function(require, exports, module){
       var calendar = cookie.get('calendar');
       if( calendar ){
         this.$('select[name="calendar"]').val(calendar);
-        this.model.set('calendar', calendar);
       }
     },
 
