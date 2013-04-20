@@ -1,7 +1,10 @@
 define(function(require, exports, module){
   var $ = require('jquery');
+  var _ = require('underscore');
   var Backbone = require('backbone');
   var moment = require('moment');
+  var cookie = require('cookie');
+  var timezones = require('../timezones');
 
   require('pickadate');
 
@@ -16,8 +19,8 @@ define(function(require, exports, module){
       if( !this.collection || !this.model ){
         throw new Error('You must pass a model and a collection');
       }
-      this.listenTo( this.collection, 'reset', this.render);
 
+      this.listenTo( this.collection, 'reset', this.render);
       this.listenTo( this.model, 'change:calendar', this.updateCalendar);
 
       this.collection.dfd.done( this.render.bind(this) );
@@ -29,28 +32,69 @@ define(function(require, exports, module){
 
     updateConfig: function(e){
       var $elem = $(e.currentTarget);
-
       var name = $elem.attr('name');
 
-      this.model.set( name, $elem.val() );
+      if( $elem.is('select[name="calendar"]') && $elem.val() ){
+        cookie.set('calendar', $elem.val());
+      }
+      this.model.set(name, $elem.val());
     },
 
     updateAllConfigs: function(e){
       var model = this.model;
 
       this.$('input, select').each(function(){
-        model.set( $(this).attr('name'), $(this).val() );
+        model.set( $(this).attr('name'), this.value );
       });
+    },
+
+    timezones: function(cb){
+      return _.each(timezones, cb, this);
     },
 
     template: require('tpl!templates/picker.ejs'),
 
     render: function(){
       this.$el.html( this.template(this) );
+      this.setCalendarFromCookie();
+      this.renderDatePicker();
+      this.setTimezone();
+      this.updateAllConfigs();
+    },
 
+    setTimezone: function(){
+      var timezone = moment().zone();
+      var isDST = moment().isDST();
+      var sign = moment().format('ZZ').substr(0,1);
+
+      if( isDST ){
+        timezone += 60;
+      }
+
+      var zoneKey = [sign + timezone, isDST ? 1 : 0].join(',');
+      var zoneValue = _.filter(timezones, function(value){
+        if( value.search( zoneKey ) > -1 ){
+          return true;
+        }
+      });
+
+      if( zoneValue.length ){
+        this.$('select[name="timezone"]').val(zoneValue[0]);
+        this.model.set('timezone', zoneValue[0]);
+      }
+    },
+
+    setCalendarFromCookie: function(){
+      var calendar = cookie.get('calendar');
+      if( calendar ){
+        this.$('select[name="calendar"]').val(calendar);
+        this.model.set('calendar', calendar);
+      }
+    },
+
+    renderDatePicker: function(){
       var today = moment();
       var nextWeek = moment().add('days', 7);
-
       var lock = true;
 
       var start = this.$('input[name="timeMin"]').pickadate({
@@ -67,11 +111,11 @@ define(function(require, exports, module){
         }
       });
 
-      start.data('pickadate').setDate( today.year(), today.month() + 1, today.date() );
-      end.data('pickadate').setDate( nextWeek.year(), nextWeek.month() + 1, nextWeek.date() );
+      start.data('pickadate')
+        .setDate( today.year(), today.month() + 1, today.date() );
 
-      this.updateAllConfigs();
-
+      end.data('pickadate')
+        .setDate( nextWeek.year(), nextWeek.month() + 1, nextWeek.date() );
     },
 
     updateCalendar: function(){

@@ -1,6 +1,6 @@
 define(function(require, exports, module){
   var $ = require('jquery');
-  var _ = require('lodash');
+  var _ = require('underscore');
   var moment = require('moment');
   var Backbone = require('backbone');
 
@@ -12,9 +12,9 @@ define(function(require, exports, module){
 
       var query = $.param({
         calendar: this.config.get('calendar'),
-        timeMin: moment( this.config.get('timeMin') ).format(),
+        timeMin: this.moment( this.config.get('timeMin') ).format(),
         // add extra time to account for the range returned by the gCal API
-        timeMax: moment( this.config.get('timeMax') ).add('days', 1).format()
+        timeMax: this.moment( this.config.get('timeMax') ).add('days', 1).format()
       });
 
       return '/untaken?'+ query;
@@ -50,7 +50,7 @@ define(function(require, exports, module){
     // Groups the models by day
     getDays: function(){
       return this.groupBy(function( model ){
-        return moment( model.get('start') ).format('YYYY-MM-DD');
+        return this.moment( model.get('start') ).format('YYYY-MM-DD');
       }, this);
     },
 
@@ -69,6 +69,30 @@ define(function(require, exports, module){
       return beginning.format('dddd M/D - '+ beginningFormat +' to ') + ending.format(endFormat);
     },
 
+    // Returns a Moment object with the correct timezone offset.
+    moment: function(date){
+      var m = moment(date);
+      var local = moment().zone();
+      var timezone = this.config.get('timezone');
+      var offset, dst;
+
+      if( timezone ){
+        timezone = timezone.split(',');
+        dst = parseInt( timezone[1], 10 );
+        offset = Math.abs( parseInt(timezone[0], 10) );
+
+        if( moment().isDST() && dst === 1 ){
+          offset -= 60;
+        }
+
+        if( offset !== local ){
+          m.subtract('minutes', offset - local);
+        }
+      }
+
+      return m;
+    },
+
     // Takes an array of Models for a given date and determines the availabilty
     //
     //  times - an array of Models with start and end times
@@ -79,16 +103,16 @@ define(function(require, exports, module){
       var dayblock = [];
 
       // Set the Beginning and the End of the current day
-      var dayStart = moment( date ).hour(START_TIME);
-      var dayEnd   = moment( date ).hour(END_TIME);
+      var dayStart = this.moment( moment(date).hour(START_TIME) );
+      var dayEnd   = this.moment( moment(date).hour(END_TIME) );
 
       // Remove the First and Last time entry from the times array
       var first = times.shift();
       var last  = times.pop();
 
       // Set the start and end times for the first meeting, if it exists
-      var firstMeetingStart = first ? moment( first.get('start') ).local(): false;
-      var firstMeetingEnd = first ? moment( first.get('end') ).local(): false;
+      var firstMeetingStart = first ? this.moment( first.get('start') ).local(): false;
+      var firstMeetingEnd = first ? this.moment( first.get('end') ).local(): false;
 
       // The next available meeting time is always the end of the first meeting
       var nextAvailable = firstMeetingEnd;
@@ -103,14 +127,14 @@ define(function(require, exports, module){
       // between the meetings
       _.each(times, function(timeEntry){
         if( nextAvailable ){
-          dayblock.push( this.createTimestring(nextAvailable, moment( timeEntry.get('start') ).local()) );
-          nextAvailable = moment(timeEntry.get('end')).local();
+          dayblock.push( this.createTimestring(nextAvailable, this.moment( timeEntry.get('start') ).local()) );
+          nextAvailable = this.moment(timeEntry.get('end')).local();
         }
       }, this);
 
       // Set the start and end times for the last meeting, if it exists
-      var lastMeetingStart = last ? moment( last.get('start') ).local() : false;
-      var lastMeetingEnd   = last ? moment( last.get('end') ).local() : false;
+      var lastMeetingStart = last ? this.moment( last.get('start') ).local() : false;
+      var lastMeetingEnd   = last ? this.moment( last.get('end') ).local() : false;
 
       // If there were meetings today, *and* a last meeting of the day, create
       // a timestring

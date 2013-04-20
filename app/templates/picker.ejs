@@ -1,7 +1,7 @@
 <h4>Select a Calendar:</h4>
 <select name="calendar">
   <option></option>
-<% collection.forEach(function(model){ %>
+<% collection.each(function(model){ %>
   <option value="<%= model.get('id') %>">
     <%= model.get('summary') %>
   </option>
@@ -10,3 +10,11 @@
 <h4>Choose some dates:</h4>
 <input type=text name="timeMin" class="datepicker" placeholder="Start Date" value="10 March, 2013"/>
 <input type=text name="timeMax" class="datepicker" placeholder="End Date"/>
+<h4>Pick a timezone</h4>
+<select name="timezone">
+<% timezones(function(offset, name){ %>
+  <option value="<%= offset %>">
+    <%= name %>
+  </option>
+<% }); %>
+</select>
