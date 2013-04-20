@@ -15,6 +15,10 @@ exports.me = function(req, res){
   res.json(presentedUser);
 };
 
+/*
+ * GET destroy current session
+ */
+
 exports.logout = function(req, res){
   req.session.destroy(function(err){
     if(err){

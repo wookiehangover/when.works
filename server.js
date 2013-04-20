@@ -62,7 +62,7 @@ app.get('/auth/:service', authom.app);
 app.get('/calendars', api.calendars);
 app.get('/untaken', api.freebusy);
 app.get('/me', user.me);
-app.get('/logout', user.me);
+app.get('/logout', user.logout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -4,15 +4,15 @@
 </div>
 
 <section class="row">
-  <div class="span3">
-    <% if( user ){ %>
+  <% if( !user ){ %>
+    <h2 class="login"><a href="/auth/google">Login with your Google Account</h2>
+  <% } else { %>
+    <div class="span3">
       <h3><%= user.data.name %></h3>
       <p><b><%= user.data.email %></b></p>
       <a href="/logout" class="btn clearfix">Logout</a>
-    <% } else { %>
-      <h2><a href="/auth/google">Login with your Google Account</h2>
-    <%} %>
-  </div>
+    </div>
+  <% } %>
 
   <div class="span8 offset1 calendars">
     <div class="row">
