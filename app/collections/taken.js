@@ -4,9 +4,6 @@ define(function(require, exports, module){
   var moment = require('moment');
   var Backbone = require('backbone');
 
-  var START_TIME = '10';
-  var END_TIME   = '18';
-
   module.exports = Backbone.Collection.extend({
     url: function(){
 
@@ -102,24 +99,26 @@ define(function(require, exports, module){
     getAvailabilityFromDay: function(times, date){
       var dayblock = [];
 
+      var startTime = moment(this.config.get('start'), 'hha').hours();
+      var endTime = moment(this.config.get('end'), 'hha').hours();
       // Set the Beginning and the End of the current day
-      var dayStart = this.moment( moment(date).hour(START_TIME) );
-      var dayEnd   = this.moment( moment(date).hour(END_TIME) );
+      var dayStart = this.moment( moment(date).hour(startTime) );
+      var dayEnd   = this.moment( moment(date).hour(endTime) );
 
       // Remove the First and Last time entry from the times array
       var first = times.shift();
       var last  = times.pop();
 
       // Set the start and end times for the first meeting, if it exists
-      var firstMeetingStart = first ? this.moment( first.get('start') ).local(): false;
-      var firstMeetingEnd = first ? this.moment( first.get('end') ).local(): false;
+      var firstMeetingStart = first ? this.moment( first.get('start') ): false;
+      var firstMeetingEnd = first ? this.moment( first.get('end') ): false;
 
       // The next available meeting time is always the end of the first meeting
       var nextAvailable = firstMeetingEnd;
 
       // If anything is on the calendar for that day and there's any free time
       // before it, add it to the dayblock
-      if( firstMeetingStart && firstMeetingStart !== dayStart ){
+      if( firstMeetingStart && firstMeetingStart !== dayStart && firstMeetingStart.isAfter( dayStart ) ){
         dayblock.push( this.createTimestring(dayStart, firstMeetingStart) );
       }
 
@@ -128,13 +127,13 @@ define(function(require, exports, module){
       _.each(times, function(timeEntry){
         if( nextAvailable ){
           dayblock.push( this.createTimestring(nextAvailable, this.moment( timeEntry.get('start') ).local()) );
-          nextAvailable = this.moment(timeEntry.get('end')).local();
+          nextAvailable = this.moment(timeEntry.get('end'));
         }
       }, this);
 
       // Set the start and end times for the last meeting, if it exists
-      var lastMeetingStart = last ? this.moment( last.get('start') ).local() : false;
-      var lastMeetingEnd   = last ? this.moment( last.get('end') ).local() : false;
+      var lastMeetingStart = last ? this.moment( last.get('start') ) : false;
+      var lastMeetingEnd   = last ? this.moment( last.get('end') ) : false;
 
       // If there were meetings today, *and* a last meeting of the day, create
       // a timestring
@@ -143,7 +142,7 @@ define(function(require, exports, module){
 
         // If the end of the last meeting is before the end of the day, create
         // a timestring
-        if( lastMeetingEnd.hours() < dayEnd.hours() ){
+        if( lastMeetingEnd.isBefore( dayEnd ) ){
           dayblock.push( this.createTimestring(lastMeetingEnd, dayEnd) );
         }
       }

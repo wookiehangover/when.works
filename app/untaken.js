@@ -15,7 +15,10 @@ define(function(require, exports, module){
     initialize: function(){
       var untaken = window.untaken = this;
 
-      this.config = new Backbone.Model();
+      this.config = new Backbone.Model({
+        start: '10am',
+        end: '6pm'
+      });
       this.user = new User();
       this.calendars = new Calendars();
       this.availability = new Availability({ config: this.config });
