@@ -2,14 +2,22 @@
   "name": "untaken",
   "version": "0.0.0",
   "dependencies": {
-    "requirejs": "~2.1.4",
-    "modernizr": "~2.6.2",
     "jquery": "~1.9.1",
     "bootstrap": "~2.3.1",
     "backbone": "~0.9.10",
+    "modernizr": "~2.6.2",
+    "requirejs": "~2.1.5",
     "lodash": "~1.0.1",
+    "requirejs-tpl": "~7438735aa84b76af0fb266d8373b5fbaab2a1a03",
     "moment": "~2.0.0",
-    "pickadate": "~2.1.4"
+    "requirejs-text": "~2.0.5",
+    "pickadate": "~2.1.4",
+    "backbone-amd": "~1.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
 }

@@ -5,11 +5,12 @@ require.config({
   paths: {
     vendor: 'components',
 
-    lodash: 'components/lodash/lodash',
+    underscore: 'components/lodash/lodash',
     jquery: 'components/jquery/jquery',
     moment: 'components/moment/moment',
-    backbone: 'components/backbone/backbone',
+    backbone: 'components/backbone-amd/backbone',
     pickadate: 'components/pickadate/source/pickadate',
+    cookie: 'components/cookie/cookie',
 
     tpl: 'components/requirejs-tpl/tpl',
     text: 'components/requirejs-text/text'
@@ -17,11 +18,6 @@ require.config({
   },
 
   shim: {
-    backbone: {
-      exports: 'Backbone',
-      deps: ['lodash', 'jquery']
-    },
-
     pickadate: {
       exports: 'jQuery.fn.pickadate',
       deps: ['jquery']
