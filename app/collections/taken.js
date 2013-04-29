@@ -33,14 +33,20 @@ define(function(require, exports, module){
 
     // Returns the availability based on all of the current models
     getUntaken: function(){
+      // Split collection into days of the week
       var days = this.getDays();
-
+      // Get the availability text for each day in the time range
       var timeblock = _.map(days, this.getAvailabilityFromDay, this);
 
+      // You jerk
       if( timeblock.length === 0 ){
-        timeblock = ["You're the jerk that doesn't have anything scheduled.", "Good for you."];
+        timeblock = [
+          "You're the jerk that doesn't have anything scheduled.",
+          "Good for you."
+        ];
       }
 
+      // Flatten nested dayblock arrays into a single array on the way out
       return _.flatten(timeblock);
     },
 
@@ -98,37 +104,40 @@ define(function(require, exports, module){
     // returns an array of available times
     getAvailabilityFromDay: function(times, date){
       var dayblock = [];
-
+      // Set the beginning and end of the Day from the user settings
       var startTime = moment(this.config.get('start'), 'hha').hours();
       var endTime = moment(this.config.get('end'), 'hha').hours();
       // Set the Beginning and the End of the current day
       var dayStart = this.moment( moment(date).hour(startTime) );
       var dayEnd   = this.moment( moment(date).hour(endTime) );
-
       // Remove the First and Last time entry from the times array
       var first = times.shift();
       var last  = times.pop();
-
       // Set the start and end times for the first meeting, if it exists
       var firstMeetingStart = first ? this.moment( first.get('start') ): false;
       var firstMeetingEnd = first ? this.moment( first.get('end') ): false;
-
       // The next available meeting time is always the end of the first meeting
-      var nextAvailable = firstMeetingEnd;
+      var nextAvailableStart = firstMeetingEnd;
 
       // If anything is on the calendar for that day and there's any free time
       // before it, add it to the dayblock
-      if( firstMeetingStart && firstMeetingStart !== dayStart && firstMeetingStart.isAfter( dayStart ) ){
+      if(firstMeetingStart &&
+         firstMeetingStart !== dayStart &&
+         firstMeetingStart.isAfter( dayStart ) ){
         dayblock.push( this.createTimestring(dayStart, firstMeetingStart) );
       }
 
       // Iterate through the "middle" times and add timestrings for the time
       // between the meetings
       _.each(times, function(timeEntry){
-        if( nextAvailable ){
-          dayblock.push( this.createTimestring(nextAvailable, this.moment( timeEntry.get('start') ).local()) );
-          nextAvailable = this.moment(timeEntry.get('end'));
-        }
+        // Handle empty start times
+        if( !nextAvailableStart ) return;
+        // Create a timestring (Monday 1/1 1 - 2pm) and add it to the list
+        var meetingEnd = this.moment( timeEntry.get('start') );
+        var timestring = this.createTimestring(nextAvailableStart, meetingEnd);
+        dayblock.push( timestring );
+        // Set the next availability period's start time
+        nextAvailableStart = this.moment( timeEntry.get('end') );
       }, this);
 
       // Set the start and end times for the last meeting, if it exists
@@ -137,8 +146,10 @@ define(function(require, exports, module){
 
       // If there were meetings today, *and* a last meeting of the day, create
       // a timestring
-      if( nextAvailable && lastMeetingStart ){
-        dayblock.push( this.createTimestring(nextAvailable, lastMeetingStart) );
+      if( nextAvailableStart && lastMeetingStart ){
+        dayblock.push(
+          this.createTimestring(nextAvailableStart, lastMeetingStart)
+        );
 
         // If the end of the last meeting is before the end of the day, create
         // a timestring
@@ -150,7 +161,7 @@ define(function(require, exports, module){
       // And if there's no last meeting, create a timestring from the end of
       // the last timeslot to the dayblock
       if( !lastMeetingStart ){
-        dayblock.push( this.createTimestring(nextAvailable, dayEnd) );
+        dayblock.push( this.createTimestring(nextAvailableStart, dayEnd) );
       }
 
       return dayblock;
