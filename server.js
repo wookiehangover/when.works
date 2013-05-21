@@ -35,7 +35,6 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
-  app.use(express.methodOverride());
   app.use(express.cookieParser( config.secret ));
   app.use(express.session({ store: new RedisStore( config.redis ) }));
   app.use(app.router);
@@ -45,12 +44,13 @@ app.configure(function(){
   app.use('/css', lessMiddleware);
   app.use('/app', express.directory(path.join(__dirname, 'app')));
   app.use('/app', express.static(path.join(__dirname, 'app')));
-
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  app.use(express.static(path.join(__dirname)));
+
 });
 
 /*

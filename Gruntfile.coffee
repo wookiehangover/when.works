@@ -1,5 +1,4 @@
 config =
-
   less:
     compile:
       options:
@@ -57,6 +56,19 @@ config =
         define: true
         require: true
 
+  mocha_phantomjs:
+    options:
+      reporter: 'dot'
+    all: ['test/index.html']
+
+  watch:
+    test:
+      files: ['test/**/*.js']
+      tasks: ['mocha_phantomjs']
+    less:
+      files: ['public/less/**/*.less']
+      tasks: ['less']
+
 module.exports = (grunt) ->
 
   grunt.initConfig( config )
@@ -66,6 +78,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-cssmin')
   grunt.loadNpmTasks('grunt-contrib-jshint')
   grunt.loadNpmTasks('grunt-devtools')
+  grunt.loadNpmTasks('grunt-mocha-phantomjs')
+  grunt.loadNpmTasks('grunt-contrib-watch')
 
   grunt.registerTask('default', [
     'jshint'

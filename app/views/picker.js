@@ -21,7 +21,7 @@ define(function(require, exports, module){
       }
 
       this.listenTo( this.collection, 'reset', this.render);
-      this.listenTo( this.model, 'change:calendar', this.updateCalendar);
+      // this.listenTo( this.model, 'change:calendar', this.updateCalendar);
 
       this.collection.dfd.done( this.render.bind(this) );
     },

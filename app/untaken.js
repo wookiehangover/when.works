@@ -10,21 +10,26 @@ define(function(require, exports, module){
   var AvailabilityView = require('views/availability');
 
   module.exports = Backbone.View.extend({
-    elem: $('body'),
+    el: $('body'),
 
     initialize: function(){
-      var untaken = window.untaken = this;
-
       this.config = new Backbone.Model({
         start: '10am',
         end: '6pm'
       });
+
       this.user = new User();
       this.calendars = new Calendars();
       this.availability = new Availability({ config: this.config });
 
       this.picker = new PickerView({ collection: this.calendars, model: this.config });
       this.output = new AvailabilityView({ collection: this.availability });
+
+      $(document).ajaxError(function(e, xhr){
+        if( xhr.status === 401 ){
+          location.replace('/auth/google');
+        }
+      });
     }
   });
 });

@@ -12,7 +12,7 @@ define(function(require, exports, module){
         $('.loader-container').removeClass('js-show');
       });
 
-    new Untaken();
+    window.untaken = new Untaken();
   });
 
 });

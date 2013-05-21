@@ -1,35 +1,22 @@
 var request = require('request');
 var moment = require('moment');
+var api = exports;
 
-var responseHandler = exports.responseHandler = function(err, resp, body){
-  if( err ){
-    console.log(err, body);
-    return this.error(500);
-  }
-
-  this.json( body );
-};
-
+var urlRoot = 'https://www.googleapis.com/calendar/v3/';
 /*
  * GET proxy to Google Calendars list API
  */
 
-exports.calendars = function(req, res){
+api.calendars = function(req, res){
   var user = req.session.user;
 
   if( !user ){
     return res.json({ error: 'Forbidden'}, 403);
   }
 
-  var url = 'https://www.googleapis.com/calendar/v3/users/me/calendarList';
-
-  var headers = {
-    Authorization: 'Bearer '+ user.token
-  };
-
   var params = {
-    url: url,
-    headers: headers,
+    url: urlRoot +'users/me/calendarList',
+    headers: formatAuthHeader(user),
     json: true
   };
 
@@ -39,44 +26,61 @@ exports.calendars = function(req, res){
 /*
  * GET proxy to Google Calendars freebusy API
  */
-exports.freebusy = function(req, res){
+api.freebusy = function(req, res){
   var user = req.session.user;
 
   if( !user ){
     return res.json({ error: 'Forbidden'}, 403);
   }
 
-  var url = 'https://www.googleapis.com/calendar/v3/freeBusy';
-
   if( !req.query.timeMin || !req.query.timeMax || !req.query.calendar ){
-    res.json({ error: 'Missing required fields' },412);
+    res.json({ error: 'Missing required fields' }, 412);
     return;
   }
 
-  // Takes the following query parameters:
-  //
-  //  calendar - `string`
-  //  timeMin  - `date` (or anything remotely date-like)
-  //  timeMax  - `date`
-  var postBody = {
-    timeMin: moment( req.query.timeMin ).format(),
-    timeMax: moment( req.query.timeMax ).format(),
-    items: [
-      {
-        id: req.query.calendar
-      }
-    ]
-  };
-
-  var headers = {
-    Authorization: 'Bearer '+ user.token
-  };
-
   var params = {
-    url: url,
-    headers: headers,
-    json: postBody
+    url: urlRoot +'freeBusy',
+    headers: formatAuthHeader(user),
+    json: formatPostBody(req.query)
   };
 
   request.post( params, responseHandler.bind(res) );
 };
+
+// Returns a headers object with the user's oauth token
+function formatAuthHeader(user){
+  return {
+    Authorization: 'Bearer '+ user.token
+  };
+}
+
+// Callback for request, to be used with .bind(res) to pass the response object
+function responseHandler(err, resp, body){
+  if( err ){
+    console.log(err, body);
+    return this.error(500);
+  }
+
+  if( body && body.error ){
+    return this.json(body.error, body.error.code);
+  }
+
+  this.json( body );
+}
+
+// Takes the following query parameters:
+//
+//  calendar - `string`
+//  timeMin  - `date` (or anything remotely date-like)
+//  timeMax  - `date`
+function formatPostBody( query ){
+  return {
+    timeMin: moment( query.timeMin ).format(),
+    timeMax: moment( query.timeMax ).format(),
+    items: [
+      {
+        id: query.calendar
+      }
+    ]
+  };
+}

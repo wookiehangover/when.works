@@ -32,3 +32,10 @@ exports.response = function( cb ){
   };
 };
 
+exports.userSessionData = {
+  session: {
+    user: {
+      token: 'hello world'
+    }
+  }
+};

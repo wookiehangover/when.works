@@ -5,8 +5,21 @@ define(function(require, exports, module){
   var Backbone = require('backbone');
 
   module.exports = Backbone.Collection.extend({
-    url: function(){
 
+    initialize: function(params){
+      if( !params.config ){
+        throw new Error('You must pass a config model');
+      }
+      this.config = params.config;
+
+      this.config.on('change', function(model){
+        if( model.get('timeMax') && model.get('timeMin') && model.get('calendar') ){
+          this.fetch();
+        }
+      }, this);
+    },
+
+    url: function(){
       var query = $.param({
         calendar: this.config.get('calendar'),
         timeMin: this.moment( this.config.get('timeMin') ).format(),
@@ -17,17 +30,8 @@ define(function(require, exports, module){
       return '/untaken?'+ query;
     },
 
-    initialize: function(params){
-      this.config = params.config;
-
-      this.config.on('change', function(model){
-        if( model.get('timeMax') && model.get('timeMin') && model.get('calendar') ){
-          this.fetch();
-        }
-      }, this);
-    },
-
     parse: function( obj ){
+      console.log(obj)
       return obj.calendars[ this.config.get('calendar') ].busy;
     },
 
