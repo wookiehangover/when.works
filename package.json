@@ -20,7 +20,6 @@
     "grunt-mocha": "~0.2.2",
     "grunt-contrib-less": "~0.7.0",
     "grunt-contrib-jshint": "~0.2.0",
-    "grunt-devtools": "~0.1.0-6",
     "grunt-contrib-cssmin": "~0.4.1",
     "grunt-mocha-phantomjs": "~0.2.7",
     "mocha": "~1.9.0",
@@ -34,7 +33,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha test && ./node_modules/.bin/grunt mocha_phantomjs",
+    "test": "mocha test && grunt mocha_phantomjs",
     "start": "node server.js"
   },
   "repository": "",
@@ -42,6 +41,6 @@
   "license": "BSD",
   "subdomain": "untaken",
   "engines": {
-    "node": "0.8.x"
+    "node": "0.10.x"
   }
 }
