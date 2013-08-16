@@ -11,7 +11,6 @@ require.config({
     backbone: 'components/backbone-amd/backbone',
     pickadate: 'components/pickadate/source/pickadate',
     cookie: 'components/cookie/cookie',
-    zeroclipboard: 'components/zeroclipboard/ZeroClipboard',
 
     tpl: 'components/requirejs-tpl/tpl',
     text: 'components/requirejs-text/text'
@@ -22,9 +21,6 @@ require.config({
     pickadate: {
       exports: 'jQuery.fn.pickadate',
       deps: ['jquery']
-    },
-    zeroclipboard: {
-      exports: 'ZeroClipboard'
     }
   }
 });
