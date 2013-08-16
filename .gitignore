@@ -3,6 +3,5 @@ dist
 .tmp
 .sass-cache
 app/components
-config/default.js
 config/production.js
 config/runtime.json
