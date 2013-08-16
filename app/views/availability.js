@@ -16,7 +16,7 @@ define(function(require, exports, module){
 
     setupClipboard: function(){
       var clip = new ZeroClipboard( this.$('button[data-action="copy"]')[0], {
-        moviePath: '/app/components/zeroclipboard/ZeroClipboard.swf',
+        moviePath: '/js/ZeroClipboard.swf',
         activeClass: 'is-active'
       });
 
