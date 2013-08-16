@@ -1,10 +1,10 @@
 {
   "name": "untaken",
-  "version": "0.0.3",
+  "version": "0.0.3-2",
   "description": "take back your calendar or whatever",
   "main": "server.js",
   "dependencies": {
-    "express": "3.2.0",
+    "express": "3.3.0",
     "ejs": "*",
     "authom": "~0.4.8",
     "connect-redis": "~1.4.5",
@@ -18,7 +18,7 @@
     "grunt": "~0.4.0",
     "grunt-requirejs": "~0.3.2",
     "grunt-mocha": "~0.2.2",
-    "grunt-contrib-less": "~0.5.0",
+    "grunt-contrib-less": "~0.7.0",
     "grunt-contrib-jshint": "~0.2.0",
     "grunt-devtools": "~0.1.0-6",
     "grunt-contrib-cssmin": "~0.4.1",

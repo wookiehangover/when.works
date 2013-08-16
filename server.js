@@ -34,9 +34,11 @@ app.configure(function(){
   app.set('view engine', 'ejs');
   app.use(express.favicon());
   app.use(express.logger('dev'));
+  app.use(express.compress());
   app.use(express.bodyParser());
   app.use(express.cookieParser( config.secret ));
   app.use(express.session({ store: new RedisStore( config.redis ) }));
+  app.use(express.csrf());
   app.use(app.router);
 
   // frontend application
@@ -50,7 +52,6 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
   app.use(express.static(path.join(__dirname)));
-
 });
 
 /*

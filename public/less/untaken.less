@@ -1,4 +1,10 @@
-@import 'bootstrap/bootstrap.less';
+@import 'bootstrap/variables.less';
+@import 'bootstrap/mixins.less';
+
+@import 'bootstrap/grid.less';
+
+@import '../app/components/topcoat/css/topcoat-desktop-dark.css';
+
 @import 'pickadate.less';
 @import 'pusher.less';
 @import 'loading.less';
@@ -8,12 +14,21 @@ input.datepicker {
 }
 
 body {
-  background: #eaeaea;
+  color: #F0F1F1;
+  background: #4A4D4E;
+  font-family: source-sans-pro, sans-serif;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  overflow-x: hidden;
 }
 
 #main {
-  background: rgba(255,255,255, 0.75);
-  padding: 0 2em;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .login {
@@ -22,9 +37,21 @@ body {
 }
 
 
-.page-header {
+#main-header {
   border-color: rgb(162, 162, 162);
+  background: #fff;
+  color: #373435;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  position: relative;
+
+
+  h1 {
+    font-size: 28px;
+    font-family: 'League Script', cursive;
+  }
 }
+
 
 
 //
@@ -35,10 +62,7 @@ body {
   width: 100%;
   padding: 2em 0 1em;
   height: @footerHeight - 3em;
-
-  .container {
-    border-top: 1px solid rgb(162, 162, 162);
-  }
+  background: #3B3E40;
 
   .ql-logo {
     padding-top: 2em;
@@ -81,3 +105,76 @@ body {
   margin: 0 auto;
 }
 
+select {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background: #595B5B;
+  background-image: none;
+  box-shadow: 0 0 0 1px #303233;
+  border: none;
+  border-top: 2px solid #666767;
+  color: #c6c8c8;
+  text-shadow: 0 -1px 0 #000;
+  overflow: hidden;
+  font-size: 14px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 20px;
+  -webkit-appearance: none;
+  -moz-appearance: button;
+}
+
+form {
+  border-top: 1px solid #58595A;
+  margin-top: 20px;
+  .control-group {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #58595A;
+    padding: 10px 0;
+
+    label {
+      display: inline-block;
+      width: 100%;
+      padding: 10px 0;
+    }
+
+    input, select {
+      margin-bottom: 10px;
+      width: 80%;
+    }
+  }
+}
+
+@media screen and (min-width: 650px) {
+  select {
+    background: #595B5B;
+    box-shadow: 0 0 0 1px #303233;
+    border: none;
+    border-top: 2px solid #666767;
+    color: #c6c8c8;
+    text-shadow: 0 -1px 0 #000;
+    padding: 3px 20px 4px 8px;
+    -webkit-appearance: none;
+  }
+
+}
+
+@media (max-width: 767px){
+
+  .span4, .span8 {
+    width: 88%;
+  }
+
+  .gh-ribbon, .primary-footer { display: none; }
+}
+
+@media screen and (min-width: 880px) {
+  .max-width {
+    max-width: 960px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+}

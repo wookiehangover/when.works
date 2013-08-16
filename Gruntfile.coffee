@@ -20,9 +20,10 @@ config =
         name: 'config'
         out: 'public/js/untaken.js'
         optimize: 'uglify2'
-        wrap: false
+        wrap: true
         preserveLicenseComments: false
         almond: true
+        generateSourceMaps: true
 
   jshint:
     files: [

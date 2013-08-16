@@ -13,7 +13,7 @@ define(function(require, exports, module){
   }
 
   module.exports = Backbone.View.extend({
-    el: $('.calendars .picker'),
+    el: $('.picker'),
 
     initialize: function(params){
       if( !this.collection || !this.model ){

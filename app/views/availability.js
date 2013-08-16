@@ -3,7 +3,7 @@ define(function(require, exports, module){
   var Backbone = require('backbone');
 
   module.exports = Backbone.View.extend({
-    el: $('.calendars .availability'),
+    el: $('.availability'),
 
     initialize: function(params){
       if( !this.collection ){

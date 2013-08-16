@@ -31,7 +31,6 @@ define(function(require, exports, module){
     },
 
     parse: function( obj ){
-      console.log(obj)
       return obj.calendars[ this.config.get('calendar') ].busy;
     },
 
@@ -135,7 +134,9 @@ define(function(require, exports, module){
       // between the meetings
       _.each(times, function(timeEntry){
         // Handle empty start times
-        if( !nextAvailableStart ) return;
+        if( !nextAvailableStart ) {
+          return;
+        }
         // Create a timestring (Monday 1/1 1 - 2pm) and add it to the list
         var meetingEnd = this.moment( timeEntry.get('start') );
         var timestring = this.createTimestring(nextAvailableStart, meetingEnd);

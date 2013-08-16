@@ -1,7 +1,9 @@
-<h4>This is when you can do stuff:</h4>
-<ul>
-<% collection.getUntaken().forEach(function( time ){ %>
-  <li><%= time %></li>
-<% }) %>
-</ul>
+<div class="topcoat-list__container">
+  <h3 class="topcoat-list__header">Availability:</h3>
+  <ul class="topcoat-list">
+  <% collection.getUntaken().forEach(function( time ){ %>
+    <li class="topcoat-list__item"><%= time %></li>
+  <% }) %>
+  </ul>
+</div>
 

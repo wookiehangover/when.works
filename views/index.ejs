@@ -1,28 +1,26 @@
 <% include _header.ejs %>
-<div class="page-header">
-  <h1>Untaken <small>You're Probably Not Available</small></h1>
-</div>
+<header id="main-header">
+  <div class="max-width">
+    <h1>You're Probably Not Available</h1>
+  </div>
+</header>
 
-<section class="row">
+<div id="main" class="max-width">
   <% if( !user ){ %>
-    <h2 class="login"><a href="/auth/google">Login with your Google Account</h2>
+  <div class="login">
+    <a href="/auth/google" class="topcoat-button--large">Login with your Google Account</a>
+  </div>
   <% } else { %>
-    <div class="span3">
+  <section class="row">
+    <div class="span4">
       <h3><%= user.data.name %></h3>
       <p><b><%= user.data.email %></b></p>
-      <a href="/logout" class="btn clearfix">Logout</a>
+      <a href="/logout" class="topcoat-button">Logout</a>
+      <div class="picker"></div>
     </div>
+    <div class="availability span8"></div>
+  </section>
   <% } %>
-
-  <div class="span8 offset1 calendars">
-    <div class="row">
-      <div class="picker span4"></div>
-      <div class="availability span4"></div>
-    </div>
-  </div>
-</section>
-<div class="embed-container">
-  <iframe id="calendar-embed" src="" style="border: 0" height="400" frameborder="0" scrolling="no"></iframe>
 </div>
 
 <% include _footer.ejs %>

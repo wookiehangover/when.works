@@ -1,42 +1,56 @@
-<h4>Select a Calendar:</h4>
-<select name="calendar">
-  <option></option>
-<% collection.each(function(model){ %>
-  <option value="<%= model.get('id') %>">
-    <%= model.get('summary') %>
-  </option>
-<% }); %>
-</select>
-<a href="javascript: void 0;" data-action="add-calendar">+ Add</a>
-<h4>Choose some dates:</h4>
-<input type=text name="timeMin" class="datepicker" placeholder="Start Date" value="10 March, 2013"/>
-<input type=text name="timeMax" class="datepicker" placeholder="End Date"/>
-<h4>Pick a timezone</h4>
-<select name="timezone">
-<% timezones(function(offset, name){ %>
-  <option value="<%= offset %>">
-    <%= name %>
-  </option>
-<% }); %>
-</select>
-<label class="control-label" for="start">Start time:</label>
-<select name="start" class="input-small">
-  <option>7am</option>
-  <option>8am</option>
-  <option>9am</option>
-  <option selected>10am</option>
-  <option>11am</option>
-  <option>12pm</option>
+<form>
+  <div class="control-group">
+    <label>Calendar:</label>
+    <select name="calendar">
+      <option>none</option>
+    <% collection.each(function(model){ %>
+      <option value="<%= model.get('id') %>">
+        <%= model.get('summary') %>
+      </option>
+    <% }); %>
+    </select>
+  </div>
 
-</select>
-<label class="control-label" for="end">End time:</label>
-<select name="end" class="input-small">
-  <option>1pm</option>
-  <option>2pm</option>
-  <option>3pm</option>
-  <option>4pm</option>
-  <option>5pm</option>
-  <option selected>6pm</option>
-  <option>7pm</option>
-  <option>8pm</option>
-</select>
+  <div class="control-group">
+    <label>Date Range:</label>
+    <input type=text name="timeMin" class="datepicker topcoat-text-input" placeholder="Start Date" value="10 March, 2013"/>
+    <input type=text name="timeMax" class="datepicker topcoat-text-input" placeholder="End Date"/>
+  </div>
+
+  <div class="control-group">
+    <label>Timezone:</label>
+    <select name="timezone">
+    <% timezones(function(offset, name){ %>
+      <option value="<%= offset %>">
+        <%= name %>
+      </option>
+    <% }); %>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="start">Day Start:</label>
+    <select name="start" class="input-small">
+      <option>7am</option>
+      <option>8am</option>
+      <option>9am</option>
+      <option selected>10am</option>
+      <option>11am</option>
+      <option>12pm</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="end">Day End:</label>
+    <select name="end" class="input-small">
+      <option>1pm</option>
+      <option>2pm</option>
+      <option>3pm</option>
+      <option>4pm</option>
+      <option>5pm</option>
+      <option selected>6pm</option>
+      <option>7pm</option>
+      <option>8pm</option>
+    </select>
+  </div>
+</form>
