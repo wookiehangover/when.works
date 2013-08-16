@@ -9,7 +9,7 @@ define(function(require, exports, module){
   require('pickadate');
 
   function createDateArray( date ) {
-    return date.split( '-' ).map(function( value ) { return +value; });
+    return date.split('-').map(function( value ) { return +value; });
   }
 
   module.exports = Backbone.View.extend({
@@ -27,17 +27,41 @@ define(function(require, exports, module){
     },
 
     events: {
-      'change select,input': 'updateConfig'
+      'change select,input': 'updateConfig',
+      'click [data-action="add-calendar"]': 'addCalendar',
+      'click [data-action="remove-calendar"]': 'removeCalendar'
     },
 
     updateConfig: function(e){
       var $elem = $(e.currentTarget);
       var name = $elem.attr('name');
+      var attrs = {};
+      attrs[name] = $elem.val();
 
-      if( $elem.is('select') && $elem.val() ){
+      if( $elem.hasClass('add-calendar') ){
+        attrs.options = { remove: false };
+      }
+
+      if( $elem.is('select:not(.add-calendar)') && $elem.val() ){
         cookie.set(name, $elem.val());
       }
-      this.model.set(name, $elem.val());
+      this.model.set(attrs);
+    },
+
+    addCalendar: function(e){
+      e.preventDefault();
+      var $select = this.$('.calendar-select').first().clone();
+      $select.find('select').addClass('add-calendar');
+      $select.find('option').first().attr('selected', true);
+      $(e.currentTarget).before($select);
+    },
+
+    removeCalendar: function(e){
+      e.preventDefault();
+      $(e.currentTarget).parent().remove();
+      if( this.$('.calendar-select').length === 1 ){
+        this.$('.calendar-select select').trigger('change');
+      }
     },
 
     updateAllConfigs: function(e){

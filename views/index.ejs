@@ -13,9 +13,11 @@
   <% } else { %>
   <section class="row">
     <div class="span4">
-      <h3><%= user.data.name %></h3>
-      <p><b><%= user.data.email %></b></p>
-      <a href="/logout" class="topcoat-button">Logout</a>
+      <div class="user">
+        <h3><%= user.data.name %></h3>
+        <p><%= user.data.email %></p>
+        <a href="/logout" class="topcoat-button">Logout</a>
+      </div>
       <div class="picker"></div>
     </div>
     <div class="availability span8"></div>

@@ -1,9 +1,14 @@
 <div class="topcoat-list__container">
   <h3 class="topcoat-list__header">Availability:</h3>
   <ul class="topcoat-list">
-  <% collection.getUntaken().forEach(function( time ){ %>
-    <li class="topcoat-list__item"><%= time %></li>
+  <% _.each(untaken, function( time, i ){ %>
+    <li class="topcoat-list__item" data-orig-index="<%= i %>">
+      <p><%= time %></p>
+      <button class="topcoat-button" data-action="remove-item">remove</button>
+    </li>
   <% }) %>
   </ul>
 </div>
+<br/>
+<button class="topcoat-button--cta" data-action="copy">Copy to Clipboard</button>
 

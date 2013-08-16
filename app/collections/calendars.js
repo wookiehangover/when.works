@@ -10,6 +10,10 @@ define(function(require, exports, module){
 
     parse: function( obj ){
       return obj.items;
+    },
+
+    comparator: function(model){
+      return model.get('summary');
     }
   });
 });

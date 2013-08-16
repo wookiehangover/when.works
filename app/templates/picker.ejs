@@ -1,14 +1,18 @@
 <form>
   <div class="control-group">
     <label>Calendar:</label>
-    <select name="calendar">
-      <option>none</option>
-    <% collection.each(function(model){ %>
-      <option value="<%= model.get('id') %>">
-        <%= model.get('summary') %>
-      </option>
-    <% }); %>
-    </select>
+    <div class="calendar-select">
+      <select name="calendar">
+        <option>none</option>
+      <% collection.each(function(model){ %>
+        <option value="<%= model.get('id') %>">
+          <%= model.get('summary') %>
+        </option>
+      <% }); %>
+      </select>
+      <button class="topcoat-button--quiet" data-action="remove-calendar">x</button>
+    </div>
+    <!-- <button class="topcoat-button" data-action="add-calendar">Add another</button> -->
   </div>
 
   <div class="control-group">

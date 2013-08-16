@@ -14,7 +14,7 @@ define(function(require, exports, module){
 
       this.config.on('change', function(model){
         if( model.get('timeMax') && model.get('timeMin') && model.get('calendar') ){
-          this.fetch();
+          this.fetch( model.get('options') || {} );
         }
       }, this);
     },
