@@ -2,7 +2,7 @@ define(function(require, exports, module){
   var Backbone = require('backbone');
 
   module.exports = Backbone.Collection.extend({
-    url: '/calendars',
+    url: '/api/calendars',
 
     initialize: function(){
       this.dfd = this.fetch();

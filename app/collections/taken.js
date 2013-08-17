@@ -27,7 +27,7 @@ define(function(require, exports, module){
         timeMax: this.moment( this.config.get('timeMax') ).add('days', 1).format()
       });
 
-      return '/untaken?'+ query;
+      return '/api/freebusy?'+ query;
     },
 
     parse: function( obj ){

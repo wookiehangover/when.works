@@ -59,8 +59,10 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/auth/:service', authom.app);
-app.get('/calendars', api.calendars);
-app.get('/untaken', api.freebusy);
+
+app.get('/api/calendars', api.calendars);
+app.get('/api/freebusy', api.freebusy);
+
 app.get('/me', user.me);
 app.get('/logout', user.logout);
 
