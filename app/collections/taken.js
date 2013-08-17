@@ -2,11 +2,12 @@ define(function(require, exports, module){
   var $ = require('jquery');
   var _ = require('underscore');
   var moment = require('moment');
+  var mixins = require('lib/mixins');
   var Backbone = require('backbone');
 
   module.exports = Backbone.Collection.extend({
 
-    initialize: function(params){
+    initialize: function(models, params){
       if( !params.config ){
         throw new Error('You must pass a config model');
       }
@@ -61,43 +62,10 @@ define(function(require, exports, module){
     },
 
     // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
-    createTimestring: function(beginning, ending){
-      // Make sure that am/pm suffixes are only applied when they differ
-      // between start and end times
-      var beginningFormat = beginning.minutes() === 0 ? 'h' : 'h:mm';
-      var endFormat = ending.minutes() === 0 ? 'ha' : 'h:mma';
-
-      if( ending.format('a') !== beginning.format('a') ){
-        beginningFormat += 'a';
-      }
-
-      // Format that shit
-      return beginning.format('dddd M/D - '+ beginningFormat +' to ') + ending.format(endFormat);
-    },
+    createTimestring: mixins.createTimestring,
 
     // Returns a Moment object with the correct timezone offset.
-    moment: function(date){
-      var m = moment(date);
-      var local = moment().zone();
-      var timezone = this.config.get('timezone');
-      var offset, dst;
-
-      if( timezone ){
-        timezone = timezone.split(',');
-        dst = parseInt( timezone[1], 10 );
-        offset = Math.abs( parseInt(timezone[0], 10) );
-
-        if( moment().isDST() && dst === 1 ){
-          offset -= 60;
-        }
-
-        if( offset !== local ){
-          m.subtract('minutes', offset - local);
-        }
-      }
-
-      return m;
-    },
+    moment: mixins.localMoment,
 
     // Takes an array of Models for a given date and determines the availabilty
     //
