@@ -36,26 +36,7 @@ config =
       'lib/**/*.js'
     ]
     options:
-      camelcase: true
-      curly: true
-      eqeqeq: true
-      strict: false
-      immed: false
-      forin: true
-      latedef: false
-      newcap: true
-      noarg: true
-      sub: true
-      undef: true
-      boss: true
-      eqnull: true
-      browser: true
-      node: true
-      expr: true
-      globals:
-        Modernizr: true
-        define: true
-        require: true
+      jshintrc: ".jshintrc"
 
   mocha_phantomjs:
     options:
