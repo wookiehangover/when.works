@@ -12,7 +12,7 @@ exports.less = {
 
 exports.redis = {
   host: process.env.REDIS_HOST || '127.0.0.1',
-  port: 6379
+  port: process.env.REDIS_PORT || 6379
 }
 
 if( process.env.REDIS_PASS ){

@@ -4,7 +4,7 @@
   "description": "take back your calendar or whatever",
   "main": "server.js",
   "dependencies": {
-    "express": "3.3.0",
+    "express": "~3.3.0",
     "ejs": "*",
     "authom": "~0.4.8",
     "connect-redis": "~1.4.5",
