@@ -45,6 +45,10 @@ define(function(require, exports, module){
       if( $elem.is('select:not(.add-calendar)') && $elem.val() ){
         cookie.set(name, $elem.val());
       }
+
+      if( $elem.is(':checkbox') ){
+        attrs[name] = $elem.prop('checked');
+      }
       this.model.set(attrs);
     },
 
@@ -68,7 +72,9 @@ define(function(require, exports, module){
       var model = this.model;
 
       this.$('input, select').each(function(){
-        model.set( $(this).attr('name'), this.value );
+        var $this = $(this);
+        var value = $this.is(':checkbox') ? $this.prop('checked') : this.value;
+        model.set( $this.attr('name'), value );
       });
     },
 

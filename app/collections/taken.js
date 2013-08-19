@@ -13,7 +13,7 @@ define(function(require, exports, module){
       }
       this.config = params.config;
 
-      this.config.on('change', function(model){
+      this.config.on('change:calendar change:timeMax change:timeMin', function(model){
         if( model.get('timeMax') && model.get('timeMin') && model.get('calendar') ){
           this.fetch( model.get('options') || {} );
         }
@@ -35,12 +35,13 @@ define(function(require, exports, module){
       return obj.calendars[ this.config.get('calendar') ].busy;
     },
 
-    // Returns the availability based on all of the current models
+    // Interface for generating and array of availabile times
     getUntaken: function(){
       // Split collection into days of the week
       var days = this.getDays();
       // Get the availability text for each day in the time range
       var timeblock = _.map(days, this.getAvailabilityFromDay, this);
+
 
       // You jerk
       if( timeblock.length === 0 ){
@@ -54,11 +55,41 @@ define(function(require, exports, module){
       return _.flatten(timeblock);
     },
 
-    // Groups the models by day
+    // Creates an Object that takes the form
+    //
+    // {
+    //   2013-01-01: [ (Freebusy Model) ]
+    // }
+    //
+    // Ranging from the configured time range
     getDays: function(){
-      return this.groupBy(function( model ){
-        return this.moment( model.get('start') ).format('YYYY-MM-DD');
+      var format = 'YYYY-MM-DD';
+
+      var events = this.groupBy(function( model ){
+        return this.moment( model.get('start') ).format(format);
       }, this);
+
+      var allDays = {};
+      var weekend = [];
+      var start = this.moment( this.config.get('timeMin') );
+      var end = this.moment( this.config.get('timeMax') );
+
+      _.times( moment.duration(end - start).days(), function(i){
+        var date = start.clone().add('d', i);
+        if( +date.format('d') === 0 || +date.format('d') === 6 ){
+          weekend.push( date.format(format) );
+        }
+        allDays[ date.format(format) ] = [];
+      });
+
+      if( this.config.get('ignoreWeekend') ){
+        _.each(weekend, function(date){
+          delete allDays[date];
+          delete events[date];
+        });
+      }
+
+      return _.merge(events, allDays);
     },
 
     // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
@@ -81,6 +112,13 @@ define(function(require, exports, module){
       // Set the Beginning and the End of the current day
       var dayStart = this.moment( moment(date).hour(startTime) );
       var dayEnd   = this.moment( moment(date).hour(endTime) );
+
+      // if this is an empty day, return early
+      if(times.length === 0){
+        dayblock.push( this.createTimestring(dayStart, dayEnd) );
+        return dayblock;
+      }
+
       // Remove the First and Last time entry from the times array
       var first = times.shift();
       var last  = times.pop();
@@ -96,6 +134,26 @@ define(function(require, exports, module){
          firstMeetingStart !== dayStart &&
          firstMeetingStart.isAfter( dayStart ) ){
         dayblock.push( this.createTimestring(dayStart, firstMeetingStart) );
+      }
+
+      // If you have an all day event scheduled, it usually ends *after* the
+      // end of the current day
+      if( firstMeetingStart &&
+          firstMeetingEnd.isAfter(dayEnd) && times.length === 0 ){
+
+        if( this.config.get('showUnavailable') ){
+          // Make things look sane by always conforming to the start time
+          if( firstMeetingStart.isBefore(dayStart) ){
+            firstMeetingStart = dayStart;
+          }
+          dayblock.push([
+            firstMeetingStart.format('dddd M/D'),
+            '- No availability after',
+            firstMeetingStart.format('hh:a')
+          ].join(' '));
+          return dayblock;
+        } else return []; // This will disappear into nothing when _.flatten'ed
+
       }
 
       // Iterate through the "middle" times and add timestrings for the time

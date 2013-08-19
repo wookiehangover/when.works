@@ -11,6 +11,7 @@ define(function(require, exports, module){
         throw new Error('You must pass a model collection');
       }
       this.listenTo( this.collection, 'sync', this.render, this);
+      this.listenTo( this.collection.config, 'change:ignoreWeekend change:start change:end change:showUnavailable', this.render, this);
     },
 
     setupClipboard: function(){
