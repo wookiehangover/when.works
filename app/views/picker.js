@@ -70,12 +70,15 @@ define(function(require, exports, module){
 
     updateAllConfigs: function(e){
       var model = this.model;
+      var attrs = {};
 
       this.$('input, select').each(function(){
         var $this = $(this);
         var value = $this.is(':checkbox') ? $this.prop('checked') : this.value;
-        model.set( $this.attr('name'), value );
+        attrs[$this.attr('name')] = value;
       });
+
+      model.set(attrs);
     },
 
     timezones: function(cb){

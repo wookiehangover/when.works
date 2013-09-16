@@ -2,6 +2,7 @@ define(function(require, exports, module){
   var $ = require('jquery');
   var _ = require('underscore');
   var Backbone = require('backbone');
+  var Modal = require('views/modal');
 
   module.exports = Backbone.View.extend({
     el: $('.availability'),
@@ -10,9 +11,20 @@ define(function(require, exports, module){
       if( !this.collection ){
         throw new Error('You must pass a model collection');
       }
-      this.listenTo( this.collection, 'sync', this.render, this);
-      this.listenTo( this.collection.config, 'change:ignoreWeekend change:start change:end change:showUnavailable', this.render, this);
+
+      this.listenTo(this.collection, 'sync', this.render, this);
+
+      var changeEvents = [
+        'change:ignoreWeekend',
+        'change:start',
+        'change:end',
+        'change:showUnavailable'
+      ].join(' ');
+
+      this.listenTo(this.collection.config, changeEvents, this.render, this);
     },
+
+    hasFlash: false,
 
     setupClipboard: function(){
       var clip = new ZeroClipboard( this.$('button[data-action="copy"]')[0], {
@@ -21,6 +33,25 @@ define(function(require, exports, module){
       });
 
       var self = this;
+
+      function removeOverlay(){
+        $('#global-zeroclipboard-html-bridge').remove();
+      }
+
+      if( ZeroClipboard.detectFlashSupport() === false ){
+        removeOverlay();
+      }
+
+      clip.on('load', function(){
+        self.hasFlash = true;
+      });
+
+      _.delay(function(){
+        if( self.hasFlash === false ){
+          removeOverlay();
+        }
+      }, 500);
+
       clip.on('dataRequested', function(client){
         client.setText(self.presentUntaken());
       });
@@ -47,7 +78,8 @@ define(function(require, exports, module){
     },
 
     events: {
-      'click [data-action="remove-item"]': 'removeItem'
+      'click [data-action="remove-item"]': 'removeItem',
+      'click [data-action="copy"]': 'copyFallback'
     },
 
     removeItem: function(e){
@@ -55,6 +87,17 @@ define(function(require, exports, module){
       var index = $(e.currentTarget).parent().data('orig-index');
       this.blacklist.push( index );
       $(e.currentTarget).parent().remove();
+    },
+
+    copyFallback: function(e){
+      e.preventDefault();
+      var modal = new Modal({
+        id: 'copy-modal',
+        title: this.collection.config.get('calendar'),
+        body: this.presentUntaken()
+      });
+
+      modal.$('textarea').select();
     }
   });
 });
