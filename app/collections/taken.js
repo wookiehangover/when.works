@@ -152,7 +152,9 @@ define(function(require, exports, module){
             firstMeetingStart.format('hh:a')
           ].join(' '));
           return dayblock;
-        } else return []; // This will disappear into nothing when _.flatten'ed
+        } else {
+          return []; // This will disappear into nothing when _.flatten'ed
+        }
 
       }
 
