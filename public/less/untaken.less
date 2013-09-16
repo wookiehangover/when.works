@@ -3,20 +3,22 @@
 
 @import 'bootstrap/grid.less';
 
-@import 'topcoat-desktop-dark.less';
+@import 'topcoat.less';
+@import 'components/topcoat-overlay.less';
 
-@import 'pickadate.less';
-@import 'pusher.less';
-@import 'effeckt.button.less';
+@import 'components/animations.less';
+@import 'components/effeckt.button.less';
+@import 'components/pickadate.less';
+@import 'components/pusher.less';
 
 input.datepicker {
   cursor: pointer;
 }
 
 body {
-  color: #F0F1F1;
-  background: #4A4D4E;
-  font-family: source-sans-pro, sans-serif;
+  // color: #F0F1F1;
+  // background: #4A4D4E;
+  // font-family: source-sans-pro, sans-serif;
   position: relative;
   -webkit-font-smoothing: antialiased;
 }
@@ -54,9 +56,38 @@ body {
     background: #3B3E40;
     color: #fff;
   }
-
-
 }
+
+
+
+
+.modal {
+  display: none;
+  &.ui-active {
+    display: block;
+    .topcoat-overlay-bg {
+      .animate-fadeIn(200ms);
+    }
+
+    .topcoat-overlay {
+      .animate-swingIn(300ms);
+    }
+  }
+}
+
+.show-modal {
+  html, body {
+    overflow: hidden;
+  }
+}
+
+#copy-modal textarea {
+  font-size: 22px;
+  width: 100%;
+}
+
+
+
 
 .gh-ribbon {
   .transition(opacity 200ms);
@@ -66,9 +97,9 @@ body {
   }
 }
 
-@import 'picker.less';
-@import 'availability.less';
-@import 'footer.less';
+@import 'pages/picker.less';
+@import 'pages/availability.less';
+@import 'pages/footer.less';
 
 @media screen and (min-width: 650px) {
   select {
