@@ -12,26 +12,43 @@
   .transition(all 300ms);
   &:hover {
     background: #fff;
+
+    .ql-logo .logout-button {
+      .opacity(100);
+    }
   }
 
   .ql-logo {
     color: #000;
 
     h2 {
+      float: left;
       line-height: 32px;
       font-size: 28px;
       font-family: 'League Script', cursive;
     }
 
-    a {
+    .logo {
       display: inline-block;
       background: url(/images/ql.png);
       text-indent: -2000em;
       height: 26px;
       width: 164px;
     }
+
+    .logout-button {
+      float: right;
+      margin-top: 12px;
+      .opacity(50);
+    }
+
   }
 
 }
 
+body.logged-out {
+  .logout-button {
+    display: none;
+  }
+}
 

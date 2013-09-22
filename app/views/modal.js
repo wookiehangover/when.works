@@ -41,6 +41,7 @@ define(function(require, exports, module){
     },
 
     show: function(){
+      $(window).scrollTop(0);
       this.$el.addClass('ui-active');
       $('html').addClass('show-modal');
     }

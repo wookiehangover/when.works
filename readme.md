@@ -1,4 +1,4 @@
-# Untaken
+# Unavailable.at
 
 This app connects to a user's Google Calendar account and returns a
 listing of what time's they're availabile for a given date range. I
@@ -7,7 +7,7 @@ do it for me.
 
 ## Setup
 
-* Node.js 0.8
+* Node.js >= 0.10
 * Redis >= 2.4
 * Grunt 0.4
 

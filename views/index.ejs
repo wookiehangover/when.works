@@ -1,14 +1,19 @@
 <% include _header.ejs %>
 <header id="main-header">
   <div class="max-width">
-    <h1>You're Probably Not Available</h1>
+    <h1 class="main">Unavailable.at</h1>
+    <h1 class="alt">You're Probably Not Available</h1>
   </div>
 </header>
 
 <div id="main" class="max-width">
   <% if( !user ){ %>
-  <div class="login">
-    <a href="/auth/google" class="topcoat-button--large">Login with your Google Account</a>
+  <div class="welcome span6">
+  <h1>Lots of meetings?</h1>
+    <p><a href="http://github.com/wookiehangover/unavailable.at" target="_blank">Unavailable.at</a> makes easy to copy, pretty-printed lists of your availability from your Google Calendar.</p>
+    <div class="login">
+      <a href="/auth/google" class="topcoat-button--large--cta">Sign in with your Google Account</a>
+    </div>
   </div>
   <% } else { %>
   <section class="row">
@@ -16,7 +21,6 @@
       <div class="user">
         <h3><%= user.data.name %></h3>
         <p><%= user.data.email %></p>
-        <a href="/logout" class="topcoat-button">Logout</a>
       </div>
       <div class="picker"></div>
     </div>

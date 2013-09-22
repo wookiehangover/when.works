@@ -5,7 +5,7 @@ define(function(require, exports, module){
     url: '/me',
 
     initialize: function(){
-      this.dfd = this.fetch();
+      this.load = this.fetch();
     }
   });
 });
