@@ -85,7 +85,7 @@ define(function(require, exports, module){
       return _.each(timezones, cb, this);
     },
 
-    template: require('tpl!templates/picker.ejs'),
+    template: require('tpl!templates/settings.ejs'),
 
     render: function(){
       this.$el.html( this.template(this) );
