@@ -130,6 +130,8 @@ define(function(require, exports, module){
       var calendar = cookie.get('calendar');
       if( calendar ){
         this.$('select[name="calendar"]').val(calendar);
+      } else {
+        this.$('select[name="calendar"] option').eq(1).prop('selected', true);
       }
     },
 
