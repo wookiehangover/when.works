@@ -1,22 +1,22 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
   var moment = require('moment');
 
-  exports.localMoment = function(date){
+  exports.localMoment = function(date) {
     var m = moment(date);
     var local = moment().zone();
     var timezone = this.config.get('timezone');
     var offset, dst;
 
-    if( timezone ){
+    if (timezone) {
       timezone = timezone.split(',');
-      dst = parseInt( timezone[1], 10 );
-      offset = Math.abs( parseInt(timezone[0], 10) );
+      dst = parseInt(timezone[1], 10);
+      offset = Math.abs(parseInt(timezone[0], 10));
 
-      if( moment().isDST() && dst === 1 ){
+      if (moment().isDST() && dst === 1) {
         offset -= 60;
       }
 
-      if( offset !== local ){
+      if (offset !== local) {
         m.subtract('minutes', offset - local);
       }
     }
@@ -24,18 +24,18 @@ define(function(require, exports, module){
   };
 
   // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
-  exports.createTimestring = function(start, end){
+  exports.createTimestring = function(start, end) {
     // Make sure that am/pm suffixes are only applied when they differ
     // between start and end times
     var startFormat = start.minutes() === 0 ? 'h' : 'h:mm';
     var endFormat = end.minutes() === 0 ? 'ha' : 'h:mma';
 
-    if( end.format('a') !== start.format('a') ){
+    if (end.format('a') !== start.format('a')) {
       startFormat += 'a';
     }
 
     // Format that shit
-    return start.format('dddd M/D - '+ startFormat +' to ') + end.format(endFormat);
+    return start.format('dddd M/D, ' + startFormat + ' to ') + end.format(endFormat);
   };
 
 

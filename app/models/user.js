@@ -1,10 +1,10 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
   var Backbone = require('backbone');
 
   module.exports = Backbone.Model.extend({
     url: '/me',
 
-    initialize: function(){
+    initialize: function() {
       this.load = this.fetch();
     }
   });

@@ -14,7 +14,6 @@ require.config({
 
     tpl: 'components/requirejs-tpl/tpl',
     text: 'components/requirejs-text/text'
-
   },
 
   shim: {

@@ -1,4 +1,4 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
   var $ = require('jquery');
   var _ = require('underscore');
   var Backbone = require('backbone');
@@ -8,22 +8,24 @@ define(function(require, exports, module){
 
   require('pickadate');
 
-  function createDateArray( date ) {
-    return date.split('-').map(function( value ) { return +value; });
+  function createDateArray(date) {
+    return date.split('-').map(function(value) {
+      return +value;
+    });
   }
 
   module.exports = Backbone.View.extend({
     el: $('.picker'),
 
-    initialize: function(params){
-      if( !this.collection || !this.model ){
+    initialize: function(params) {
+      if (!this.collection || !this.model) {
         throw new Error('You must pass a model and a collection');
       }
 
-      this.listenTo( this.collection, 'reset', this.render);
-      // this.listenTo( this.model, 'change:calendar', this.updateCalendar);
+      this.listenTo(this.collection, 'reset', this.render);
+      this.listenTo(this.model, 'change:calendar', this.updateCalendar);
 
-      this.collection.dfd.done( this.render.bind(this) );
+      this.collection.dfd.done(this.render.bind(this));
     },
 
     events: {
@@ -32,27 +34,29 @@ define(function(require, exports, module){
       'click [data-action="remove-calendar"]': 'removeCalendar'
     },
 
-    updateConfig: function(e){
+    updateConfig: function(e) {
       var $elem = $(e.currentTarget);
       var name = $elem.attr('name');
       var attrs = {};
       attrs[name] = $elem.val();
 
-      if( $elem.hasClass('add-calendar') ){
-        attrs.options = { remove: false };
+      if ($elem.hasClass('add-calendar')) {
+        attrs.options = {
+          remove: false
+        };
       }
 
-      if( $elem.is('select:not(.add-calendar)') && $elem.val() ){
+      if ($elem.is('select:not(.add-calendar)') && $elem.val()) {
         cookie.set(name, $elem.val());
       }
 
-      if( $elem.is(':checkbox') ){
+      if ($elem.is(':checkbox')) {
         attrs[name] = $elem.prop('checked');
       }
       this.model.set(attrs);
     },
 
-    addCalendar: function(e){
+    addCalendar: function(e) {
       e.preventDefault();
       var $select = this.$('.calendar-select').first().clone();
       $select.find('select').addClass('add-calendar');
@@ -60,19 +64,19 @@ define(function(require, exports, module){
       $(e.currentTarget).before($select);
     },
 
-    removeCalendar: function(e){
+    removeCalendar: function(e) {
       e.preventDefault();
       $(e.currentTarget).parent().remove();
-      if( this.$('.calendar-select').length === 1 ){
+      if (this.$('.calendar-select').length === 1) {
         this.$('.calendar-select select').trigger('change');
       }
     },
 
-    updateAllConfigs: function(e){
+    updateAllConfigs: function(e) {
       var model = this.model;
       var attrs = {};
 
-      this.$('input, select').each(function(){
+      this.$('input, select').each(function() {
         var $this = $(this);
         var value = $this.is(':checkbox') ? $this.prop('checked') : this.value;
         attrs[$this.attr('name')] = value;
@@ -81,14 +85,14 @@ define(function(require, exports, module){
       model.set(attrs);
     },
 
-    timezones: function(cb){
+    timezones: function(cb) {
       return _.each(timezones, cb, this);
     },
 
     template: require('tpl!templates/settings.ejs'),
 
-    render: function(){
-      this.$el.html( this.template(this) );
+    render: function() {
+      this.$el.html(this.template(this));
       this.setCalendarFromCookie();
       this.renderDatePicker();
       this.setStartAndEnd();
@@ -96,72 +100,73 @@ define(function(require, exports, module){
       this.updateAllConfigs();
     },
 
-    setStartAndEnd: function(){
-      _.each(['start', 'end'], function(value){
+    setStartAndEnd: function() {
+      _.each(['start', 'end'], function(value) {
         var c = cookie.get(value);
-        if( c ){
-          this.$('select[name="'+ value +'"]').val( c );
+        if (c) {
+          this.$('select[name="' + value + '"]').val(c);
         }
       }, this);
     },
 
-    setTimezone: function(){
+    setTimezone: function() {
       var timezone = moment().zone();
       var isDST = moment().isDST();
-      var sign = moment().format('ZZ').substr(0,1);
+      var sign = moment().format('ZZ').substr(0, 1);
 
-      if( isDST ){
+      if (isDST) {
         timezone += 60;
       }
 
       var zoneKey = [sign + timezone, isDST ? 1 : 0].join(',');
-      var zoneValue = _.filter(timezones, function(value){
-        if( value.search( zoneKey ) > -1 ){
+      var zoneValue = _.filter(timezones, function(value) {
+        if (value.search(zoneKey) > -1) {
           return true;
         }
       });
 
-      if( zoneValue.length ){
+      if (zoneValue.length) {
         this.$('select[name="timezone"]').val(zoneValue[0]);
       }
     },
 
-    setCalendarFromCookie: function(){
+    setCalendarFromCookie: function() {
       var calendar = cookie.get('calendar');
-      if( calendar ){
+      if (calendar) {
         this.$('select[name="calendar"]').val(calendar);
       } else {
+        debugger;
         this.$('select[name="calendar"] option').eq(1).prop('selected', true);
       }
     },
 
-    renderDatePicker: function(){
+    renderDatePicker: function() {
       var today = moment();
       var nextWeek = moment().add('days', 7);
       var lock = true;
 
       var start = this.$('input[name="timeMin"]').pickadate({
-        onSelect: function(){
-          var fromDate = createDateArray( this.getDate( 'yyyy-mm-dd' ) );
-          end.data( 'pickadate' ).setDateLimit( fromDate );
+        onSelect: function() {
+          var fromDate = createDateArray(this.getDate('yyyy-mm-dd'));
+          end.data('pickadate').setDateLimit(fromDate);
         }
       });
 
       var end = this.$('input[name="timeMax"]').pickadate({
         onSelect: function() {
-          var toDate = createDateArray( this.getDate( 'yyyy-mm-dd' ) );
-          start.data( 'pickadate' ).setDateLimit( toDate, 1 );
+          var toDate = createDateArray(this.getDate('yyyy-mm-dd'));
+          start.data('pickadate').setDateLimit(toDate, 1);
         }
       });
 
       start.data('pickadate')
-        .setDate( today.year(), today.month() + 1, today.date() );
+        .setDate(today.year(), today.month() + 1, today.date());
 
       end.data('pickadate')
-        .setDate( nextWeek.year(), nextWeek.month() + 1, nextWeek.date() );
+        .setDate(nextWeek.year(), nextWeek.month() + 1, nextWeek.date());
     },
 
-    updateCalendar: function(){
+    updateCalendar: function() {
       var query = $.param({
         showTitle: 0,
         showNav: 0,
@@ -174,9 +179,8 @@ define(function(require, exports, module){
         src: this.model.get('calendar')
       });
 
-      var url = 'http://www.google.com/calendar/embed?'+ query;
+      var url = 'http://www.google.com/calendar/embed?' + query;
       $('#calendar-embed').hide().attr('src', url).delay(1000).fadeIn();
     }
-
   });
 });

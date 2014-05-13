@@ -1,4 +1,4 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
   var $ = require('jquery');
   var _ = require('underscore');
   var Backbone = require('backbone');
@@ -15,38 +15,38 @@ define(function(require, exports, module){
 
     duration: 15e3,
 
-    initialize: function(){
-      _.bindAll(this, 'switchHeader');
-
+    initialize: function() {
       this.config = new Backbone.Model({
-        start: '10am',
+        start: '9am',
         end: '6pm'
       });
 
       this.user = new User();
 
-      this.user.load.then(_.bind(function(){
+      this.user.load.then(_.bind(function() {
         this.$el.removeClass('logged-out');
       }, this));
 
       this.calendars = new Calendars();
-      this.availability = new Availability(null, { config: this.config });
+      this.availability = new Availability(null, {
+        config: this.config
+      });
 
-      this.settings = new SettingsView({ collection: this.calendars, model: this.config });
-      this.output = new AvailabilityView({ collection: this.availability });
+      this.settings = new SettingsView({
+        collection: this.calendars,
+        model: this.config,
+        user: this.user
+      });
 
-      $(document).ajaxError(function(e, xhr){
-        if( xhr.status === 401 ){
+      this.output = new AvailabilityView({
+        collection: this.availability
+      });
+
+      $(document).ajaxError(function(e, xhr) {
+        if (xhr.status === 401) {
           location.replace('/auth/google');
         }
       });
-
-      this.timer = setTimeout(this.switchHeader, this.duration);
-    },
-
-    switchHeader: function(){
-      this.$('#main-header').toggleClass('switch');
-      this.timer = setTimeout(this.switchHeader, this.duration);
     }
   });
 });

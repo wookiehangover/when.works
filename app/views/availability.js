@@ -1,4 +1,4 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
   var $ = require('jquery');
   var _ = require('underscore');
   var Backbone = require('backbone');
@@ -7,8 +7,8 @@ define(function(require, exports, module){
   module.exports = Backbone.View.extend({
     el: $('.availability'),
 
-    initialize: function(params){
-      if( !this.collection ){
+    initialize: function(params) {
+      if (!this.collection) {
         throw new Error('You must pass a model collection');
       }
 
@@ -26,54 +26,56 @@ define(function(require, exports, module){
 
     hasFlash: false,
 
-    setupClipboard: function(){
-      var clip = new ZeroClipboard( this.$('button[data-action="copy"]')[0], {
+    setupClipboard: function() {
+      var clip = new ZeroClipboard(this.$('button[data-action="copy"]')[0], {
         moviePath: '/js/ZeroClipboard.swf',
         activeClass: 'is-active'
       });
 
       var self = this;
 
-      function removeOverlay(){
+      function removeOverlay() {
         $('#global-zeroclipboard-html-bridge').remove();
       }
 
-      if( ZeroClipboard.detectFlashSupport() === false ){
+      if (ZeroClipboard.detectFlashSupport() === false) {
         removeOverlay();
       }
 
-      clip.on('load', function(){
+      clip.on('load', function() {
         self.hasFlash = true;
       });
 
-      _.delay(function(){
-        if( self.hasFlash === false ){
+      _.delay(function() {
+        if (self.hasFlash === false) {
           removeOverlay();
         }
       }, 500);
 
-      clip.on('dataRequested', function(client){
+      clip.on('dataRequested', function(client) {
         client.setText(self.presentUntaken());
       });
     },
 
     template: require('tpl!templates/availability.ejs'),
 
-    render: function(){
+    render: function() {
       this.blacklist = [];
 
       var untaken = this.collection.getUntaken();
-      this.$el.html( this.template({ untaken: untaken }) );
+      this.$el.html(this.template({
+        untaken: untaken
+      }));
       this.setupClipboard();
     },
 
-    presentUntaken: function(){
-      var untaken = _.reject(this.collection.getUntaken(), function(time, i){
+    presentUntaken: function() {
+      var untaken = _.reject(this.collection.getUntaken(), function(time, i) {
         return _.indexOf(this.blacklist, i) > -1;
       }, this);
 
-      return _.map(untaken, function(time){
-        return '• '+ time;
+      return _.map(untaken, function(time) {
+        return '• ' + time;
       }).join('\n');
     },
 
@@ -82,14 +84,14 @@ define(function(require, exports, module){
       'click [data-action="copy"]': 'copyFallback'
     },
 
-    removeItem: function(e){
+    removeItem: function(e) {
       e.preventDefault();
       var index = $(e.currentTarget).parent().data('orig-index');
-      this.blacklist.push( index );
+      this.blacklist.push(index);
       $(e.currentTarget).parent().remove();
     },
 
-    copyFallback: function(e){
+    copyFallback: function(e) {
       e.preventDefault();
       var modal = new Modal({
         id: 'copy-modal',

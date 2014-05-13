@@ -1,4 +1,4 @@
-define(function(require, exports, module){
+define(function(require, exports, module) {
   var $ = require('jquery');
   var _ = require('underscore');
   var Backbone = require('backbone');
@@ -9,19 +9,19 @@ define(function(require, exports, module){
 
     template: require('tpl!templates/modal.ejs'),
 
-    initialize: function(options){
-      if( options.title ) {
+    initialize: function(options) {
+      if (options.title) {
         this.title = options.title;
       }
-      if( options.body ){
+      if (options.body) {
         this.body = options.body;
       }
-      this.render().appendTo( $('body') );
+      this.render().appendTo($('body'));
       this.show();
     },
 
-    render: function(){
-      this.$el.html( this.template() );
+    render: function() {
+      this.$el.html(this.template());
       return this.$el;
     },
 
@@ -29,23 +29,22 @@ define(function(require, exports, module){
       'click [data-action="dismiss"]': 'dismiss'
     },
 
-    dismiss: function(event){
+    dismiss: function(event) {
       event.preventDefault();
       this.hide();
       this.remove();
     },
 
-    hide: function(){
+    hide: function() {
       this.$el.removeClass('ui-active');
       $('html').removeClass('show-modal');
     },
 
-    show: function(){
+    show: function() {
       $(window).scrollTop(0);
       this.$el.addClass('ui-active');
       $('html').addClass('show-modal');
     }
-
   });
 
   module.exports = Modal;
