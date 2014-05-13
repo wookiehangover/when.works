@@ -110,7 +110,7 @@ body {
 
     nav {
       display: none;
-      background: #3B3E40;
+      background: #282B2C;
       position: absolute;
       padding: 1rem;
       text-align: center;
@@ -120,7 +120,8 @@ body {
       }
     }
 
-    &:hover nav {
+    &:hover nav,
+    &:active nav {
       display: block;
       top: 50px;
       right: 0px;
@@ -198,6 +199,22 @@ body {
   }
 
   .gh-ribbon, .primary-footer { display: none; }
+
+  #copy-modal {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+    top: 0;
+    left: 0;
+
+    .topcoat-overlay {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      top: 0;
+      left: 0;
+    }
+  }
 }
 
 @media screen and (min-width: 880px) {

@@ -6,7 +6,7 @@
     <a href="/auth/google" class="sign-in topcoat-button">SIGN IN</a>
   <% } else { %>
     <div class="user">
-      <img src="<%= user.data.picture %>" class="avatar"/>
+      <img src="<%= user.data.picture %>" alt="<%= user.data.email %>" class="avatar"/>
       <nav>
         <p><%= user.data.email %></p>
         <a href="/logout" class="logout topcoat-button--quiet">LOGOUT</a>
