@@ -83,10 +83,8 @@ define(function(require, exports, module) {
       });
 
       if (this.config.get('ignoreWeekend')) {
-        _.each(weekend, function(date) {
-          allDays[date] === undefined;
-          events[date] === undefined;
-        });
+        allDays = _.omit(allDays, weekend)
+        events = _.omit(events, weekend)
       }
 
       return _.merge(events, allDays);
