@@ -17,7 +17,7 @@ define(function(require, exports, module) {
 
     initialize: function() {
       this.config = new Backbone.Model({
-        start: '9am',
+        start: '10am',
         end: '6pm'
       });
 

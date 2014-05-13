@@ -1,8 +1,13 @@
+TOPCOAT_TARGET = 'mobile'
+TOPCOAT_COLOR = 'dark'
 
 install:
 	@npm install
 	@bower cache clean
 	@bower install
-	@cp app/components/topcoat/css/topcoat-mobile-light.css public/less/topcoat.less
+	make topcoat
 
-.PHONY: install
+topcoat:
+	@cp app/components/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less
+
+.PHONY: install topcoat

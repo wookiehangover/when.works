@@ -1,30 +1,31 @@
 <% include _header.ejs %>
 <header id="main-header">
-  <div class="max-width">
-    <h1 class="main">Unavailable.at</h1>
-    <h1 class="alt">You're Probably Not Available</h1>
-  </div>
+  <h1 class="main">Unavailable.at</h1>
+
+  <% if( !user ){ %>
+    <a href="/auth/google" class="sign-in topcoat-button">SIGN IN</a>
+  <% } else { %>
+    <div class="user">
+      <img src="<%= user.data.picture %>" class="avatar"/>
+      <nav>
+        <p><%= user.data.email %></p>
+        <a href="/logout" class="logout topcoat-button--quiet">LOGOUT</a>
+      </nav>
+    </div>
+  <% } %>
 </header>
 
 <div id="main" class="max-width">
   <% if( !user ){ %>
-  <div class="welcome span6">
-  <h1>Lots of meetings?</h1>
-    <p><a href="http://github.com/wookiehangover/unavailable.at" target="_blank">Unavailable.at</a> makes easy to copy pretty-printed lists of your availability from your Google Calendar.</p>
-    <div class="login">
-      <a href="/auth/google" class="topcoat-button--large--cta">Sign in with your Google Account</a>
-    </div>
-  </div>
+  <h1>Find a time for your next meeting, fast.</h1>
+  <p>See of all your free time &mdash; and quit wasting it scheduling your next meeting.</p>
+  <a href="/auth/google" class="signin topcoat-button--large--cta">Check My Availability</a>
   <% } else { %>
   <section class="row">
+    <div class="availability span8"></div>
     <div class="span4">
-      <div class="user">
-        <h3><%= user.data.name %></h3>
-        <p><%= user.data.email %></p>
-      </div>
       <div class="picker"></div>
     </div>
-    <div class="availability span8"></div>
   </section>
   <% } %>
 </div>

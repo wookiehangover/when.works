@@ -16,11 +16,15 @@ input.datepicker {
 }
 
 body {
-  // color: #F0F1F1;
-  // background: #4A4D4E;
   // font-family: source-sans-pro, sans-serif;
   position: relative;
   -webkit-font-smoothing: antialiased;
+  color: #F0F1F1;
+  background: #4A4D4E;
+
+  &.alt {
+    background: #1F2122;
+  }
 }
 
 .wrapper {
@@ -33,10 +37,36 @@ body {
   padding: 20px;
 }
 
+.alt #main {
+  h1 {
+    font-weight: normal;
+    font-size: 3.4rem;
+  }
+
+  p {
+    font-size: 1.8rem;
+    color: #8EA3AA;
+    width: 70%;
+  }
+
+  .signin {
+    margin-top: 1rem;
+  }
+
+  .screenshot {
+    float: right;
+    width: 60%;
+    margin-bottom: -300px;
+  }
+}
+
 #main-header {
   border-color: rgb(162, 162, 162);
   background: #fff;
-  color: #373435;
+  // color: #373435;
+  width: 100%;
+  background: #3B3E40;
+  color: #fff;
   box-sizing: border-box;
   padding: 10px 20px;
   position: relative;
@@ -66,9 +96,41 @@ body {
   }
 
   .transition(all 300ms);
-  &:hover {
-    background: #3B3E40;
-    color: #fff;
+
+  .sign-in {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  .user {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    nav {
+      display: none;
+      background: #3B3E40;
+      position: absolute;
+      padding: 1rem;
+      text-align: center;
+
+      .logout {
+        width: 100%;
+      }
+    }
+
+    &:hover nav {
+      display: block;
+      top: 50px;
+      right: 0px;
+    }
+
+    .avatar {
+      float: left;
+      width: 50px;
+      height: 50px;
+    }
   }
 }
 

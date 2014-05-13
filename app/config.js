@@ -8,7 +8,7 @@ require.config({
     underscore: 'components/lodash/lodash',
     jquery: 'components/jquery/jquery',
     moment: 'components/moment/moment',
-    backbone: 'components/backbone-amd/backbone',
+    backbone: 'components/backbone/backbone',
     pickadate: 'components/pickadate/source/pickadate',
     cookie: 'components/cookie/cookie',
 

@@ -17,10 +17,15 @@ define(function(require, exports, module) {
   module.exports = Backbone.View.extend({
     el: $('.picker'),
 
-    initialize: function(params) {
+    initialize: function(options) {
       if (!this.collection || !this.model) {
         throw new Error('You must pass a model and a collection');
       }
+
+      if (!options.user) {
+        throw new Error('You must pass a user model');
+      }
+      this.user = options.user;
 
       this.listenTo(this.collection, 'reset', this.render);
       this.listenTo(this.model, 'change:calendar', this.updateCalendar);
@@ -135,8 +140,7 @@ define(function(require, exports, module) {
       if (calendar) {
         this.$('select[name="calendar"]').val(calendar);
       } else {
-        debugger;
-        this.$('select[name="calendar"] option').eq(1).prop('selected', true);
+        this.$('select[name="calendar"] option[value="' + this.user.get('email') + '"]').prop('selected', true);
       }
     },
 
