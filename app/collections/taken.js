@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 
       this.once('sync', function(){
         this.loaded = true;
-      }, this)
+      }, this);
 
       this.config.on('change:calendar change:timeMax change:timeMin', function(model) {
         if (model.get('timeMax') && model.get('timeMin') && model.get('calendar')) {
