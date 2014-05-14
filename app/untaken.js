@@ -28,14 +28,15 @@ define(function(require, exports, module) {
       }, this));
 
       this.calendars = new Calendars();
-      this.availability = new Availability(null, {
-        config: this.config
-      });
 
       this.settings = new SettingsView({
         collection: this.calendars,
         model: this.config,
         user: this.user
+      });
+
+      this.availability = new Availability(null, {
+        config: this.config
       });
 
       this.output = new AvailabilityView({

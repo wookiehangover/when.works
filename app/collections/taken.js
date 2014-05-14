@@ -76,10 +76,12 @@ define(function(require, exports, module) {
 
       _.times(moment.duration(end - start).days(), function(i) {
         var date = start.clone().add('d', i);
-        if (+date.format('d') === 0 || +date.format('d') === 6) {
-          weekend.push(date.format(format));
+        var dayIndex = +date.format('d');
+        var dateKey = date.format(format);
+        if (dayIndex === 0 || dayIndex === 6) {
+          weekend.push(dateKey);
         }
-        allDays[date.format(format)] = [];
+        allDays[dateKey] = [];
       });
 
       if (this.config.get('ignoreWeekend')) {
@@ -153,18 +155,22 @@ define(function(require, exports, module) {
         } else {
           return []; // This will disappear into nothing when _.flatten'ed
         }
+      }
 
+      if (firstMeetingEnd && firstMeetingEnd.isBefore(dayStart)) {
+        nextAvailableStart = dayStart;
       }
 
       // Iterate through the "middle" times and add timestrings for the time
       // between the meetings
       _.each(times, function(timeEntry) {
-        // Handle empty start times
-        if (!nextAvailableStart) {
+        var meetingEnd = this.moment(timeEntry.get('start'));
+        // Handle empty start times, and same start & end times
+        if (!nextAvailableStart || meetingEnd.isSame(nextAvailableStart)) {
           return;
         }
+
         // Create a timestring (Monday 1/1 1 - 2pm) and add it to the list
-        var meetingEnd = this.moment(timeEntry.get('start'));
         var timestring = this.createTimestring(nextAvailableStart, meetingEnd);
         dayblock.push(timestring);
         // Set the next availability period's start time
@@ -178,9 +184,12 @@ define(function(require, exports, module) {
       // If there were meetings today, *and* a last meeting of the day, create
       // a timestring
       if (nextAvailableStart && lastMeetingStart) {
-        dayblock.push(
-        this.createTimestring(nextAvailableStart, lastMeetingStart)
-        );
+
+        if (!nextAvailableStart.isSame(lastMeetingStart)) {
+          dayblock.push(
+          this.createTimestring(nextAvailableStart, lastMeetingStart)
+          );
+        }
 
         // If the end of the last meeting is before the end of the day, create
         // a timestring
