@@ -12,13 +12,17 @@
       </select>
       <button class="topcoat-button--quiet" data-action="remove-calendar">x</button>
     </div>
-    <!-- <button class="topcoat-button" data-action="add-calendar">Add another</button> -->
   </div>
 
-  <div class="control-group">
-    <label>Date Range:</label>
-    <input type=text name="timeMin" class="datepicker topcoat-text-input" placeholder="Start Date" value="10 March, 2013"/>
-    <input type=text name="timeMax" class="datepicker topcoat-text-input" placeholder="End Date"/>
+  <div class="control-group calendar-range">
+    <a href="#" class="topcoat-button" data-week="current">This Week</a>
+    <a href="#" class="topcoat-button topcoat-button--quiet" data-week="next">Next Week</a>
+
+    <a href="#" class="topcoat-button topcoat-button--quiet" data-week="custom">Custom Range</a>
+    <div class="custom-range">
+      <input type=text name="timeMin" class="datepicker topcoat-text-input" placeholder="Start Date" value="10 March, 2013"/>
+      <input type=text name="timeMax" class="datepicker topcoat-text-input" placeholder="End Date"/>
+    </div>
   </div>
 
   <div class="control-group">

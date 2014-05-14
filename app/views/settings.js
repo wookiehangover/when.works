@@ -28,7 +28,6 @@ define(function(require, exports, module) {
       this.user = options.user;
 
       this.listenTo(this.collection, 'reset', this.render);
-      this.listenTo(this.model, 'change:calendar', this.updateCalendar);
 
       this.collection.dfd.done(this.render.bind(this));
     },
@@ -36,7 +35,8 @@ define(function(require, exports, module) {
     events: {
       'change select,input': 'updateConfig',
       'click [data-action="add-calendar"]': 'addCalendar',
-      'click [data-action="remove-calendar"]': 'removeCalendar'
+      'click [data-action="remove-calendar"]': 'removeCalendar',
+      'click [data-week]': 'setCalendarRange'
     },
 
     updateConfig: function(e) {
@@ -88,6 +88,31 @@ define(function(require, exports, module) {
       });
 
       model.set(attrs);
+    },
+
+    setCalendarRange: function(e) {
+      e.preventDefault();
+
+      var $this = $(e.currentTarget);
+      $this.removeClass('topcoat-button--quiet');
+      $this.siblings('a').addClass('topcoat-button--quiet');
+
+      switch($this.data('week')) {
+        case 'current':
+          this.$('.custom-range').slideUp();
+          this.setDatePicker(moment(), moment().endOf('week'));
+          break;
+        case 'next':
+          var nextWeek = moment().add('w', 1);
+          this.setDatePicker(nextWeek.clone().startOf('week'), nextWeek.clone().endOf('week'));
+          this.$('.custom-range').slideUp();
+          break;
+        case 'custom':
+          this.$('.custom-range').slideDown();
+          break;
+        default:
+          break;
+      }
     },
 
     timezones: function(cb) {
@@ -145,46 +170,33 @@ define(function(require, exports, module) {
     },
 
     renderDatePicker: function() {
-      var today = moment();
-      var nextWeek = moment().add('days', 7);
-      var lock = true;
-
-      var start = this.$('input[name="timeMin"]').pickadate({
+      var start = this.startDate = this.$('input[name="timeMin"]').pickadate({
         onSelect: function() {
           var fromDate = createDateArray(this.getDate('yyyy-mm-dd'));
           end.data('pickadate').setDateLimit(fromDate);
         }
       });
 
-      var end = this.$('input[name="timeMax"]').pickadate({
+      var end = this.endDate = this.$('input[name="timeMax"]').pickadate({
         onSelect: function() {
           var toDate = createDateArray(this.getDate('yyyy-mm-dd'));
           start.data('pickadate').setDateLimit(toDate, 1);
         }
       });
 
-      start.data('pickadate')
-        .setDate(today.year(), today.month() + 1, today.date());
-
-      end.data('pickadate')
-        .setDate(nextWeek.year(), nextWeek.month() + 1, nextWeek.date());
+      this.setDatePicker(moment(), moment().endOf('week'));
     },
 
-    updateCalendar: function() {
-      var query = $.param({
-        showTitle: 0,
-        showNav: 0,
-        showPrint: 0,
-        showTabs: 0,
-        showCalendars: 0,
-        mode: 'WEEK',
-        height: 400,
-        wkst: 1,
-        src: this.model.get('calendar')
-      });
+    setDatePicker: function(start, end) {
+      this.model.unset('timeMin', { silent: true });
+      this.model.unset('timeMax', { silent: true });
 
-      var url = 'http://www.google.com/calendar/embed?' + query;
-      $('#calendar-embed').hide().attr('src', url).delay(1000).fadeIn();
+      this.startDate.data('pickadate')
+        .setDate(start.year(), start.month() + 1, start.date());
+
+      this.endDate.data('pickadate')
+        .setDate(end.year(), end.month() + 1, end.date());
     }
+
   });
 });
