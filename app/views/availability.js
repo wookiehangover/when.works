@@ -18,7 +18,8 @@ define(function(require, exports, module) {
         'change:ignoreWeekend',
         'change:start',
         'change:end',
-        'change:showUnavailable'
+        'change:showUnavailable',
+        'change:timezone'
       ].join(' ');
 
       this.listenTo(this.collection.config, changeEvents, this.render, this);
@@ -60,6 +61,10 @@ define(function(require, exports, module) {
     template: require('tpl!templates/availability.ejs'),
 
     render: function() {
+      if (!this.collection.loaded) {
+        return;
+      }
+
       this.blacklist = [];
 
       var untaken = this.collection.getUntaken();
