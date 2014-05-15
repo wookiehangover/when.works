@@ -12,3 +12,15 @@ build:
         code: sudo npm install -g grunt-cli
     - npm-test
 
+deploy:
+  steps:
+    - script:
+        name: Build Assets
+        code: grunt
+    - script:
+        name: Commit Assets
+        code: |
+          git add .
+          git commit -am 'asset compile'
+    - heroku-deploy:
+        key-name: heroku-production
