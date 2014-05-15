@@ -36,7 +36,13 @@ define(function(require, exports, module) {
       'change select,input': 'updateConfig',
       'click [data-action="add-calendar"]': 'addCalendar',
       'click [data-action="remove-calendar"]': 'removeCalendar',
-      'click [data-week]': 'setCalendarRange'
+      'click [data-week]': 'setCalendarRange',
+      'change input[type="range"]': 'updateRange'
+    },
+
+    updateRange: function(e) {
+      var $elem = $(e.currentTarget);
+      $elem.siblings(':text').val($elem.val());
     },
 
     updateConfig: function(e) {
@@ -44,6 +50,10 @@ define(function(require, exports, module) {
       var name = $elem.attr('name');
       var attrs = {};
       attrs[name] = $elem.val();
+
+      if ($elem.data('ignore')) {
+        return;
+      }
 
       if ($elem.hasClass('add-calendar')) {
         attrs.options = {

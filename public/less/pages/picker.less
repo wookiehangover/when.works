@@ -6,13 +6,13 @@ form {
     border-bottom: 1px solid #58595A;
     padding: 10px 0;
 
-    label {
+    label:not(.topcoat-switch) {
       display: inline-block;
       width: 100%;
       padding: 10px 0;
     }
 
-    input, select {
+    input:not([type="checkbox"]), select {
       margin-bottom: 10px;
       width: 100%;
     }
@@ -35,6 +35,41 @@ form {
     .custom-range {
       display: none;
       margin-top: 10px;
+    }
+  }
+
+  .day-length {
+
+    .day-start, .day-end {
+      float: left;
+      width: 50%;
+    }
+
+    select {
+      width: 80%;
+    }
+  }
+
+  .toggles {
+    span {
+      line-height: 3rem;
+      margin-right: 1rem;
+    }
+
+    .topcoat-switch {
+      float: right;
+    }
+  }
+
+  .slider {
+    input.topcoat-range {
+      width: 60%;
+      margin-top: 1rem;
+    }
+
+    input.topcoat-text-input {
+      width: 30%;
+      margin-right: 1rem;
     }
   }
 }

@@ -55,6 +55,12 @@ define(function(require, exports, module) {
 
       clip.on('dataRequested', function(client) {
         client.setText(self.presentUntaken());
+        var btn = self.$('.copy .label');
+        var text = btn.text();
+        btn.text('Copied!');
+        setTimeout(function() {
+          btn.text(text);
+        }, 2000);
       });
     },
 
