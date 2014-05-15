@@ -33,7 +33,7 @@ define(function(require, exports, module){
       assert.isDefined( this.Untaken );
     });
 
-    describe('initialize', function(){
+    xdescribe('initialize', function(){
       before(function(){
         this.untaken = new this.Untaken();
       });

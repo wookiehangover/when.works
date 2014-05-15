@@ -23,9 +23,11 @@ define(function(require, exports, module) {
 
       this.user = new User();
 
-      this.user.load.then(_.bind(function() {
-        this.$el.removeClass('logged-out');
-      }, this));
+      if (this.user.load) {
+        this.user.load.then(_.bind(function() {
+          this.$el.removeClass('logged-out');
+        }, this));
+      }
 
       this.calendars = new Calendars();
 
