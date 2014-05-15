@@ -1,13 +1,18 @@
-TOPCOAT_TARGET = 'mobile'
-TOPCOAT_COLOR = 'dark'
+TOPCOAT_TARGET := 'mobile'
+TOPCOAT_COLOR := 'dark'
+
+all: install topcoat bootstrap
 
 install:
 	@npm install
 	@bower cache clean
 	@bower install
-	make topcoat
 
 topcoat:
-	@cp app/components/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less
+	cp app/components/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less
 
-.PHONY: install topcoat
+bootstrap:
+	find public/less/bootstrap -name *.less -delete
+	cp app/components/bootstrap/less/*.less public/less/bootstrap
+
+.PHONY: all install

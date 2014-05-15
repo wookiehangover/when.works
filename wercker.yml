@@ -1,0 +1,14 @@
+box: wercker/nodejs
+build:
+  steps:
+    - script:
+        name: Install Bower
+        code: sudo npm install -g bower
+    - script:
+        name: Fetch Dependencies
+        code: make install
+    - script:
+        name: Install Grunt
+        code: sudo npm install -g grunt-cli
+    - npm-test
+
