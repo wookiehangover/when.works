@@ -35,7 +35,7 @@ define(function(require, exports, module) {
     }
 
     // Format that shit
-    return start.format('dddd M/D, ' + startFormat + ' to ') + end.format(endFormat);
+    return start.format('dddd M/D, ' + startFormat + ' - ') + end.format(endFormat);
   };
 
 
