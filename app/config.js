@@ -10,7 +10,7 @@ require.config({
     moment: 'components/moment/moment',
     backbone: 'components/backbone/backbone',
     pickadate: 'components/pickadate/source/pickadate',
-    cookie: 'components/cookie/cookie',
+    cookie: 'lib/cookie',
 
     tpl: 'components/requirejs-tpl/tpl',
     text: 'components/requirejs-text/text'
