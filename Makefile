@@ -15,4 +15,4 @@ bootstrap:
 	find public/less/bootstrap -name *.less -delete
 	cp app/components/bootstrap/less/*.less public/less/bootstrap
 
-.PHONY: all install
+.PHONY: all install deps
