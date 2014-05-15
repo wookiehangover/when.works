@@ -10,7 +10,7 @@ require.config({
     moment: 'components/moment/moment',
     backbone: 'components/backbone/backbone',
     pickadate: 'components/pickadate/source/pickadate',
-    cookie: 'components/cookie/cookie',
+    cookie: 'lib/cookie',
     chai: '../node_modules/chai/chai',
     squire: 'components/squire/src/Squire',
 
