@@ -53,7 +53,7 @@ define(function(require, exports, module) {
 
       return _.map(dayblocks, function(times){
         return _.reject(times, function(time){
-          return (moment.duration(time[1] - time[0]).as('minutes') < minDuration)
+          return (moment.duration(time[1] - time[0]).as('minutes') < minDuration);
         });
       });
     },

@@ -62,8 +62,6 @@ define(function(require, exports, module) {
           return (time in blacklist);
         });
 
-        debugger;
-
         return dayblock;
       });
     }
