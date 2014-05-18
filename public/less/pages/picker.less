@@ -19,8 +19,45 @@ form {
   }
 
   .calendar-select {
-    &:first-of-type button {
-      display: none;
+    .topcoat-button {
+      margin-top: 1px;
+      padding: 0 1rem 1px;
+      line-height: 2rem;
+      width: 15%;
+
+      &.remove {
+        display: none;
+        background-color: #ec514e;
+        color: #fff;
+      }
+
+      &.add {
+        display: none;
+      }
+    }
+
+    &:last-of-type {
+      select {
+        width: 84%;
+      }
+      .topcoat-button.add {
+        display: inline-block;
+      }
+    }
+
+    &.multiple:hover {
+      select {
+        width: 84%;
+      }
+      .topcoat-button.remove {
+        display: inline-block;
+      }
+
+      &:last-of-type {
+        .topcoat-button.add {
+          display: none;
+        }
+      }
     }
   }
 

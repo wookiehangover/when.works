@@ -70,7 +70,6 @@ define(function(require, exports, module) {
       var days = this.getDays();
       // Get the availability text for each day in the time range
       var dayblocks = _.map(days, this.getAvailabilityFromDay, this);
-
       // Cache the munged availability data in the timeblocks collection
       this.timeblocks.add({
         id: this.config.get('calendar'),
