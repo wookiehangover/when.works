@@ -19,7 +19,8 @@ define(function(require, exports, module) {
         'change:start',
         'change:end',
         'change:showUnavailable',
-        'change:timezone'
+        'change:timezone',
+        'change:minDuration'
       ].join(' ');
 
       this.listenTo(this.collection.config, changeEvents, this.render, this);

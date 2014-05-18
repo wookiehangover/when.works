@@ -33,7 +33,7 @@ api.freebusy = function(req, res){
     return res.json({ error: 'Forbidden'}, 403);
   }
 
-  if( !req.query.timeMin || !req.query.timeMax || !req.query.calendar ){
+  if( !req.query.timeMin || !req.query.timeMax || !req.query.calendars ){
     res.json({ error: 'Missing required fields' }, 412);
     return;
   }
@@ -74,13 +74,13 @@ function responseHandler(err, resp, body){
 //  timeMin  - `date` (or anything remotely date-like)
 //  timeMax  - `date`
 function formatPostBody( query ){
-  return {
+  var json = {
     timeMin: moment( query.timeMin ).format(),
     timeMax: moment( query.timeMax ).format(),
-    items: [
-      {
-        id: query.calendar
-      }
-    ]
+    items: query.calendars.map(function(cal) {
+      return { id: cal };
+    })
   };
+
+  return json;
 }

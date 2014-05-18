@@ -194,7 +194,10 @@ define(function(require, exports, module) {
         }
       });
 
-      this.setDatePicker(moment(), moment().endOf('week'));
+      var today = moment();
+      var nextWeek = moment().endOf('week');
+
+      this.setDatePicker(today, nextWeek);
     },
 
     setDatePicker: function(start, end) {

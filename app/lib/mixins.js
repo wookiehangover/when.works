@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+  var _ = require('underscore');
   var moment = require('moment');
 
   exports.localMoment = function(date) {
@@ -25,6 +26,11 @@ define(function(require, exports, module) {
 
   // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
   exports.createTimestring = function(start, end) {
+    if (_.isArray(start)) {
+      params = start;
+      end = params[1];
+      start = params[0];
+    }
     // Make sure that am/pm suffixes are only applied when they differ
     // between start and end times
     var startFormat = start.minutes() === 0 ? 'h' : 'h:mm';

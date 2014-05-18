@@ -13,8 +13,6 @@ define(function(require, exports, module) {
   module.exports = Backbone.View.extend({
     el: $('body'),
 
-    duration: 15e3,
-
     initialize: function() {
       this.config = new Backbone.Model({
         start: '10am',
