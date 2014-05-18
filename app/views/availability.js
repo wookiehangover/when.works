@@ -74,11 +74,14 @@ define(function(require, exports, module) {
 
       this.blacklist = [];
 
-      var untaken = this.collection.getUntaken();
+      this.renderTimes(this.collection.getUntaken());
+      this.setupClipboard();
+    },
+
+    renderTimes: function(untaken) {
       this.$el.html(this.template({
         untaken: untaken
       }));
-      this.setupClipboard();
     },
 
     presentUntaken: function() {

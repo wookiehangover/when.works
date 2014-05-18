@@ -48,6 +48,7 @@ define(function(require, exports, module) {
       return obj.calendars[this.config.get('calendar')].busy;
     },
 
+    // Removes any free time that is shorter than the minimum meeting duration
     pruneShortMeetings: function(dayblocks) {
       var minDuration = parseInt(this.config.get('minDuration'), 10);
 
@@ -65,7 +66,7 @@ define(function(require, exports, module) {
       // Get the availability text for each day in the time range
       var dayblocks = _.map(days, this.getAvailabilityFromDay, this);
       dayblocks = this.pruneShortMeetings(dayblocks);
-      var timeblock = _.map(_.flatten(dayblocks, true), this.createTimestring);
+      var timeblock = this.presentDayblocks(dayblocks);
 
       this.timeblocks.add({
         id: this.config.get('calendar'),
@@ -81,6 +82,10 @@ define(function(require, exports, module) {
 
       // Flatten nested dayblock arrays into a single array on the way out
       return timeblock;
+    },
+
+    presentDayblocks: function(dayblocks) {
+      return _.map(_.flatten(dayblocks, true), this.createTimestring);
     },
 
     // Creates an Object that takes the form
@@ -117,7 +122,7 @@ define(function(require, exports, module) {
         events = _.omit(events, weekend);
       }
 
-      return _.merge(events, allDays);
+      return _.merge(allDays, events);
     },
 
     // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"

@@ -5,65 +5,72 @@ define(function(require, exports, module) {
 
   module.exports = Backbone.Collection.extend({
 
-    getAllTimes: function(){
-      return this.reduce(function(res, model){
-        _.each(model.get('times'), function(times, day){
-          if (res[day]) {
-            res[day].concat(times);
+    getTimesByDay: function(){
+      var timeblocks = this.pluck('times');
+      var days = {};
+
+      return _.reduce(timeblocks, function(days, timeblock){
+        _.each(timeblock, function(times, day){
+          if (days[day]) {
+            days[day].push.apply(days[day], times);
           } else {
-            res[day] = [].concat(times);
+            days[day] = times;
           }
         });
-        return res;
+        return days;
       }, {});
     },
 
-    reduceTimes: function() {
-      var times = this.getAllTimes();
+    filterDayblock: function(dayblock) {
+      var merged = [];
+      var mergedList = [];
 
-      return _.map(times, function(day){
-        var dayblock = [];
-
-        var startTimes = [];
-        var endTimes = [];
-        _.each(day, function(meeting){
-          startTimes.push(meeting[0]);
-          endTimes.push(meeting[1]);
-        });
-        startTimes.sort();
-        endTimes.sort();
-
-        startTimes = _.uniq(startTimes, true);
-        endTimes = _.uniq(endTimes, true);
-
-        // startTimes [9, 10, 11]
-        // endTimes [10:30, 11, 11:30]
-        //
-        // => [[9,10:30],[11,11:30]]
-
-        // var first = startTimes.shift();
-        // var last = endTimes.pop();
-
-        var blacklist = [];
-
-        var rejectIfNextMeetingIsBeforeMeetingEnd = function(startTime, endTime){
-          return startTime.isBefore(endTime) || startTime.isSame(endTime);
-        };
-
-        _.each(startTimes, function(start, i){
-          var next = startTimes[i + 1];
-          var end = endTimes[i];
-          if (next && end && rejectIfNextMeetingIsBeforeMeetingEnd(next, end)){
-            blacklist.push(next);
-          }
-        });
-
-        startTimes = _.reject(startTimes, function(time){
-          return (time in blacklist);
-        });
-
-        return dayblock;
+      _.each(dayblock, function(time, i){
+        var next = dayblock[i + 1];
+        if (next && time[1].isAfter(next[0])) {
+          mergedList.push([
+            next[0],
+            (next[1].isAfter(time[1]) ? next[1] : time[1] )
+          ]);
+          merged.push(i + 1);
+        } else if (!(i in merged)) {
+          mergedList.push(time);
+        }
       });
+
+      return _.reject(mergedList, function(time, i){
+        var next = mergedList[i + 1];
+        if (next) {
+          return this.detectMeetingCollision(time, next);
+        } else {
+          return false;
+        }
+      }, this);
+    },
+
+    detectMeetingCollision: function(first, next) {
+      if (first[1].isAfter(next[0])) {
+        return true;
+      }
+      if (first[0].isSame(next[0])) {
+        return true;
+      }
+      if (first[1].isSame(next[1])) {
+        return true;
+      }
+      return false;
+    },
+
+    reduceTimes: function() {
+      var days = this.getTimesByDay();
+
+      return _.map(days, function(dayblock) {
+        dayblock = dayblock.sort(function(a, b) {
+          return a[0] - b[0];
+        });
+
+        return this.filterDayblock(dayblock);
+      }, this);
     }
   });
 
