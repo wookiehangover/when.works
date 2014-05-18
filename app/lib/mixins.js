@@ -27,7 +27,7 @@ define(function(require, exports, module) {
   // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
   exports.createTimestring = function(start, end) {
     if (_.isArray(start)) {
-      params = start;
+      var params = start;
       end = params[1];
       start = params[0];
     }

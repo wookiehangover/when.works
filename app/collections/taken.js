@@ -59,19 +59,26 @@ define(function(require, exports, module) {
       });
     },
 
+    // Returns a presented dayblock in the form ['Monday 6/66, 1 -2pm', ...]
+    presentDayblocks: function(dayblocks) {
+      return _.map(_.flatten(this.pruneShortMeetings(dayblocks), true), this.createTimestring);
+    },
+
     // Interface for generating and array of availabile times
     getUntaken: function() {
       // Split collection into days of the week
       var days = this.getDays();
       // Get the availability text for each day in the time range
       var dayblocks = _.map(days, this.getAvailabilityFromDay, this);
-      dayblocks = this.pruneShortMeetings(dayblocks);
-      var timeblock = this.presentDayblocks(dayblocks);
 
+      // Cache the munged availability data in the timeblocks collection
       this.timeblocks.add({
         id: this.config.get('calendar'),
         times: _.zipObject(_.keys(days), dayblocks)
       }, { merge: true });
+
+      // Create the presented data structure for rendering
+      var timeblock = this.presentDayblocks(dayblocks);
 
       // You jerk
       if (timeblock.length === 0) {
@@ -80,12 +87,7 @@ define(function(require, exports, module) {
         ];
       }
 
-      // Flatten nested dayblock arrays into a single array on the way out
       return timeblock;
-    },
-
-    presentDayblocks: function(dayblocks) {
-      return _.map(_.flatten(dayblocks, true), this.createTimestring);
     },
 
     // Creates an Object that takes the form
