@@ -9,6 +9,9 @@ define(function(require, exports, module) {
 
   var SettingsView = require('views/settings');
   var AvailabilityView = require('views/availability');
+  var Timeblock = require('jsx!templates/timeblock');
+
+  var React = require('react');
 
   module.exports = Backbone.View.extend({
     el: $('body'),
@@ -48,6 +51,36 @@ define(function(require, exports, module) {
           location.replace('/auth/google');
         }
       });
+
+      // this.renderTimeblock();
+
+    },
+
+    renderTimeblock: function(){
+      this.timeblock = React.renderComponent(
+        Timeblock({
+          availability: this.availability,
+          config: this.config
+        }),
+        this.$('.availability').get(0)
+      );
+
+      var changeEvents = [
+        'change:ignoreWeekend',
+        'change:start',
+        'change:end',
+        'change:showUnavailable',
+        'change:timezone',
+        'change:minDuration'
+      ].join(' ');
+
+      this.config.on(changeEvents, function(){
+        this.timeblock.setProps({ config: this.config });
+      }, this);
+
+      this.availability.on('sync', function(){
+        this.timeblock.setProps({ availability: this.availability });
+      }, this);
     }
   });
 });

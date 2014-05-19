@@ -74,9 +74,6 @@ define(function(require, exports, module) {
     addCalendar: function(e) {
       e.preventDefault();
       var $select = this.$('.calendar-select').first().clone();
-      // $select.find('select').addClass('add-calendar');
-      // $select.find('option').first().attr('selected', true);
-      this.$('.calendar-select').addClass('multiple');
       this.$('.calendar-select').last().after($select);
     },
 

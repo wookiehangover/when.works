@@ -16,7 +16,9 @@
     "less": "~1.4.2",
     "topcoat": "~0.8.0",
     "zeroclipboard": "~1.2.0-beta.3",
-    "requirejs-tpl": "*"
+    "requirejs-tpl": "*",
+    "react": "~0.10.0",
+    "require-jsx": "*"
   },
   "devDependencies": {},
   "ignore": [
