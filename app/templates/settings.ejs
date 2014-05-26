@@ -2,7 +2,6 @@
   <div class="control-group">
     <label>Calendar:</label>
     <div class="calendar-select">
-      <button class="topcoat-button remove" data-action="remove-calendar">-</button>
       <select name="calendar">
         <option>none</option>
       <% collection.each(function(model){ %>
@@ -11,6 +10,7 @@
         </option>
       <% }); %>
       </select>
+      <button class="topcoat-button remove" data-action="remove-calendar">-</button>
       <button class="topcoat-button topcoat-button--cta add" data-action="add-calendar">+</button>
     </div>
   </div>

@@ -49,7 +49,12 @@ define(function(require, exports, module) {
       var $elem = $(e.currentTarget);
       var name = $elem.attr('name');
       var attrs = {};
-      attrs[name] = $elem.val();
+      if (name === 'calendar') {
+        attrs[name] = this.model.get('calendar') && this.$('.calendar-select.multiple').length ?
+          this.model.get('calendar').concat([$elem.val()]) : [$elem.val()];
+      } else {
+        attrs[name] = $elem.val();
+      }
 
       if ($elem.data('ignore')) {
         return;
@@ -73,19 +78,16 @@ define(function(require, exports, module) {
 
     addCalendar: function(e) {
       e.preventDefault();
-      var $select = this.$('.calendar-select').first().clone();
-      // $select.find('select').addClass('add-calendar');
-      // $select.find('option').first().attr('selected', true);
+      var $select = this.$('.calendar-select').first().clone().removeClass('multiple');
       this.$('.calendar-select').addClass('multiple');
       this.$('.calendar-select').last().after($select);
     },
 
     removeCalendar: function(e) {
       e.preventDefault();
-      $(e.currentTarget).parent().remove();
-      if (this.$('.calendar-select').length === 1) {
-        this.$('.calendar-select select').trigger('change');
-      }
+      var calendars = this.model.get('calendar');
+      this.model.set('calendar', _.omit(calendars, $(e.currentTarget).val()));
+      this.$('.calendar-select select').trigger('change');
     },
 
     updateAllConfigs: function(e) {
@@ -95,7 +97,13 @@ define(function(require, exports, module) {
       this.$('input, select').each(function() {
         var $this = $(this);
         var value = $this.is(':checkbox') ? $this.prop('checked') : this.value;
-        attrs[$this.attr('name')] = value;
+        var name = $this.attr('name');
+        if (name === 'calendar') {
+          attrs[name] = attrs[name] ?
+            attrs[name].push(value) : attrs[name] = [value];
+        } else {
+          attrs[name] = value;
+        }
       });
 
       model.set(attrs);

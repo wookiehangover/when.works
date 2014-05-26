@@ -8,6 +8,8 @@ define(function(require, exports, module) {
 
   module.exports = Backbone.Collection.extend({
 
+    DATE_FORMAT: 'YYYY-MM-DD',
+
     constructor: function() {
       this.timeblocks = new Timeblocks();
       return Backbone.Collection.apply(this, arguments);
@@ -31,11 +33,8 @@ define(function(require, exports, module) {
     },
 
     url: function() {
-      var calendars = [
-        this.config.get('calendar')
-      ];
       var query = $.param({
-        calendars: calendars,
+        calendars: this.config.get('calendar'),
         timeMin: this.moment(this.config.get('timeMin')).format(),
         // add extra time to account for the range returned by the gCal API
         timeMax: this.moment(this.config.get('timeMax')).add('days', 1).format()
@@ -45,7 +44,9 @@ define(function(require, exports, module) {
     },
 
     parse: function(obj) {
-      return obj.calendars[this.config.get('calendar')].busy;
+      return _.map(obj.calendars, function(data, name){
+        return { id: name, freebusy: data.busy };
+      });
     },
 
     // Removes any free time that is shorter than the minimum meeting duration
@@ -66,18 +67,31 @@ define(function(require, exports, module) {
 
     // Interface for generating and array of availabile times
     getUntaken: function() {
-      // Split collection into days of the week
-      var days = this.getDays();
-      // Get the availability text for each day in the time range
-      var dayblocks = _.map(days, this.getAvailabilityFromDay, this);
-      // Cache the munged availability data in the timeblocks collection
-      this.timeblocks.add({
-        id: this.config.get('calendar'),
-        times: _.zipObject(_.keys(days), dayblocks)
-      }, { merge: true });
 
-      // Create the presented data structure for rendering
-      var timeblock = this.presentDayblocks(dayblocks);
+      var calendars = this.config.get('calendar');
+
+      _.each(calendars, function(id){
+        var days = this.getDays(this.config.get('calendar')[0]);
+        // Get the availability text for each day in the time range
+        var dayblocks = _.map(days, this.getAvailabilityFromDay, this);
+
+        // Cache the munged availability data in the timeblocks collection
+        this.timeblocks.add({
+          id: id,
+          times: _.zipObject(_.keys(days), dayblocks),
+          timeblock: this.presentDayblocks(dayblocks)
+        }, { merge: true });
+      }, this);
+
+      var timeblock;
+
+      if (calendars.length === 1){
+        timeblock = this.timeblocks.get(calendars[0]).get('timeblock');
+      } else {
+        timeblock = this.presentDayblocks(
+          this.timeblocks.reduceTimes(calendars)
+        );
+      }
 
       // You jerk
       if (timeblock.length === 0) {
@@ -96,11 +110,10 @@ define(function(require, exports, module) {
     // }
     //
     // Ranging from the configured time range
-    getDays: function() {
-      var format = 'YYYY-MM-DD';
-
-      var events = this.groupBy(function(model) {
-        return this.moment(model.get('start')).format(format);
+    getDays: function(id) {
+      var model = this.get(id);
+      var events = _.groupBy(model.get('freebusy'), function(meeting) {
+        return this.moment(meeting.start).format(this.DATE_FORMAT);
       }, this);
 
       var allDays = {};
@@ -111,12 +124,12 @@ define(function(require, exports, module) {
       _.times(moment.duration(end - start).days(), function(i) {
         var date = start.clone().add('d', i);
         var dayIndex = +date.format('d');
-        var dateKey = date.format(format);
+        var dateKey = date.format(this.DATE_FORMAT);
         if (dayIndex === 0 || dayIndex === 6) {
           weekend.push(dateKey);
         }
         allDays[dateKey] = [];
-      });
+      }, this);
 
       if (this.config.get('ignoreWeekend')) {
         allDays = _.omit(allDays, weekend);
@@ -161,11 +174,11 @@ define(function(require, exports, module) {
       var first = times.shift();
       var last = times.pop();
       // Set the start and end times for the first meeting, if it exists
-      var firstMeetingStart = first ? this.moment(first.get('start')) : false;
-      var firstMeetingEnd = first ? this.moment(first.get('end')) : false;
+      var firstMeetingStart = first ? this.moment(first.start) : false;
+      var firstMeetingEnd = first ? this.moment(first.end) : false;
       // Set the start and end times for the last meeting, if it exists
-      var lastMeetingStart = last ? this.moment(last.get('start')) : false;
-      var lastMeetingEnd = last ? this.moment(last.get('end')) : false;
+      var lastMeetingStart = last ? this.moment(last.start) : false;
+      var lastMeetingEnd = last ? this.moment(last.end) : false;
       // The next available meeting time is always the end of the first meeting
       var nextAvailableStart = firstMeetingEnd;
 
@@ -191,7 +204,7 @@ define(function(require, exports, module) {
       // Iterate through the "middle" times and add timestrings for the time
       // between the meetings
       _.each(times, function(timeEntry) {
-        var meetingEnd = this.moment(timeEntry.get('start'));
+        var meetingEnd = this.moment(timeEntry.start);
         // Handle empty start times, and same start & end times
         if (!nextAvailableStart || meetingEnd.isSame(nextAvailableStart)) {
           return;
@@ -200,7 +213,7 @@ define(function(require, exports, module) {
         // Create a timestring (Monday 1/1 1 - 2pm) and add it to the list
         addToDayblock(nextAvailableStart, meetingEnd);
         // Set the next availability period's start time
-        nextAvailableStart = this.moment(timeEntry.get('end'));
+        nextAvailableStart = this.moment(timeEntry.end);
       }, this);
 
 

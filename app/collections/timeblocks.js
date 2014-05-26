@@ -13,8 +13,17 @@ define(function(require, exports, module) {
     //   ...
     // ]
     //
-    reduceTimes: function() {
-      var days = this.getTimesByDay(this.pluck('times'));
+    reduceTimes: function(calendars) {
+      var times = this.reduce(function(mem, model){
+        if (_.contains(calendars, model.id)) {
+          mem.push(model.get('times'));
+        }
+        return mem;
+      }, []);
+
+      console.log(times)
+
+      var days = this.getTimesByDay(times);
 
       return _.map(days, function(dayblock) {
         return this.filterDayblock(dayblock.sort(function(a, b) {
