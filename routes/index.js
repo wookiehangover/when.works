@@ -11,3 +11,8 @@ exports.index = function(req, res){
   res.render('index', { user: user });
 };
 
+exports.humans = function(req, res) {
+  var user = req.session ? req.session.user : false;
+  res.render('humans', { user: user });
+}
+

@@ -6,64 +6,35 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var RedisStore = require('connect-redis')(express);
 var config = require('config');
+var authom = require('./lib/authom');
+var middleware = require('./lib/middleware');
+
+var app = express();
+
+middleware(app);
+
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 
 /*
- * Application Routes
+ * Routes
  */
+
 var routes = require('./routes');
 var user = require('./routes/user');
 var api = require('./routes/api');
 
-/*
- * Custom Middleware
- */
-var authom = require('./lib/authom');
-var lessMiddleware = require('./lib/process-less')(config.less);
-var requireMiddleware = require('./lib/process-require');
-
-/*
- * Application init
- */
-var app = express();
-
-app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.favicon(__dirname + '/public/favicon.ico'));
-  app.use(express.logger('dev'));
-  app.use(express.compress());
-  app.use(express.bodyParser());
-  app.use(express.cookieParser( config.secret ));
-  app.use(express.session({ store: new RedisStore( config.redis ) }));
-  app.use(app.router);
-
-  // frontend application
-  app.use(requireMiddleware);
-  app.use('/css', lessMiddleware);
-  app.use('/app', express.directory(path.join(__dirname, 'app')));
-  app.use('/app', express.static(path.join(__dirname, 'app')));
-  app.use(express.static(path.join(__dirname, 'public')));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler());
-  app.use(express.static(path.join(__dirname)));
-});
-
-/*
- * Route Map
- */
-
 app.get('/', routes.index);
-app.get('/auth/:service', authom.app);
+app.get('/auth/:service', api.checkCache, authom.app);
 
-app.get('/api/calendars', api.calendars);
-app.get('/api/freebusy', api.freebusy);
 
-app.get('/me', user.me);
+app.get('/api/calendars', api.checkCache, api.calendars);
+app.get('/api/freebusy', api.checkCache, api.freebusy);
+
+app.get('/me', api.checkCache, user.me);
 app.get('/logout', user.logout);
 
 http.createServer(app).listen(app.get('port'), function(){

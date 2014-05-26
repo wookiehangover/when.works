@@ -1,8 +1,13 @@
 var request = require('request');
 var moment = require('moment');
-var api = exports;
+var cache = require('../lib/cacheman');
 
 var urlRoot = 'https://www.googleapis.com/calendar/v3/';
+
+var api = exports;
+
+api.checkCache = cache.checkCache;
+
 /*
  * GET proxy to Google Calendars list API
  */
@@ -20,7 +25,7 @@ api.calendars = function(req, res){
     json: true
   };
 
-  request( params, responseHandler.bind(res) );
+  request( params, responseHandler.bind({ res: res, req: req }) );
 };
 
 /*
@@ -44,8 +49,9 @@ api.freebusy = function(req, res){
     json: formatPostBody(req.query)
   };
 
-  request.post( params, responseHandler.bind(res) );
+  request.post( params, responseHandler.bind({ res: res, req: req }) );
 };
+
 
 // Returns a headers object with the user's oauth token
 function formatAuthHeader(user){
@@ -58,14 +64,21 @@ function formatAuthHeader(user){
 function responseHandler(err, resp, body){
   if( err ){
     console.log(err, body);
-    return this.error(500);
+    return this.res.error(500);
   }
 
   if( body && body.error ){
-    return this.json(body.error, body.error.code);
+    return this.res.json(body.error, body.error.code);
   }
 
-  this.json( body );
+  // var filename = this.req.url === '/api/calendars' ? 'calendars.json' : 'freebusy.json';
+  // fs.writeFile(filename, JSON.stringify(body, '', '  '), function(err){
+  //   console.log('response saved')
+  // })
+
+  cache.cacheResponse(this.req.client, this.req.url, body);
+
+  this.res.json( body );
 }
 
 // Takes the following query parameters:

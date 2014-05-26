@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var cache = require('../lib/cacheman');
 
 /*
  * GET users listing.
@@ -12,6 +13,7 @@ exports.me = function(req, res){
 
   var presentedUser = _.omit( user.data, 'id' );
 
+  cache.cacheResponse(req.client, req.url, presentedUser);
   res.json(presentedUser);
 };
 
