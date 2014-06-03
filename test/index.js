@@ -1,1 +1,2 @@
-var api = require('./routes/api');
+require('./routes/api');
+require('./routes/user');

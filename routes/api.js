@@ -13,11 +13,7 @@ api.checkCache = cache.checkCache;
  */
 
 api.calendars = function(req, res){
-  var user = req.session.user;
-
-  if( !user ){
-    return res.json({ error: 'Forbidden'}, 403);
-  }
+  var user = req.user;
 
   var params = {
     url: urlRoot +'users/me/calendarList',
@@ -32,11 +28,7 @@ api.calendars = function(req, res){
  * GET proxy to Google Calendars freebusy API
  */
 api.freebusy = function(req, res){
-  var user = req.session.user;
-
-  if( !user ){
-    return res.json({ error: 'Forbidden'}, 403);
-  }
+  var user = req.user;
 
   if( !req.query.timeMin || !req.query.timeMax || !req.query.calendars ){
     res.json({ error: 'Missing required fields' }, 412);
@@ -52,6 +44,17 @@ api.freebusy = function(req, res){
   request.post( params, responseHandler.bind({ res: res, req: req }) );
 };
 
+// Middleware to check that the current user is authenticated
+api.requireUser = function(req, res, next){
+  var user = req.session.user;
+
+  if( !user ){
+    res.json(403, { error: 'Forbidden'});
+  } else {
+    req.user = user;
+    next();
+  }
+};
 
 // Returns a headers object with the user's oauth token
 function formatAuthHeader(user){
@@ -65,6 +68,10 @@ function responseHandler(err, resp, body){
   if( err ){
     console.log(err, body);
     return this.res.error(500);
+  }
+
+  if (resp.statusCode === 401) {
+    return this.res.redirect('/refresh-token?redirect='+ this.req.url);
   }
 
   if( body && body.error ){

@@ -24,4 +24,4 @@ exports.requirejs = {
   source: '/app/components/requirejs/require.js'
 }
 
-exports.cacheExpires = parseInt(process.env.CACHE_EXPIRES, 10) || 18e3;
+exports.cacheExpires = parseInt(process.env.CACHE_EXPIRES, 10) || 60;

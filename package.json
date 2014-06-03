@@ -8,13 +8,11 @@
     "ejs": "*",
     "authom": "^0.4.8",
     "connect-redis": "2.x",
-    "moment": "^2.3.0",
+    "moment": "^2.6.0",
     "config": "^0.4.21",
     "lodash": "^2.4.1",
     "request": "^2.14.0",
     "less": "~1.3.3",
-    "xml2js": "^0.4.3",
-    "cheerio": "^0.16.0",
     "redis": "^0.10.3",
     "morgan": "^1.1.1",
     "cookie-parser": "^1.1.0",
@@ -44,7 +42,8 @@
     "backdash": "^1.1.2-2.4.1",
     "watchify": "^0.10.1",
     "browserify-lodash-template-loader": "git://github.com/wookiehangover/browserify-lodash-template-loader.git",
-    "pickadate": "^3.5.1"
+    "pickadate": "^3.5.1",
+    "topcoat": "^0.7.5"
   },
   "directories": {
     "test": "test"
@@ -64,7 +63,8 @@
   },
   "browserify": {
     "transform": [
-      "browserify-lodash-template-loader"
+      "browserify-lodash-template-loader",
+      "reactify"
     ]
   }
 }
