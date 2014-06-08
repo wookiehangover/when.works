@@ -4,7 +4,7 @@ module.exports = Backbone.Collection.extend({
   url: '/api/calendars',
 
   initialize: function() {
-    this.dfd = this.fetch();
+    this.load = this.fetch();
   },
 
   parse: function(obj) {

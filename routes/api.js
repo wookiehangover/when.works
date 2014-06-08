@@ -78,11 +78,6 @@ function responseHandler(err, resp, body){
     return this.res.json(body.error, body.error.code);
   }
 
-  // var filename = this.req.url === '/api/calendars' ? 'calendars.json' : 'freebusy.json';
-  // fs.writeFile(filename, JSON.stringify(body, '', '  '), function(err){
-  //   console.log('response saved')
-  // })
-
   cache.cacheResponse(this.req.client, this.req.url, body);
 
   this.res.json( body );

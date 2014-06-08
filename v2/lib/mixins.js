@@ -1,26 +1,12 @@
 var _ = require('lodash');
-var moment = require('moment');
+var moment = require('moment-timezone');
+var tzData = require('./timezone-data');
+
+moment.tz.add(tzData);
 
 exports.localMoment = function(date) {
-  var m = moment(date);
-  var local = moment().zone();
   var timezone = this.config.get('timezone');
-  var offset, dst;
-
-  if (timezone) {
-    timezone = timezone.split(',');
-    dst = parseInt(timezone[1], 10);
-    offset = Math.abs(parseInt(timezone[0], 10));
-
-    if (moment().isDST() && dst === 1) {
-      offset -= 60;
-    }
-
-    if (offset !== local) {
-      m.subtract('minutes', offset - local);
-    }
-  }
-  return m;
+  return moment(date).tz(timezone);
 };
 
 // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"

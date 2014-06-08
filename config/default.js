@@ -24,4 +24,9 @@ exports.requirejs = {
   source: '/app/components/requirejs/require.js'
 }
 
-exports.cacheExpires = parseInt(process.env.CACHE_EXPIRES, 10) || 60;
+exports.browserify = {
+  dev: '/js/untaken.js',
+  prod: '/js/untaken.min.js'
+}
+
+exports.cacheExpires = parseInt(process.env.CACHE_EXPIRES, 10) || 1;

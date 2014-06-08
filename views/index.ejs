@@ -1,6 +1,6 @@
 <% include _header.ejs %>
 <header id="main-header">
-  <h1 class="main">Unavailable.at</h1>
+  <h1 class="main">when works</h1>
 
   <% if( !user ){ %>
     <a href="/auth/google" class="sign-in topcoat-button">SIGN IN</a>
@@ -27,6 +27,9 @@
       <div class="picker"></div>
     </div>
   </section>
+  <script>
+    window.userData = <%- JSON.stringify(user.data) %>
+  </script>
   <% } %>
 </div>
 

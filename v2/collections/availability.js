@@ -1,9 +1,10 @@
 var $ = require('jquery');
 var _ = require('lodash');
-var moment = require('moment');
 var Backbone = require('backdash');
 var mixins = require('../lib/mixins');
 var Timeblocks = require('./timeblocks');
+var moment = require('moment-timezone')
+var tzData = require('../lib/timezone-data');
 
 module.exports = Backbone.Collection.extend({
 
@@ -24,8 +25,9 @@ module.exports = Backbone.Collection.extend({
       this.loaded = true;
     }, this);
 
-    this.config.on('change:calendar change:timeMax change:timeMin', function(model) {
-      if (model.get('timeMax') && model.get('timeMin') && model.get('calendar')) {
+    this.config.on('change:calendars change:timeMax change:timeMin', function(model) {
+      if (model.get('timeMax') && model.get('timeMin') && model.get('calendars')) {
+        console.log(model.get('calendars'))
         this.fetch(model.get('options') || {});
       }
     }, this);
@@ -33,7 +35,7 @@ module.exports = Backbone.Collection.extend({
 
   url: function() {
     var query = $.param({
-      calendars: this.config.get('calendar'),
+      calendars: this.config.get('calendars'),
       timeMin: this.moment(this.config.get('timeMin')).format(),
       // add extra time to account for the range returned by the gCal API
       timeMax: this.moment(this.config.get('timeMax')).add('days', 1).format()
@@ -66,11 +68,13 @@ module.exports = Backbone.Collection.extend({
 
   // Interface for generating and array of availabile times
   getUntaken: function() {
-
-    var calendars = this.config.get('calendar');
+    if (this.length === 0) {
+      return [];
+    }
+    var calendars = this.config.get('calendars');
 
     _.each(calendars, function(id){
-      var days = this.getDays(this.config.get('calendar')[0]);
+      var days = this.getDays(this.config.get('calendars')[0]);
       // Get the availability text for each day in the time range
       var dayblocks = _.map(days, this.getAvailabilityFromDay, this);
 
@@ -91,8 +95,6 @@ module.exports = Backbone.Collection.extend({
         this.timeblocks.reduceTimes(calendars)
       );
     }
-
-    console.log(calendars, timeblock);
 
     // You jerk
     if (timeblock.length === 0) {

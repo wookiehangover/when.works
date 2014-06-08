@@ -1,0 +1,231 @@
+{
+  "kind": "calendar#calendarList",
+  "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/YhZ7X-X0fZG4f5DpWXPQJTls3Rc\"",
+  "nextSyncToken": "00001401110394840000",
+  "items": [
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDUyMTk1MTYzMjAwMA\"",
+      "id": "bchou@quickleft.com",
+      "summary": "Bing Chou: Work",
+      "timeZone": "America/Denver",
+      "colorId": "10",
+      "backgroundColor": "#b3dc6c",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDAxMjkwMDM5ODAwMA\"",
+      "id": "joe@quickleft.com",
+      "summary": "jstump@quickleft.com",
+      "timeZone": "America/Los_Angeles",
+      "colorId": "12",
+      "backgroundColor": "#fad165",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM3MzkwOTQ5MzMzNzAwMA\"",
+      "id": "sam@quickleft.com",
+      "summary": "sam@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "14",
+      "backgroundColor": "#9fe1e7",
+      "foregroundColor": "#000000",
+      "selected": true,
+      "accessRole": "owner",
+      "defaultReminders": [
+        {
+          "method": "popup",
+          "minutes": 10
+        }
+      ],
+      "notificationSettings": {
+        "notifications": [
+          {
+            "type": "eventCreation",
+            "method": "email"
+          },
+          {
+            "type": "eventChange",
+            "method": "email"
+          },
+          {
+            "type": "eventCancellation",
+            "method": "email"
+          },
+          {
+            "type": "eventResponse",
+            "method": "email"
+          }
+        ]
+      },
+      "primary": true
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDY5MjY0NzkzMzAwMA\"",
+      "id": "ingrid@quickleft.com",
+      "summary": "ingrid@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "22",
+      "backgroundColor": "#f691b2",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5NTcwMTQwNDc5NzAwMA\"",
+      "id": "quickleft.com_3b647jj03suq6mg0797okki47c@group.calendar.google.com",
+      "summary": "Conferences",
+      "timeZone": "America/Denver",
+      "colorId": "8",
+      "backgroundColor": "#16a765",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5OTk5MzI4OTIyNDAwMA\"",
+      "id": "quickleft.com_38343137393235362d313934@resource.calendar.google.com",
+      "summary": "Command Center",
+      "timeZone": "America/Los_Angeles",
+      "colorId": "18",
+      "backgroundColor": "#b99aff",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5NDU1NTE1MzQzNDAwMA\"",
+      "id": "rscott@quickleft.com",
+      "summary": "rachel@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "16",
+      "backgroundColor": "#4986e7",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDg3MzQ4MDYzMDAwMA\"",
+      "id": "jcollins@quickleft.com",
+      "summary": "jcollins@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "23",
+      "backgroundColor": "#cd74e6",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5OTk5MzI5NDk4NDAwMA\"",
+      "id": "quickleft.com_2d37363738343635372d363132@resource.calendar.google.com",
+      "summary": "Fish Bowl",
+      "timeZone": "America/Los_Angeles",
+      "colorId": "15",
+      "backgroundColor": "#9fc6e7",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDc4Mzg3OTU2ODAwMA\"",
+      "id": "mjackson@quickleft.com",
+      "summary": "mjackson@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "5",
+      "backgroundColor": "#ff7537",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDAxMjkwMzEzNzAwMA\"",
+      "id": "mwork@quickleft.com",
+      "summary": "mwork@quickleft.com",
+      "timeZone": "America/Los_Angeles",
+      "colorId": "1",
+      "backgroundColor": "#ac725e",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5OTI5NzQ2NDA3OTAwMA\"",
+      "id": "quickleft.com_8pb2741vl4ut8bq3l2kbuqfc9c@group.calendar.google.com",
+      "summary": "Team",
+      "description": "Everything going down at QL",
+      "timeZone": "America/Denver",
+      "colorId": "19",
+      "backgroundColor": "#c2c2c2",
+      "foregroundColor": "#000000",
+      "accessRole": "owner",
+      "notificationSettings": {
+        "notifications": [
+          {
+            "type": "eventCreation",
+            "method": "email"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDY4MjM3NDE0NzAwMA\"",
+      "id": "bbonifield@quickleft.com",
+      "summary": "bob@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "9",
+      "backgroundColor": "#7bd148",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5MzAyMDM3ODUwNzAwMA\"",
+      "id": "dstadler@quickleft.com",
+      "summary": "dave@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "4",
+      "backgroundColor": "#fa573c",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5MDg1NjQwODEzMDAwMA\"",
+      "id": "amcpherson@quickleft.com",
+      "summary": "alex@quickleft.com",
+      "timeZone": "America/Los_Angeles",
+      "colorId": "17",
+      "backgroundColor": "#9a9cff",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTM5MDg1NjQxNTA2MTAwMA\"",
+      "id": "mabiezzi@quickleft.com",
+      "summary": "mike@quickleft.com",
+      "timeZone": "America/Denver",
+      "colorId": "17",
+      "backgroundColor": "#9a9cff",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"lALbFE98s88NEFGE7rntyxNtHBY/MTQwMDUyMjAxMzEyMjAwMA\"",
+      "id": "quickleft.com_4d6vjll885u86jdglm0vt639ng@group.calendar.google.com",
+      "summary": "Tech Events & Conferences",
+      "timeZone": "America/Denver",
+      "colorId": "11",
+      "backgroundColor": "#fbe983",
+      "foregroundColor": "#000000",
+      "accessRole": "owner"
+    }
+  ]
+}

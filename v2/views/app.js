@@ -4,22 +4,28 @@ var Backbone = require('backdash');
 Backbone.$ = $;
 
 var User = require('../models/user');
+var Config = require('../models/config');
 var Calendars = require('../collections/calendars');
-var Availability = require('../collections/taken');
+var Availability = require('../collections/availability');
 
-var SettingsView = require('./settings');
 var AvailabilityView = require('./availability');
+
+var React = require('react');
+window.React = React;
+
+var Settings = require('./settings');
+var AvailabilityComponent = require('./availability2');
 
 module.exports = Backbone.View.extend({
   el: $('body'),
 
   initialize: function() {
-    this.config = new Backbone.Model({
-      start: '10am',
-      end: '6pm'
+    this.user = new User(window.userData || {});
+    this.config = new Config(null, { user: this.user });
+    this.calendars = new Calendars();
+    this.availability = new Availability(null, {
+      config: this.config
     });
-
-    this.user = new User();
 
     if (this.user.load) {
       this.user.load.then(_.bind(function() {
@@ -27,26 +33,37 @@ module.exports = Backbone.View.extend({
       }, this));
     }
 
-    this.calendars = new Calendars();
+    var injector = {
+      user: this.user,
+      config: this.config,
+      calendars: this.calendars,
+      availability: this.availability
+    }
 
-    this.settings = new SettingsView({
-      collection: this.calendars,
-      model: this.config,
-      user: this.user
-    });
+    this.settings = React.renderComponent(
+      Settings(injector),
+      this.$('.picker').get(0)
+    );
 
-    this.availability = new Availability(null, {
-      config: this.config
-    });
+    this.output = React.renderComponent(
+      AvailabilityComponent(injector),
+      this.$('.availability').get(0)
+    );
 
-    this.output = new AvailabilityView({
-      collection: this.availability
-    });
+    // this.settings = new SettingsView({
+    //   collection: this.calendars,
+    //   model: this.config,
+    //   user: this.user
+    // });
 
-    $(document).ajaxError(function(e, xhr) {
-      if (xhr.status === 401) {
-        location.replace('/auth/google');
-      }
-    });
+    // this.output = new AvailabilityView({
+    //   collection: this.availability
+    // });
+
+    // $(document).ajaxError(function(e, xhr) {
+    //   if (xhr.status === 401) {
+    //     location.replace('/auth/google');
+    //   }
+    // });
   }
 });

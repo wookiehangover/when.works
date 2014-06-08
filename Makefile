@@ -9,7 +9,7 @@ install:
 	@bower install
 
 topcoat:
-	cp app/components/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less
+	cp node_modules/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less
 
 bootstrap:
 	find public/less/bootstrap -name *.less -delete

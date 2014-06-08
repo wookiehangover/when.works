@@ -43,7 +43,8 @@
     "watchify": "^0.10.1",
     "browserify-lodash-template-loader": "git://github.com/wookiehangover/browserify-lodash-template-loader.git",
     "pickadate": "^3.5.1",
-    "topcoat": "^0.7.5"
+    "topcoat": "^0.7.5",
+    "moment-timezone": "0.0.6"
   },
   "directories": {
     "test": "test"
@@ -51,8 +52,8 @@
   "scripts": {
     "test": "mocha test && grunt mocha_phantomjs",
     "start": "node server.js",
-    "watch": "watchify -o public/js/v2.js -v -d v2",
-    "build": "NODE_ENV=production browserify v2 | uglifyjs -cm > public/js/v2.min.js"
+    "watch": "watchify -o public/js/untaken.js -v -d v2",
+    "build": "NODE_ENV=production browserify v2 | uglifyjs -cm > public/js/untaken.min.js"
   },
   "repository": "",
   "author": "",
