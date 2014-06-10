@@ -8,8 +8,6 @@ var Config = require('../models/config');
 var Calendars = require('../collections/calendars');
 var Availability = require('../collections/availability');
 
-var AvailabilityView = require('./availability');
-
 var React = require('react');
 window.React = React;
 

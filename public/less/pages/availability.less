@@ -1,3 +1,35 @@
+.calendar-list {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0;
+
+  li {
+    color: #000;
+    font-size: 1.5rem;
+    height: 50px;
+
+    img {
+      height: 3rem;
+      .border-radius(1.5rem);
+      border: 1px solid #3B3E40;
+    }
+
+    span {
+      position: relative;
+      bottom: 1rem;
+      left: 1rem;
+    }
+  }
+
+  li + li {
+    margin-top: 1rem;
+  }
+}
+
+.availability {
+  background: rgba(255, 255, 255, 0.6);
+}
+
 .availability li {
   position: relative;
 

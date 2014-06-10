@@ -15,10 +15,10 @@ var CalendarList = React.createClass({
             return (
               <li className="topcoat-list__item">
                 <p>{time}</p>
-                <button className="topcoat-button" onClick={this.onClick}>remove</button>
+                <button className="topcoat-button" onClick={_.partial(this.props.onClick, time)}>remove</button>
               </li>
             )
-          })}
+          }.bind(this))}
         </ul>
       </div>
     )

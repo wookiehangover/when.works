@@ -5,3 +5,4 @@ dist
 app/components
 config/production.js
 config/runtime.json
+.env

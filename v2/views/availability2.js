@@ -6,6 +6,7 @@ var React = require('react');
 var _ = require('lodash');
 var Backbone = require('backdash');
 var CalendarList = require('./components/availability/calendar-list');
+var crypto = require('crypto');
 
 var Availability = React.createClass(_.extend({
 
@@ -41,7 +42,7 @@ var Availability = React.createClass(_.extend({
     }).join('\n');
   },
 
-  removeTimeblock: function(e) {
+  removeTimeblock: function(time, e) {
 
   },
 
@@ -51,10 +52,27 @@ var Availability = React.createClass(_.extend({
     }
   },
 
+  getImage: function(calendar) {
+    var hash = crypto.createHash('md5');
+    hash.update(calendar.toLowerCase().trim());
+    return 'http://www.gravatar.com/avatar/' + hash.digest('hex');
+  },
+
+
   render: function() {
     return (
       <div>
-        <CalendarList ref="list" times={this.props.availability.getUntaken()} onClick={this.removeTimeblock} />
+        <ul className="calendar-list">
+          {_.map(this.props.config.get('calendars'), function(calendar){
+            return (
+              <li>
+                <img src={this.getImage(calendar)}/>
+                {calendar}
+              </li>
+            )
+          }, this)}
+        </ul>
+        <CalendarList ref="list" times={this.props.availability.getAvailableTimes()} onClick={this.removeTimeblock} />
       </div>
     )
   }

@@ -1,5 +1,7 @@
 var _ = require('lodash');
 var cache = require('../lib/cacheman');
+var config = require('config');
+var request = require('request');
 
 /*
  * GET users listing.

@@ -10,6 +10,7 @@ var Backbone = require('backdash');
 
 // Components
 var CalendarSelect = require('./components/settings/calendar-select');
+var CalendarAdd = require('./components/settings/calendar-add');
 var Datepicker = require('./components/settings/datepicker');
 var MeetingLength = require('./components/settings/meeting-length');
 var DayLength = require('./components/settings/day-length');
@@ -35,6 +36,7 @@ var Settings = React.createClass(_.extend({
     return (
       <form>
         <CalendarSelect calendars={this.props.calendars} config={this.props.config} user={this.props.user} />
+        <CalendarAdd calendars={this.props.calendars} config={this.props.config} />
         <Datepicker config={this.props.config} />
         <TimezoneSelect config={this.props.config} />
         <MeetingLength config={this.props.config} />

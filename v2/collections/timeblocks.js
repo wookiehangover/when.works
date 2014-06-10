@@ -67,28 +67,87 @@ module.exports = Backbone.Collection.extend({
     //
     // Given: [[a, b], [c, d]] where B > C
     //  create a merged entry of the form: [a, (B || D)]
-    var mergedList = _.reduce(dayblock, function(block, time, i){
-      var next = dayblock[i + 1];
-      if (next && time[1].isAfter(next[0])) {
-        block.push([
-          next[0],
-          (next[1].isAfter(time[1]) ? next[1] : time[1] )
-        ]);
-        merged.push(i + 1);
-      } else if (!(i in merged)) {
-        block.push(time);
+    // var mergedList = _.reduce(dayblock, function(block, time, i){
+    //   var next = dayblock[i + 1];
+    //   if (next && time[1].isAfter(next[0])) {
+    //     block.push([
+    //       next[0],
+    //       (next[1].isAfter(time[1]) ? next[1] : time[1] )
+    //     ]);
+    //     merged.push(i + 1);
+    //   } else if (!(i in merged)) {
+    //     block.push(time);
+    //   }
+    //   return block;
+    // }, []);
+
+
+    // [ [a, b], [c, d] ]
+    //
+    // b > c => a - d
+    // b < c => a - b
+
+    // push the first interval onto the stack
+
+    dayblock = dayblock.sort(function(a, b){
+      if (a[0].isSame(b[0])) {
+        return a[1] - b[1]
+      } else {
+        return a[0] - b[0]
       }
-      return block;
-    }, []);
+    })
+
+    console.log(dayblock);
+
+    var stack = [];
+    stack.push(dayblock.shift());
+    _.each(dayblock, function(interval){
+      var last = _.last(stack);
+
+      console.log('last', last[0].format(), last[1].format())
+      console.log('current', interval[0].format(), interval[1].format())
+
+      if (interval[0].isAfter(last[1])) {
+        return stack.push(interval);
+      }
+
+      if (interval[0].isBefore(last[1]) && interval[1].isAfter(last[1])) {
+        last[1] = interval[1]
+      }
+    });
+
+    console.log(stack);
+
+    return stack;
+
+
+    // var mergedList = _.transform(dayblock, function(block, currentTime, i){
+    //   var lastTime = _.last(block)|| [];
+    //   var nextTime = dayblock[i + 1] || [];
+
+    //   if (lastTime[1]) {
+    //     if (currentTime[0].isBefore(lastTime[1]) && currentTime[1].isAfter(lastTime[1])) {
+    //       lastTime[1] = currentTime[1];
+    //     } else if (currentTime[0].isAfter(lastTime[1])) {
+    //       block.push(currentTime);
+    //     }
+    //   } else if (currentTime[1].isAfter(nextTime[0]) || currentTime[1].isSame(nextTime[0])) {
+    //     block.push([currentTime[0], nextTime[1]]);
+    //     merged.push(i + 1);
+    //   }
+    //   else {
+    //     block.push(currentTime);
+    //   }
+    // }, []);
 
     // Walk through the merged list, pruning any meeting slots that are still
     // colliding
     //
     // TODO: this seems like a klude, but it seems to work, soo...
-    return _.reject(mergedList, function(time, i){
-      var next = mergedList[i + 1];
-      return next ? this.detectMeetingCollision(time, next) : false;
-    }, this);
+    // return _.reject(mergedList, function(time, i){
+    //   var next = mergedList[i + 1];
+    //   return next ? this.detectMeetingCollision(time, next) : false;
+    // }, this);
   },
 
   // Helper for improving readability around meeting start/end comparisons

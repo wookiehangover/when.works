@@ -41,7 +41,7 @@ api.freebusy = function(req, res){
     json: formatPostBody(req.query)
   };
 
-  request.post( params, responseHandler.bind({ res: res, req: req }) );
+  request.post(params, responseHandler.bind({ res: res, req: req }));
 };
 
 // Middleware to check that the current user is authenticated
@@ -49,7 +49,7 @@ api.requireUser = function(req, res, next){
   var user = req.session.user;
 
   if( !user ){
-    res.json(403, { error: 'Forbidden'});
+    res.json({ error: 'Forbidden'}, 403);
   } else {
     req.user = user;
     next();
@@ -80,7 +80,7 @@ function responseHandler(err, resp, body){
 
   cache.cacheResponse(this.req.client, this.req.url, body);
 
-  this.res.json( body );
+  this.res.json(body);
 }
 
 // Takes the following query parameters:
