@@ -1,5 +1,6 @@
 var Backbone = require('backdash');
 var moment = require('moment');
+var jstz = require('../lib/jstz').jstz;
 
 function getFormat() {
   if (window.Intl === undefined || window.Intl.DateTimeFormat === undefined) {
@@ -29,7 +30,7 @@ module.exports = Backbone.Model.extend({
       start: '10am',
       end: '6pm',
       minDuration: 30,
-      timezone: getFormat(),
+      timezone: getFormat() || jstz.determine().name(),
       ignoreWeekend: true,
       calendars: [this.user.get('email')]
     };

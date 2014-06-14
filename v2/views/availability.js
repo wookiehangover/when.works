@@ -1,17 +1,42 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
 var $ = require('jquery');
 var _ = require('lodash');
 var Backbone = require('backdash');
-var Modal = require('./modal');
+var CalendarList = require('./components/availability/calendar-list');
+var AvailabilityHeader = require('./components/availability/header');
+var CopyButton = require('./components/availability/copy-button');
 
-module.exports = Backbone.View.extend({
-  el: $('.availability'),
+var Availability = React.createClass(_.extend({
 
-  initialize: function(params) {
-    if (!this.collection) {
-      throw new Error('You must pass a model collection');
+  // Event Handlers
+
+  removeTimeblock: function(time, e) {
+    var blacklist = this.state.blacklist;
+    blacklist.push(time);
+    this.setState({ blacklist: blacklist });
+  },
+
+  reset: function(e) {
+    e.preventDefault();
+    this.setState({ blacklist: [] });
+  },
+
+  // React Methods
+
+  getInitialState: function() {
+    return {
+      blacklist: []
     }
+  },
 
-    this.listenTo(this.collection, 'sync', this.render, this);
+  componentDidMount: function() {
+    var update = function update(){
+      this.forceUpdate()
+    }.bind(this);
 
     var changeEvents = [
       'change:ignoreWeekend',
@@ -22,97 +47,32 @@ module.exports = Backbone.View.extend({
       'change:minDuration'
     ].join(' ');
 
-    this.listenTo(this.collection.config, changeEvents, this.render, this);
+    this.listenTo(this.props.config, changeEvents, update)
+    this.listenTo(this.props.availability, 'sync', update)
   },
 
-  hasFlash: false,
-
-  setupClipboard: function() {
-    var clip = new ZeroClipboard(this.$('button[data-action="copy"]')[0], {
-      moviePath: '/js/ZeroClipboard.swf',
-      activeClass: 'is-active'
-    });
-
-    var self = this;
-
-    function removeOverlay() {
-      $('#global-zeroclipboard-html-bridge').remove();
-    }
-
-    if (ZeroClipboard.detectFlashSupport() === false) {
-      removeOverlay();
-    }
-
-    clip.on('load', function() {
-      self.hasFlash = true;
-    });
-
-    _.delay(function() {
-      if (self.hasFlash === false) {
-        removeOverlay();
-      }
-    }, 500);
-
-    clip.on('dataRequested', function(client) {
-      client.setText(self.presentUntaken());
-      var btn = self.$('.copy .label');
-      var text = btn.text();
-      btn.text('Copied!');
-      setTimeout(function() {
-        btn.text(text);
-      }, 2000);
-    });
+  componentDidUnmount: function() {
+    this.stopListening();
   },
-
-  template: require('../templates/availability.html'),
 
   render: function() {
-    if (!this.collection.loaded) {
-      return;
-    }
+    var times = this.props.availability.getAvailableTimes(this.state.blacklist);
+    var calendars = this.props.config.get('calendars');
+    return (
+      <div>
+        <AvailabilityHeader calendars={calendars} />
 
-    this.blacklist = [];
+        <CalendarList
+          ref="list"
+          times={times}
+          reset={this.reset}
+          removeTimeblock={this.removeTimeblock} />
 
-    this.renderTimes(this.collection.getUntaken());
-    this.setupClipboard();
+        <CopyButton times={times} calendars={calendars} />
+      </div>
+    )
   },
 
-  renderTimes: function(untaken) {
-    this.$el.html(this.template({
-      untaken: untaken
-    }));
-  },
+}, Backbone.Events))
 
-  presentUntaken: function() {
-    var untaken = _.reject(this.collection.getUntaken(), function(time, i) {
-      return _.indexOf(this.blacklist, i) > -1;
-    }, this);
-
-    return _.map(untaken, function(time) {
-      return '• ' + time;
-    }).join('\n');
-  },
-
-  events: {
-    'click [data-action="remove-item"]': 'removeItem',
-    'click [data-action="copy"]': 'copyFallback'
-  },
-
-  removeItem: function(e) {
-    e.preventDefault();
-    var index = $(e.currentTarget).parent().data('orig-index');
-    this.blacklist.push(index);
-    $(e.currentTarget).parent().remove();
-  },
-
-  copyFallback: function(e) {
-    e.preventDefault();
-    var modal = new Modal({
-      id: 'copy-modal',
-      title: this.collection.config.get('calendar'),
-      body: this.presentUntaken()
-    });
-
-    modal.$('textarea').select();
-  }
-});
+module.exports = Availability;

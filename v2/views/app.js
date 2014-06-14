@@ -12,7 +12,7 @@ var React = require('react');
 window.React = React;
 
 var Settings = require('./settings');
-var AvailabilityComponent = require('./availability2');
+var AvailabilityComponent = require('./availability');
 
 module.exports = Backbone.View.extend({
   el: $('body'),
@@ -48,20 +48,10 @@ module.exports = Backbone.View.extend({
       this.$('.availability').get(0)
     );
 
-    // this.settings = new SettingsView({
-    //   collection: this.calendars,
-    //   model: this.config,
-    //   user: this.user
-    // });
-
-    // this.output = new AvailabilityView({
-    //   collection: this.availability
-    // });
-
-    // $(document).ajaxError(function(e, xhr) {
-    //   if (xhr.status === 401) {
-    //     location.replace('/auth/google');
-    //   }
-    // });
+    $(document).ajaxError(function(e, xhr) {
+      if (xhr.status === 401) {
+        location.replace('/auth/google');
+      }
+    });
   }
 });

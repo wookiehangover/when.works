@@ -27,11 +27,13 @@ module.exports = Backbone.Collection.extend({
   },
 
   url: function() {
+    var min = this.moment(this.config.get('timeMin')).format();
+    var max = this.moment(this.config.get('timeMax')).add('days', 1).format();
+
     var query = $.param({
       calendars: this.config.get('calendars'),
-      timeMin: this.moment(this.config.get('timeMin')).format(),
-      // add extra time to account for the range returned by the gCal API
-      timeMax: this.moment(this.config.get('timeMax')).add('days', 1).format()
+      timeMin: min,
+      timeMax: max
     });
 
     return '/api/freebusy?' + query;
@@ -90,7 +92,7 @@ module.exports = Backbone.Collection.extend({
   },
 
   // Interface for generating and array of availabile times
-  getAvailableTimes: function() {
+  getAvailableTimes: function(blacklist) {
     if (this.length === 0) {
       return [];
     }
@@ -104,6 +106,9 @@ module.exports = Backbone.Collection.extend({
     } else {
       days = this.getAllDays(calendars);
       dayblocks = _.map(days, function(times, date){
+        if (times.length === 0) {
+          return [];
+        }
         var timeblock = this.mergeSort(times);
         return this.getAvailabilityFromDay(timeblock, date);
       }, this);
@@ -118,7 +123,7 @@ module.exports = Backbone.Collection.extend({
       ];
     }
 
-    return timeblock;
+    return _.difference(timeblock, blacklist || []);
   },
 
   // Merges all calendars into the `getDays` format
@@ -170,7 +175,10 @@ module.exports = Backbone.Collection.extend({
   createTimestring: mixins.createTimestring,
 
   // Returns a Moment object with the correct timezone offset.
-  moment: mixins.localMoment,
+  moment: function(date) {
+    var timezone = this.config.get('timezone');
+    return moment(date).tz(timezone);
+  },
 
   // Takes an array of Models for a given date and determines the availabilty
   //
@@ -230,10 +238,12 @@ module.exports = Backbone.Collection.extend({
 
     // Iterate through the "middle" times and add timestrings for the time
     // between the meetings
-    _.each(times, function(timeEntry) {
+    _.each(times, function(timeEntry, i) {
       var meetingEnd = this.moment(timeEntry.start);
+
       // Handle empty start times, and same start & end times
       if (!nextAvailableStart || meetingEnd.isSame(nextAvailableStart)) {
+        nextAvailableStart = this.moment(timeEntry.end);
         return;
       }
 
@@ -247,7 +257,7 @@ module.exports = Backbone.Collection.extend({
       nextAvailableStart = this.moment(timeEntry.end);
     }, this);
 
-    if (nextAvailableStart.isSame(dayStart) && _.last(times)) {
+    if (nextAvailableStart && nextAvailableStart.isSame(dayStart) && _.last(times)) {
       nextAvailableStart = this.moment(_.last(times).end);
     }
 

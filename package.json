@@ -52,7 +52,7 @@
   "scripts": {
     "test": "mocha test && grunt mocha_phantomjs",
     "start": "node server.js",
-    "watch": "watchify -o public/js/untaken.js -v -d v2",
+    "watch": "watchify v2 -o public/js/untaken.js -v",
     "build": "NODE_ENV=production browserify v2 | uglifyjs -cm > public/js/untaken.min.js"
   },
   "repository": "",

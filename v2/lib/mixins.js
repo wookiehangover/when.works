@@ -5,7 +5,7 @@ var tzData = require('./timezone-data');
 moment.tz.add(tzData);
 
 exports.localMoment = function(date) {
-  var timezone = this.config.get('timezone');
+  var timezone = this.props.config.get('timezone');
   return moment(date).tz(timezone);
 };
 
