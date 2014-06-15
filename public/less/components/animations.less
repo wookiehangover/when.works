@@ -71,3 +71,24 @@
     }
   }
 }
+
+
+// React Transitions
+
+.fadeIn-enter {
+  .opacity(1);
+  .transition(opacity 500ms ease-in-out);
+}
+
+.fadeIn-enter.fadeIn-enter-active {
+  .opacity(100);
+}
+
+.fadeIn-leave {
+  .opacity(100);
+  .transition(opacity 300ms ease-in);
+}
+
+.fadeIn-leave.fadeIn-leave-active {
+  .opacity(1);
+}

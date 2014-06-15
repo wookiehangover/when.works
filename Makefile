@@ -1,5 +1,5 @@
 TOPCOAT_TARGET := 'mobile'
-TOPCOAT_COLOR := 'dark'
+TOPCOAT_COLOR := 'light'
 
 all: install topcoat bootstrap
 
