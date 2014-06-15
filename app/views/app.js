@@ -24,7 +24,8 @@ module.exports = Backbone.View.extend({
     this.config = new Config(null, { user: this.user });
     this.calendars = new Calendars();
     this.availability = new Availability(null, {
-      config: this.config
+      config: this.config,
+      calendars: this.calendars
     });
 
     if (this.user.load) {

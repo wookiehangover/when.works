@@ -15,13 +15,14 @@ module.exports = Backbone.Collection.extend({
     }
     this.config = params.config;
 
-    this.once('sync', function(){
-      this.loaded = true;
-    }, this);
+    if (!params.calendars) {
+      throw new Error('You must pass a calendars collection');
+    }
+    this.calendars = params.calendars;
 
     this.config.on('change:calendars change:timeMax change:timeMin', function(model) {
       if (model.get('timeMax') && model.get('timeMin') && model.get('calendars')) {
-        this.fetch(model.get('options') || {});
+        this.calendars.load.then(this.fetch.bind(this));
       }
     }, this);
   },
