@@ -35,7 +35,7 @@ var CalendarAdd = React.createClass({
     var calendars = this.props.config.get('calendars');
     var options = _.transform(this.props.calendars.toJSON(), function(result, model){
       if (_.indexOf(calendars, model.id) < 0) {
-        result.push(<option value={model.id}>{model.summary}</option>)
+        result.push(<option value={model.id} key={model.id}>{model.summary}</option>)
       }
     });
 

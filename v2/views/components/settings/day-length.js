@@ -14,7 +14,7 @@ var TimeSelect = React.createClass({
         defaultValue={this.props.selected}
         onChange={this.props.onChange} >
           {this.props.times.map(function(time){
-            return (<option>{time}</option>)
+            return (<option key={time}>{time}</option>)
           })}
       </select>
     )
@@ -41,7 +41,7 @@ var DayLength = React.createClass({
     return (
     <div className="control-group day-length">
       <div className="day-start">
-        <label className="control-label" for="start">Day Start:</label>
+        <label className="control-label">Day Start:</label>
         <TimeSelect
           name="start"
           onChange={this.updateConfig}
@@ -49,7 +49,7 @@ var DayLength = React.createClass({
           times={this.state.startTimes} />
       </div>
       <div className="day-end">
-        <label className="control-label" for="end">Day End:</label>
+        <label className="control-label">Day End:</label>
         <TimeSelect
           name="end"
           onChange={this.updateConfig}

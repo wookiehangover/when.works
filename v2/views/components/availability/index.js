@@ -6,9 +6,9 @@ var React = require('react');
 var $ = require('jquery');
 var _ = require('lodash');
 var Backbone = require('backdash');
-var CalendarList = require('./components/availability/calendar-list');
-var AvailabilityHeader = require('./components/availability/header');
-var CopyButton = require('./components/availability/copy-button');
+var CalendarList = require('./calendar-list');
+var AvailabilityHeader = require('./header');
+var CopyButton = require('./copy-button');
 
 var Availability = React.createClass(_.extend({
 
@@ -48,6 +48,7 @@ var Availability = React.createClass(_.extend({
     ].join(' ');
 
     this.listenTo(this.props.config, changeEvents, update)
+    this.listenTo(this.props.calendars, 'sync', update)
     this.listenTo(this.props.availability, 'sync', update)
   },
 
@@ -60,12 +61,13 @@ var Availability = React.createClass(_.extend({
     var calendars = this.props.config.get('calendars');
     return (
       <div>
-        <AvailabilityHeader calendars={calendars} />
+        <AvailabilityHeader activeCalendars={calendars} calendars={this.props.calendars} />
 
         <CalendarList
           ref="list"
           times={times}
           reset={this.reset}
+          blacklistActive={this.state.blacklist.length > 0}
           removeTimeblock={this.removeTimeblock} />
 
         <CopyButton times={times} calendars={calendars} />

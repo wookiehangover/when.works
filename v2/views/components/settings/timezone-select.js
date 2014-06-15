@@ -20,7 +20,7 @@ var TimezoneSelect = React.createClass({
         <label>Timezone:</label>
         <select name="timezone" defaultValue={this.props.config.get('timezone')} onChange={this.updateConfig}>
           {_.map(tzData.zones, function(offset, name){
-            return (<option>{name}</option>)
+            return (<option key={name}>{name}</option>)
           })}
         </select>
       </div>

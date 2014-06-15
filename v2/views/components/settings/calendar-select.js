@@ -14,7 +14,7 @@ var SelectList = React.createClass({
     var calendars = this.props.config.get('calendars');
     var options = _.transform(this.props.calendars.toJSON(), function(result, model){
       if (model.id === selected || _.indexOf(calendars, model.id) < 0) {
-        result.push(<option value={model.id}>{model.summary}</option>)
+        result.push(<option value={model.id} key={_.uniqueId(model.id)}>{model.summary}</option>)
       }
     });
 
@@ -61,12 +61,14 @@ var CalendarSelect = React.createClass({
   render: function() {
     var classList = ['control-group'];
 
+    var label = this.props.config.get('calendars').length > 1 ? 'Calendars:' : 'Calendar:';
+
     return (
       <div className={classList.join(' ')}>
-        <label>Calendar:</label>
+        <label>{label}</label>
         {this.props.calendars.length > 0 ? _.map(this.props.config.get('calendars'), function(calendar, i){
           return SelectList({
-            ref: 'add-'+ i,
+            key: 'add-'+ i,
             value: calendar,
             config: this.props.config,
             calendars: this.props.calendars,

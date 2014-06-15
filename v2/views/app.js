@@ -11,8 +11,8 @@ var Availability = require('../collections/availability');
 var React = require('react');
 window.React = React;
 
-var Settings = require('./settings');
-var AvailabilityComponent = require('./availability');
+var Settings = require('./components/settings');
+var AvailabilityComponent = require('./components/availability');
 
 module.exports = Backbone.View.extend({
   el: $('body'),

@@ -9,13 +9,13 @@ var _ = require('lodash');
 var Backbone = require('backdash');
 
 // Components
-var CalendarSelect = require('./components/settings/calendar-select');
-var CalendarAdd = require('./components/settings/calendar-add');
-var Datepicker = require('./components/settings/datepicker');
-var MeetingLength = require('./components/settings/meeting-length');
-var DayLength = require('./components/settings/day-length');
-var TimezoneSelect = require('./components/settings/timezone-select');
-var Toggles = require('./components/settings/toggles');
+var CalendarSelect = require('./calendar-select');
+var CalendarAdd = require('./calendar-add');
+var Datepicker = require('./datepicker');
+var MeetingLength = require('./meeting-length');
+var DayLength = require('./day-length');
+var TimezoneSelect = require('./timezone-select');
+var Toggles = require('./toggles');
 
 var Settings = React.createClass(_.extend({
 

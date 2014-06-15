@@ -2,36 +2,63 @@
  * @jsx React.DOM
  */
 
-var React = require('react');
-var _ = require('lodash');
-var crypto = require('crypto');
+var React = require('react/addons')
+var _ = require('lodash')
+var crypto = require('crypto')
+var CSSTransitionGroup = React.addons.CSSTransitionGroup
 
 var AvailabilityHeader = React.createClass({
 
   getImage: function(calendar) {
-    var hash = crypto.createHash('md5');
-    hash.update(calendar.toLowerCase().trim());
-    return 'http://www.gravatar.com/avatar/' + hash.digest('hex');
+    var hash = crypto.createHash('md5')
+    hash.update(calendar.toLowerCase().trim())
+    return 'http://www.gravatar.com/avatar/' + hash.digest('hex')
+  },
+
+  getBackgroundColor: function(color) {
+    color = color.substr(1);
+    var rgb = [
+      parseInt(color.substr(0,2), 16),
+      parseInt(color.substr(2,2), 16),
+      parseInt(color.substr(4,2), 16)
+    ];
+
+    return 'rgba('+ rgb.join(',') +', 0.5)';
+  },
+
+  getCalendars: function() {
+    return _.transform(this.props.activeCalendars, function(result, id){
+      if (this.props.calendars && this.props.calendars.get(id)) {
+        result.push(this.props.calendars.get(id))
+      }
+    }, [], this)
   },
 
   render: function() {
+    var calendars = _.map(this.getCalendars(), function(calendar){
+      var style = {
+        background: this.getBackgroundColor(calendar.get('backgroundColor')),
+        color: calendar.get('foregroundColor')
+      }
+
+      return (
+        <li style={style} key={calendar.id + '-header'}>
+          <img src={this.getImage(calendar.id)}/>
+          {calendar.get('summary')}
+        </li>
+      )
+    }, this)
+
     return (
       <header>
-        <ul className="calendar-list">
-          {_.map(this.props.calendars, function(calendar){
-            return (
-              <li>
-                <img src={this.getImage(calendar)}/>
-                {calendar}
-              </li>
-            )
-          }, this)}
-        </ul>
+        <CSSTransitionGroup transitionName="fadeIn" className="calendar-list" component={React.DOM.ul}>
+          {calendars}
+        </CSSTransitionGroup>
       </header>
     )
-  },
+  }
 
 })
 
-module.exports = AvailabilityHeader;
+module.exports = AvailabilityHeader
 

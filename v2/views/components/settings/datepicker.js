@@ -114,7 +114,7 @@ var Datepicker = React.createClass({
       return $(node).find(selector);
     }
 
-    $(node).on('change', 'input', this.updateConfig.bind(this));
+    $(node).on('change', 'input', this.updateConfig);
     this.renderDatePicker();
   },
 
