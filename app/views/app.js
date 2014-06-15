@@ -14,6 +14,8 @@ window.React = React;
 var Settings = require('./components/settings');
 var AvailabilityComponent = require('./components/availability');
 
+var Router = require('../router');
+
 module.exports = Backbone.View.extend({
   el: $('body'),
 
@@ -47,6 +49,9 @@ module.exports = Backbone.View.extend({
       AvailabilityComponent(injector),
       this.$('.availability').get(0)
     );
+
+    this.router = new Router(injector);
+    Backbone.history.start({ pushState: true });
 
     $(document).ajaxError(function(e, xhr) {
       if (xhr.status === 401) {

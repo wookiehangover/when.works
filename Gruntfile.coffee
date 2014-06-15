@@ -15,7 +15,10 @@ config =
 
   jshint:
     files: [
-      'app/**/*.js'
+      'app/*.js'
+      'app/collections/*.js'
+      'app/models/*.js'
+      'app/views/*.js'
       'server.js'
       'routes/**/*.js'
       'lib/**/*.js'
@@ -42,6 +45,7 @@ module.exports = (grunt) ->
 
   grunt.loadNpmTasks('grunt-contrib-less')
   grunt.loadNpmTasks('grunt-contrib-cssmin')
+  grunt.loadNpmTasks('grunt-mocha-phantomjs')
   grunt.loadNpmTasks('grunt-contrib-jshint')
   grunt.loadNpmTasks('grunt-contrib-watch')
 

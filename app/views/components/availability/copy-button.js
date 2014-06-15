@@ -65,7 +65,9 @@ var CopyButton = React.createClass({
       body: this.presentTimeblockList()
     });
 
-    modal.$('textarea').select();
+    setTimeout(function() {
+      modal.$('textarea').select();
+    }, 1000)
   },
 
   // React Methods

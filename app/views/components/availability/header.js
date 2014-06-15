@@ -2,14 +2,18 @@
  * @jsx React.DOM
  */
 
-var React = require('react/addons')
+var React = require('react')
 var _ = require('lodash')
 var crypto = require('crypto')
-var CSSTransitionGroup = React.addons.CSSTransitionGroup
 
 var AvailabilityHeader = React.createClass({
 
   getImage: function(calendar) {
+
+    if (calendar === this.props.user.get('email')) {
+      return this.props.user.get('picture')
+    }
+
     var hash = crypto.createHash('md5')
     hash.update(calendar.toLowerCase().trim())
     return 'http://www.gravatar.com/avatar/' + hash.digest('hex')
@@ -51,9 +55,9 @@ var AvailabilityHeader = React.createClass({
 
     return (
       <header>
-        <CSSTransitionGroup transitionName="fadeIn" className="calendar-list" component={React.DOM.ul}>
+        <ul className="calendar-list">
           {calendars}
-        </CSSTransitionGroup>
+        </ul>
       </header>
     )
   }

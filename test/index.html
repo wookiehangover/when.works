@@ -1,16 +1,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../app/components/mocha/mocha.css" />
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="../app/components/mocha/mocha.js"></script>
-    <script src="../node_modules/sinon/pkg/sinon-1.9.1.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/sinon/pkg/sinon-1.10.2.js"></script>
     <script>
       mocha.ui('bdd');
       mocha.reporter('html');
     </script>
-    <script data-main="app/config" src="../app/components/requirejs/require.js"></script>
+    <script src="app/bundle.js"></script>
   </body>
 </html>

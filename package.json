@@ -40,11 +40,13 @@
     "envify": "^1.2.1",
     "react": "^0.10.0",
     "backdash": "^1.1.2-2.4.1",
-    "watchify": "^0.10.1",
+    "watchify": "^0.10.2",
     "browserify-lodash-template-loader": "git://github.com/wookiehangover/browserify-lodash-template-loader.git",
     "pickadate": "^3.5.1",
     "topcoat": "^0.7.5",
-    "moment-timezone": "0.0.6"
+    "moment-timezone": "0.0.6",
+    "browserify": "^4.1.10",
+    "uglify-js": "^2.4.14"
   },
   "directories": {
     "test": "test"
@@ -52,8 +54,9 @@
   "scripts": {
     "test": "mocha test && grunt mocha_phantomjs",
     "start": "node server.js",
-    "watch": "watchify v2 -o public/js/untaken.js -v",
-    "build": "NODE_ENV=production browserify v2 | uglifyjs -cm > public/js/untaken.min.js"
+    "watch": "watchify app -o public/js/untaken.js -v -d",
+    "watch-test": "NODE_PATH=./app:$NODE_PATH watchify test/app -o test/app/bundle.js -v -d",
+    "build": "NODE_ENV=production browserify app | uglifyjs -cm > public/js/untaken.min.js"
   },
   "repository": "",
   "author": "",

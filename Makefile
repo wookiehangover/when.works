@@ -8,6 +8,13 @@ install:
 	@bower cache clean
 	@bower install
 
+build:
+	grunt
+	npm run build
+
+watch:
+	npm run watch & nodemon -i app -i public server
+
 topcoat:
 	cp node_modules/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less
 

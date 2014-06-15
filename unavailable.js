@@ -17,6 +17,7 @@ var user = require('./routes/user');
 var api = require('./routes/api');
 
 app.get('/', routes.index);
+app.get('/for/:email', routes.index);
 app.get('/auth/:service', authom.app);
 
 app.get('/api/calendars', api.requireUser, api.checkCache, api.calendars);
