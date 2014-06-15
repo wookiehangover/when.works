@@ -15,6 +15,13 @@ module.exports = Backbone.View.extend({
     if (options.body) {
       this.body = options.body;
     }
+
+    $(document).on('keydown.modal', function(e){
+      if (e.which === 27) {
+        this.dismiss(e);
+      }
+    }.bind(this))
+
     this.render().appendTo($('body'));
     this.show();
   },
@@ -32,6 +39,7 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
     this.hide();
     this.remove();
+    $(document).off('keydown.modal');
   },
 
   hide: function() {
