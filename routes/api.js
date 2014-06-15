@@ -71,6 +71,7 @@ function responseHandler(err, resp, body){
   }
 
   if (resp.statusCode === 401) {
+    console.log('token expired, refreshing')
     return this.res.redirect('/refresh-token?redirect='+ this.req.url);
   }
 
