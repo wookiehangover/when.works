@@ -39,3 +39,20 @@ exports.userSessionData = {
     }
   }
 };
+
+exports.user = {
+  "id": "108809895309028249408",
+  "email": "sam@quickleft.com",
+  "verified_email": true,
+  "name": "Samuel Breed",
+  "given_name": "Samuel",
+  "family_name": "Breed",
+  "link": "https://plus.google.com/108809895309028249408",
+  "picture": "https://lh4.googleusercontent.com/-q_eJOQjuaM4/AAAAAAAAAAI/AAAAAAAAABE/UB6OIPpqEr8/photo.jpg",
+  "gender": "male",
+  "locale": "en",
+  "hd": "quickleft.com"
+};
+
+
+

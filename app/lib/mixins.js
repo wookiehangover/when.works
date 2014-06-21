@@ -9,22 +9,16 @@ exports.localMoment = function(date) {
   return moment(date).tz(timezone);
 };
 
-// Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
-exports.createTimestring = function(start, end) {
-  if (_.isArray(start)) {
-    var params = start;
-    end = params[1];
-    start = params[0];
-  }
-  // Make sure that am/pm suffixes are only applied when they differ
-  // between start and end times
-  var startFormat = start.minutes() === 0 ? 'h' : 'h:mm';
-  var endFormat = end.minutes() === 0 ? 'ha' : 'h:mma';
+exports.attachDependencies = function(params) {
+  var errors = _.compact(_.map(this.dependencies, function(msg, dep) {
+    if (params[dep]) {
+      this[dep] = params[dep]
+    } else {
+      return msg
+    }
+  }, this));
 
-  if (end.format('a') !== start.format('a')) {
-    startFormat += 'a';
+  if (errors.length > 0) {
+    throw new Error('Missing require dependencies:' + errors.join(', '));
   }
-
-  // Format that shit
-  return start.format('dddd M/D, ' + startFormat + ' - ') + end.format(endFormat);
 };

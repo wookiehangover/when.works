@@ -1,30 +1,25 @@
-var $ = require('jquery');
-var _ = require('lodash');
-var Backbone = require('backdash');
-var mixins = require('../lib/mixins');
+var $ = require('jquery')
+var _ = require('lodash')
+var Backbone = require('backdash')
 var moment = require('moment-timezone')
-var tzData = require('../lib/timezone-data');
+var mixins = require('../lib/mixins')
+
+var DATE_FORMAT = 'YYYY-MM-DD';
 
 module.exports = Backbone.Collection.extend({
 
-  DATE_FORMAT: 'YYYY-MM-DD',
+  dependencies: {
+    config: 'config model',
+    calendars: 'calendars collection'
+  },
 
   initialize: function(models, params) {
-    if (!params.config) {
-      throw new Error('You must pass a config model');
-    }
-    this.config = params.config;
-
-    if (!params.calendars) {
-      throw new Error('You must pass a calendars collection');
-    }
-    this.calendars = params.calendars;
-
-    this.config.on('change:calendars change:timeMax change:timeMin', function(model) {
-      if (model.get('timeMax') && model.get('timeMin') && model.get('calendars')) {
-        this.calendars.load.then(this.fetch.bind(this));
-      }
-    }, this);
+    mixins.attachDependencies.call(this, params)
+    this.listenTo(
+      this.config,
+      'change:calendars change:timeMax change:timeMin',
+      this.reload
+    );
   },
 
   url: function() {
@@ -46,6 +41,13 @@ module.exports = Backbone.Collection.extend({
     });
   },
 
+
+  reload: function(model) {
+    if (model.get('timeMax') && model.get('timeMin') && model.get('calendars')) {
+      this.calendars.load.then(this.fetch.bind(this));
+    }
+  },
+
   // Removes any free time that is shorter than the minimum meeting duration
   pruneShortMeetings: function(dayblocks) {
     var minDuration = parseInt(this.config.get('minDuration'), 10);
@@ -64,7 +66,7 @@ module.exports = Backbone.Collection.extend({
 
   // Returns a merged array of "busy" times, for combining multiple calendars
   mergeSort: function(times) {
-    times = times.sort(function(a, b) {
+    var sortedTimes = _.clone(times).sort(function(a, b) {
       var aStart = moment(a.start);
       var bStart = moment(b.start);
 
@@ -75,13 +77,13 @@ module.exports = Backbone.Collection.extend({
       }
     })
 
-    var stack = [];
-    stack.push(times.shift());
-    _.each(times, function(interval){
-      var last = _.last(stack);
+    var mergedTimes = [];
+    mergedTimes.push(sortedTimes.shift());
+    _.each(sortedTimes, function(interval){
+      var last = _.last(mergedTimes);
 
       if (moment(interval.start).isAfter(moment(last.end))) {
-        return stack.push(interval);
+        return mergedTimes.push(interval);
       }
 
       if (moment(interval.end).isAfter(moment(last.end))) {
@@ -89,7 +91,7 @@ module.exports = Backbone.Collection.extend({
       }
     });
 
-    return stack;
+    return mergedTimes;
   },
 
   // Interface for generating and array of availabile times
@@ -146,7 +148,7 @@ module.exports = Backbone.Collection.extend({
   getDays: function(id) {
     var model = this.get(id);
     var events = _.groupBy(model.get('freebusy'), function(meeting) {
-      return this.moment(meeting.start).format(this.DATE_FORMAT);
+      return this.moment(meeting.start).format(DATE_FORMAT);
     }, this);
 
     var allDays = {};
@@ -157,7 +159,7 @@ module.exports = Backbone.Collection.extend({
     _.times(moment.duration(end - start).days(), function(i) {
       var date = start.clone().add('d', i);
       var dayIndex = +date.format('d');
-      var dateKey = date.format(this.DATE_FORMAT);
+      var dateKey = date.format(DATE_FORMAT);
       if (dayIndex === 0 || dayIndex === 6) {
         weekend.push(dateKey);
       }
@@ -173,7 +175,24 @@ module.exports = Backbone.Collection.extend({
   },
 
   // Creates a timestring in the form: "Monday, 1/23 - 4 to 6pm"
-  createTimestring: mixins.createTimestring,
+  createTimestring: function(start, end) {
+    if (_.isArray(start)) {
+      var params = start;
+      end = params[1];
+      start = params[0];
+    }
+    // Make sure that am/pm suffixes are only applied when they differ
+    // between start and end times
+    var startFormat = start.minutes() === 0 ? 'h' : 'h:mm';
+    var endFormat = end.minutes() === 0 ? 'ha' : 'h:mma';
+
+    if (end.format('a') !== start.format('a')) {
+      startFormat += 'a';
+    }
+
+    // Format that shit
+    return start.format('dddd M/D, ' + startFormat + ' - ') + end.format(endFormat);
+  },
 
   // Returns a Moment object with the correct timezone offset.
   moment: function(date) {
@@ -239,7 +258,7 @@ module.exports = Backbone.Collection.extend({
 
     // Iterate through the "middle" times and add timestrings for the time
     // between the meetings
-    _.each(times, function(timeEntry, i) {
+    _.each(times, function(timeEntry) {
       var meetingEnd = this.moment(timeEntry.start);
 
       // Handle empty start times, and same start & end times

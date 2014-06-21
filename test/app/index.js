@@ -1,4 +1,4 @@
-require('./collections/taken-spec');
+require('./collections/availability-spec');
 
 if (window.mochaPhantomJS) {
   window.mochaPhantomJS.run();

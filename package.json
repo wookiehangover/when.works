@@ -8,7 +8,7 @@
     "ejs": "*",
     "authom": "^0.4.8",
     "connect-redis": "2.x",
-    "moment": "^2.6.0",
+    "moment": "^2.7.0",
     "config": "^0.4.21",
     "lodash": "^2.4.1",
     "request": "^2.36.0",
