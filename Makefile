@@ -5,8 +5,6 @@ all: install topcoat bootstrap
 
 install:
 	@npm install
-	@bower cache clean
-	@bower install
 
 build:
 	grunt
