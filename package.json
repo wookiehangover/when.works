@@ -46,7 +46,8 @@
     "topcoat": "^0.7.5",
     "moment-timezone": "0.0.6",
     "browserify": "^4.1.10",
-    "uglify-js": "^2.4.14"
+    "uglify-js": "^2.4.14",
+    "es5-shim": "^3.4.0"
   },
   "directories": {
     "test": "test"
