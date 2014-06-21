@@ -6,3 +6,4 @@ app/components
 config/production.js
 config/runtime.json
 .env
+.DS_Store
