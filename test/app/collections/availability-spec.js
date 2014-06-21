@@ -1,13 +1,16 @@
-var _ = require('lodash');
 var assert = require('chai').assert;
+var _ = require('lodash');
 var Backbone = require('backdash');
-var Config = require('models/config');
 var moment = require('moment');
+var sinon = require('sinon');
+
+var Config = require('models/config');
 var Availability = require('collections/availability');
 var fixtures = require('../fixtures');
 
 describe('collections/availability', function(){
   beforeEach(function() {
+    this.sinon = sinon.sandbox.create();
     this.config = new Config(null, {
       user: new Backbone.Model(fixtures.user)
     });
@@ -17,6 +20,26 @@ describe('collections/availability', function(){
       config: this.config,
       calendars: this.calendars
     };
+
+    this.availability = new Availability(fixtures.availabilitySet, this.deps);
+    this.availability.stopListening();
+
+    this.start = moment();
+    this.end = moment().add('h', 1);
+    this.times = [
+      {
+        start: this.start,
+        end: moment().add('m', 30)
+      },
+      {
+        start: moment().add('m', 15),
+        end: this.end
+      }
+    ];
+  })
+
+  afterEach(function() {
+    this.sinon.restore();
   })
 
   it('exists', function(){
@@ -41,25 +64,6 @@ describe('collections/availability', function(){
   });
 
   describe('mergeSort', function() {
-    beforeEach(function(){
-      this.availability = new Availability(fixtures.availabilitySet, this.deps);
-      this.availability.stopListening();
-
-      this.start = moment();
-      this.end = moment().add('h', 1);
-      this.times = [
-        {
-          start: this.start,
-          end: moment().add('m', 30)
-        },
-        {
-          start: moment().add('m', 15),
-          end: this.end
-        }
-      ];
-
-    })
-
     it('collapses 2 overlapping times into a single time', function() {
       var mergedTimes = this.availability.mergeSort(this.times);
       assert.equal(mergedTimes.length, 1);
@@ -89,6 +93,38 @@ describe('collections/availability', function(){
       assert.equal(+mergedTimes[0].end, +this.end);
     });
   });
+
+  describe('getAvailableTimes', function() {
+    it('should return an empty array without any calendar data', function() {
+      this.availability.reset();
+      var ret = this.availability.getAvailableTimes();
+      assert.equal(ret.length, 0);
+    });
+
+    it('should process a single calendar without a performing a mergeSort', function() {
+      var cal = this.availability.first().id;
+      var getDays = this.sinon.spy(this.availability, 'getDays');
+      this.config.set('calendars', [cal]);
+      var ret = this.availability.getAvailableTimes();
+      assert.isTrue(getDays.calledWith(cal));
+      assert.equal(ret.length, 12); // "magic" number from fixture data
+    })
+
+    it('should perform a mergeSort when handling multiple calendars', function() {
+      var mergeSort = this.sinon.spy(this.availability, 'mergeSort');
+      this.config.set('calendars', this.availability.pluck('id'));
+      var ret = this.availability.getAvailableTimes();
+      assert.isTrue(mergeSort.called);
+      assert.equal(ret.length, 11);
+    });
+
+    it('should filter blacklisted timeStrings', function() {
+      this.config.set('calendars', [this.availability.first().id]);
+      var times = this.availability.getAvailableTimes();
+      var ret = this.availability.getAvailableTimes(times.slice(0, 5));
+      assert.equal(ret.length, 7);
+    });
+  })
 });
 
 

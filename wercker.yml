@@ -2,11 +2,14 @@ box: wercker/nodejs
 build:
   steps:
     - script:
-        name: Install grunt and bower
-        code: sudo npm install -g grunt-cli bower
+        name: Install grunt
+        code: sudo npm install -g grunt-cli
+    - npm-install
     - script:
-        name: Fetch Dependencies
-        code: make install
+        name: Build assets
+        code: |
+          make build
+          rsync -avzv "$WERCKER_SOURCE_DIR/public" "$WERCKER_CACHE_DIR/$WERCKER_GIT_COMMIT/"
     - npm-test
 deploy:
   steps:
@@ -15,6 +18,7 @@ deploy:
         code: |
           sudo npm install -g grunt-cli bower
           grunt
+    - analogj/git-configure@0.0.3
     - script:
         name: Commit Assets
         code: |

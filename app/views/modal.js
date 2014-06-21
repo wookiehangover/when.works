@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('lodash');
 var Backbone = require('backdash');
 
 module.exports = Backbone.View.extend({
