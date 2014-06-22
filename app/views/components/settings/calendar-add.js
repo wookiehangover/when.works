@@ -41,6 +41,11 @@ var CalendarAdd = React.createClass({
 
     var classList = ['control-group', 'add-calendar'];
 
+    var buttonContent = this.state.open ?
+      'Cancel' :
+      [<span className="icomatic">group</span>, ' Add Another Calendar'];
+
+
     if (this.state.open) {
       classList.push('ui-active')
     }
@@ -52,7 +57,7 @@ var CalendarAdd = React.createClass({
           {options}
         </select>
         <button className="topcoat-button topcoat-button--quiet" onClick={this.toggleOpen}>
-          {this.state.open ? 'Cancel' : 'Add Another Calendar'}
+          {buttonContent}
         </button>
       </div>
     )

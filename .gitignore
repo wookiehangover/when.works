@@ -9,3 +9,6 @@ config/runtime.json
 .DS_Store
 .wercker
 deploy
+public/font/icomatic.html
+public/font/icomatic.js
+public/font/icomatic.html

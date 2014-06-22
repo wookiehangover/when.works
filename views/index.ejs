@@ -3,10 +3,10 @@
   <h1 class="main">when works</h1>
 
   <% if( !user ){ %>
-    <a href="/auth/google" class="sign-in topcoat-button">SIGN IN</a>
+    <a href="/auth/google" class="sign-in"><strong>SIGN IN</strong> with <span class="icomatic">googleplus</span></a>
   <% } else { %>
     <div class="user">
-      <img src="<%= user.data.picture %>" alt="<%= user.data.email %>" class="avatar"/>
+      <span class="icomatic">listview</span>
       <nav>
         <p><%= user.data.email %></p>
         <a href="/logout" class="logout topcoat-button--quiet">LOGOUT</a>
@@ -17,9 +17,9 @@
 
 <div id="main" class="max-width">
   <% if( !user ){ %>
-  <h1>Find a time for your next meeting, fast.</h1>
+    <h1>Find a time for your next meeting, fast.</h1>
   <p>See of all your free time &mdash; and quit wasting it scheduling your next meeting.</p>
-  <a href="/auth/google" class="signin topcoat-button--large--cta">Check My Availability</a>
+  <a href="/auth/google" class="signin topcoat-button--large--cta"><span class="icomatic">calendar</span> Check My Availability</a>
   <% } else { %>
   <section class="row">
     <div class="availability span8"></div>
