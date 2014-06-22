@@ -2,7 +2,7 @@
 
 > Find time for your next meeting, fast.
 
-[![wercker status](https://app.wercker.com/status/6f6722eb395e5075e60e2d065b4bec0a/m "wercker status")](https://app.wercker.com/project/bykey/6f6722eb395e5075e60e2d065b4bec0a)
+[![wercker status](https://app.wercker.com/status/d69047196b8bc67bdf6328ae92df19a5/m "wercker status")](https://app.wercker.com/project/bykey/d69047196b8bc67bdf6328ae92df19a5)
 
 This app connects to a user's Google Calendar account and returns a
 listing of what time's they're availabile for a given date range. I
