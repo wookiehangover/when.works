@@ -1,3 +1,10 @@
+if (process.env.NODETIME_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_KEY,
+    appName: 'when.works'
+  });
+}
+
 var app = require('./whenworks');
 var http = require('http');
 
