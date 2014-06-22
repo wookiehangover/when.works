@@ -28,7 +28,21 @@ deploy:
         code: |
           git config --global user.email "sam@quickleft.com.com"
           git config --global user.name "Wercker Bot"
+          git checkout -b wercker-build
           git add .
           git commit -am 'asset compile'
-    - heroku-deploy:
-        key-name: SSH_KEY
+    - add-to-known_hosts:
+        hostname: $URL
+    - wouter/setup-ssh:
+        private-key: $SSH_KEY_PRIVATE
+        username: ubuntu
+        host: $URL
+    - script:
+        name: Setup SSH Config
+        code: |
+          touch ~/.ssh/config
+          echo -e "IdentityFile $WERCKER_SETUP_SSH_ID_FILE" > ~/.ssh/config
+    - script:
+        name: Deploy to Testing Server
+        code: |
+          git push -f dokku@$URL:www wercker-build:master
