@@ -209,13 +209,21 @@ module.exports = Backbone.Collection.extend({
   getAvailabilityFromDay: function(times, date) {
     var dayblock = [];
     // Set the beginning and end of the Day from the user settings
-    var startTime = this.moment(this.config.get('start'), 'hha').hours();
-    var endTime = this.moment(this.config.get('end'), 'hha').hours();
+    var startTime = moment(this.config.get('start'), 'hha').hours();
+    var endTime = moment(this.config.get('end'), 'hha').hours();
     // Set the Beginning and the End of the current day
     var dayStart = this.moment(moment(date).hour(startTime));
     var dayEnd = this.moment(moment(date).hour(endTime));
 
     function addToDayblock(start, end) {
+      // Guard against meeting times outside of your desired time range
+      if (start.isBefore(dayStart)) {
+        start = dayStart;
+      }
+
+      if (end.isAfter(dayEnd)) {
+        end = dayEnd;
+      }
       dayblock.push([start, end]);
     }
 
@@ -250,10 +258,6 @@ module.exports = Backbone.Collection.extend({
     if (firstMeetingStart &&
       firstMeetingEnd.isAfter(dayEnd) && times.length === 0) {
       return []; // This will disappear into nothing when _.flatten'ed
-    }
-
-    if (firstMeetingEnd && firstMeetingEnd.isBefore(dayStart)) {
-      nextAvailableStart = dayStart;
     }
 
     // Iterate through the "middle" times and add timestrings for the time

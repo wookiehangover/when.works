@@ -107,7 +107,7 @@ describe('collections/availability', function(){
       this.config.set('calendars', [cal]);
       var ret = this.availability.getAvailableTimes();
       assert.isTrue(getDays.calledWith(cal));
-      assert.equal(ret.length, 9); // "magic" number from fixture data
+      assert.equal(ret.length, 12); // "magic" number from fixture data
     })
 
     it('should perform a mergeSort when handling multiple calendars', function() {
@@ -115,14 +115,23 @@ describe('collections/availability', function(){
       this.config.set('calendars', this.availability.pluck('id'));
       var ret = this.availability.getAvailableTimes();
       assert.isTrue(mergeSort.called);
-      assert.equal(ret.length, 10);
+      assert.equal(ret.length, 11);
     });
 
     it('should filter blacklisted timeStrings', function() {
       this.config.set('calendars', [this.availability.first().id]);
       var times = this.availability.getAvailableTimes();
       var ret = this.availability.getAvailableTimes(times.slice(0, 5));
-      assert.equal(ret.length, 4);
+      assert.equal(ret.length, 7);
+    });
+
+    it('should not contain times after the configured beginning or end times', function() {
+      this.availability.reset(fixtures.availabilityLargeSet);
+      this.config.set('calendars', this.availability.pluck('id'));
+      var ret = this.availability.getAvailableTimes().join(' ');
+      console.log(ret)
+      assert.isFalse(/9./.test(ret))
+      assert.isFalse(/7./.test(ret))
     });
   })
 });
