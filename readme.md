@@ -25,6 +25,12 @@ there.
 $ npm install
 ```
 
+### Run tests
+
+```
+$ npm test
+```
+
 ### Browserify builds
 
 ```
