@@ -4,14 +4,18 @@ TOPCOAT_COLOR := light
 all: install topcoat bootstrap
 
 install:
+	@cp config/config-example.js config/default.js
 	@npm install
+	@npm run build
 
 build:
-	grunt
-	npm run build-production
+	@grunt
+	@npm run build-production
 
 watch:
-	npm run watch & nodemon -i app -i public server
+	@npm run watch &
+	@npm run watch-test &
+	@npm start
 
 topcoat:
 	cp node_modules/topcoat/css/topcoat-$(TOPCOAT_TARGET)-$(TOPCOAT_COLOR).css public/less/topcoat.less

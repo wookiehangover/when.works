@@ -12,3 +12,5 @@ deploy
 public/font/icomatic.html
 public/font/icomatic.js
 public/font/icomatic.html
+public/js/untaken.js
+test/app/bundle.js
