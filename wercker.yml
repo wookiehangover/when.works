@@ -38,7 +38,7 @@ deploy:
         hostname: $DEPLOY_URL
     - wouter/setup-ssh:
         private-key: $SSH_KEY_PRIVATE
-        username: ubuntu
+        username: dokku
         host: $DEPLOY_URL
     - script:
         name: Setup SSH Config
