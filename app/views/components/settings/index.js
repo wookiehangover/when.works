@@ -15,7 +15,7 @@ var Datepicker = require('./datepicker');
 var MeetingLength = require('./meeting-length');
 var DayLength = require('./day-length');
 var TimezoneSelect = require('./timezone-select');
-var Toggles = require('./toggles');
+var Toggle = require('./toggle');
 
 var Settings = React.createClass(_.extend({
 
@@ -41,7 +41,10 @@ var Settings = React.createClass(_.extend({
         <TimezoneSelect config={this.props.config} />
         <MeetingLength config={this.props.config} />
         <DayLength config={this.props.config} />
-        <Toggles config={this.props.config} />
+        <Toggle
+          label="Hide Weekends:"
+          name="ignoreWeekend"
+          config={this.props.config} />
       </form>
     )
   }
