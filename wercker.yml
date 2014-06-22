@@ -1,7 +1,6 @@
 box: wercker/nodejs
 build:
   steps:
-    - aussiegeek/install-phantomjs@0.0.3
     - npm-install
     - script:
         name: Install grunt
