@@ -31,4 +31,4 @@ deploy:
           git add .
           git commit -am 'asset compile'
     - heroku-deploy:
-        key-name: heroku-production
+        key-name: SSH_KEY
