@@ -2,12 +2,15 @@ box: wercker/nodejs
 build:
   steps:
     - npm-install
+    - script:
+        name: Build assets
+        code: npm run build
     - npm-test
     - script:
         name: Install grunt
         code: sudo npm install -g grunt-cli
     - script:
-        name: Build and Cache Assets
+        name: Build and Cache Production Assets
         code: |
           make build
           rsync -avzv "$WERCKER_SOURCE_DIR/public" "$WERCKER_CACHE_DIR/$WERCKER_GIT_COMMIT/"
@@ -32,11 +35,11 @@ deploy:
           git add .
           git commit -am 'asset compile'
     - add-to-known_hosts:
-        hostname: $URL
+        hostname: $DEPLOY_URL
     - wouter/setup-ssh:
         private-key: $SSH_KEY_PRIVATE
         username: ubuntu
-        host: $URL
+        host: $DEPLOY_URL
     - script:
         name: Setup SSH Config
         code: |
@@ -45,4 +48,4 @@ deploy:
     - script:
         name: Deploy to Testing Server
         code: |
-          git push -f dokku@$URL:www wercker-build:master
+          git push -f dokku@$DEPLOY_URL:www wercker-build:master

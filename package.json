@@ -55,7 +55,8 @@
     "start": "node server.js",
     "watch": "watchify app -o public/js/untaken.js -v -d",
     "watch-test": "NODE_PATH=./app:$NODE_PATH watchify test/app -o test/app/bundle.js -v -d",
-    "build": "NODE_ENV=production browserify app | uglifyjs -cm > public/js/untaken.min.js"
+    "build": "browserify app -o public/js/untaken.js -d",
+    "build-production": "NODE_ENV=production browserify app | uglifyjs -cm > public/js/untaken.min.js"
   },
   "repository": "",
   "author": "",

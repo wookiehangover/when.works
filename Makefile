@@ -8,7 +8,7 @@ install:
 
 build:
 	grunt
-	npm run build
+	npm run build-production
 
 watch:
 	npm run watch & nodemon -i app -i public server
