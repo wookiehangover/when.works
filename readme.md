@@ -1,4 +1,4 @@
-# when.works
+# [when.works](https://when.works)
 
 > Find time for your next meeting, fast.
 
@@ -11,18 +11,23 @@ do it for me.
 
 ## Setup
 
+**Prerequisites:**
+
 * Node.js >= 0.10
-* Redis >= 2.4
+* Redis >= 2.6
 * Grunt >= 0.4
 
-`config/default.js` and `config/production.js` are not checked into the
-repo. Take a look at `config/config-example.js` for what should go in
-there.
-
-### Install
+Install npm dependencies and runs a one-time browserify build.
 
 ```
-$ npm install
+$ make install
+```
+
+Run a development server and [Browserify](http://browserify.org/) watch
+tasks. 
+
+```
+$ make watch
 ```
 
 ### Run tests
@@ -31,21 +36,34 @@ $ npm install
 $ npm test
 ```
 
-### Browserify builds
+### Build for production
 
-```
-$ npm run watch
-```
-
-### FE test builds
-
-```
-$ npm run watch-tests
-```
-
-### Building for production
+Minified production builds automatically created by wercker, but they
+can be manually created and checked in for deployment.
 
 ```
 $ make build
 ```
+
+---
+
+## CI
+
+when.works uses [Wercker](http://wercker.com) for running tests,
+building production and test assets, and deploying to production.
+
+Click on the Wercker badge at the top of the readme to see build
+statuses.
+
+## Deploying with Wercker
+
+Successful builds can be deployed to production from Wercker. Using the
+[Wercker CLI](http://devcenter.wercker.com/articles/cli/):
+
+```
+wercker deploy
+```
+
+Follow the prompts to deploy your build.
+
 
