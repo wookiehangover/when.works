@@ -209,8 +209,8 @@ module.exports = Backbone.Collection.extend({
   getAvailabilityFromDay: function(times, date) {
     var dayblock = [];
     // Set the beginning and end of the Day from the user settings
-    var startTime = moment(this.config.get('start'), 'hha').hours();
-    var endTime = moment(this.config.get('end'), 'hha').hours();
+    var startTime = this.moment(this.config.get('start'), 'hha').hours();
+    var endTime = this.moment(this.config.get('end'), 'hha').hours();
     // Set the Beginning and the End of the current day
     var dayStart = this.moment(moment(date).hour(startTime));
     var dayEnd = this.moment(moment(date).hour(endTime));
