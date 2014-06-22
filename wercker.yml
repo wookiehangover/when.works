@@ -2,6 +2,7 @@ box: wercker/nodejs
 build:
   steps:
     - npm-install
+    - npm-test
     - script:
         name: Install grunt
         code: sudo npm install -g grunt-cli
@@ -10,7 +11,6 @@ build:
         code: |
           make build
           rsync -avzv "$WERCKER_SOURCE_DIR/public" "$WERCKER_CACHE_DIR/$WERCKER_GIT_COMMIT/"
-    - npm-test
 
 deploy:
   steps:
