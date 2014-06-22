@@ -11,7 +11,7 @@ var fixtures = require('../fixtures');
 describe('collections/availability', function(){
   beforeEach(function() {
     this.sinon = sinon.sandbox.create();
-    this.config = new Config({ timezone: "America/Denver" }, {
+    this.config = new Config(null, {
       user: new Backbone.Model(fixtures.user)
     });
     this.calendars = new Backbone.Collection();
