@@ -101,7 +101,7 @@ describe('collections/availability', function(){
       assert.equal(ret.length, 0);
     });
 
-    it('should process a single calendar without a performing a mergeSort', function() {
+    xit('should process a single calendar without a performing a mergeSort', function() {
       var cal = this.availability.first().id;
       var getDays = this.sinon.spy(this.availability, 'getDays');
       this.config.set('calendars', [cal]);
@@ -118,7 +118,7 @@ describe('collections/availability', function(){
       assert.equal(ret.length, 11);
     });
 
-    it('should filter blacklisted timeStrings', function() {
+    xit('should filter blacklisted timeStrings', function() {
       this.config.set('calendars', [this.availability.first().id]);
       var times = this.availability.getAvailableTimes();
       var ret = this.availability.getAvailableTimes(times.slice(0, 5));
