@@ -39,7 +39,7 @@ var AvailabilityHeader = React.createClass({
   },
 
   render: function() {
-    var calendars = _.map(this.getCalendars(), function(calendar){
+    var calendars = _.map(this.getCalendars(), function(calendar, index){
       var style = {
         background: this.getBackgroundColor(calendar.get('backgroundColor')),
         color: calendar.get('foregroundColor')
@@ -49,6 +49,8 @@ var AvailabilityHeader = React.createClass({
         <li style={style} key={calendar.id + '-header'}>
           <img src={this.getImage(calendar.id)}/>
           {calendar.get('summary')}
+          {index === 0 ? '' :
+            <a href="#" onClick={_.partial(this.props.removeCalendar, calendar.id)} className="icomatic cancel">cancel</a>}
         </li>
       )
     }, this)
