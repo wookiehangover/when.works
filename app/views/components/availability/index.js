@@ -3,7 +3,6 @@
  */
 
 var React = require('react');
-var $ = require('jquery');
 var _ = require('lodash');
 var Backbone = require('backdash');
 var CalendarList = require('./calendar-list');
@@ -23,6 +22,12 @@ var Availability = React.createClass(_.extend({
   reset: function(e) {
     e.preventDefault();
     this.setState({ blacklist: [] });
+  },
+
+  removeCalendar: function(calendar, e) {
+    e.preventDefault();
+    var calendars = this.props.config.get('calendars');
+    this.props.config.set('calendars', _.without(calendars, calendar));
   },
 
   // React Methods
@@ -64,6 +69,7 @@ var Availability = React.createClass(_.extend({
         <AvailabilityHeader
           user={this.props.user}
           activeCalendars={calendars}
+          removeCalendar={this.removeCalendar}
           calendars={this.props.calendars} />
 
         <CalendarList
