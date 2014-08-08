@@ -92,3 +92,29 @@
 .fadeIn-leave.fadeIn-leave-active {
   .opacity(1);
 }
+
+.animate-background() {
+  -webkit-animation: movebg 10s infinite;
+     -moz-animation: movebg 10s infinite;
+       -o-animation: movebg 10s infinite;
+          animation: movebg 10s infinite;
+
+  @-webkit-keyframes movebg {
+    from { background-position: 0 0; }
+    to { background-position: 100% 100%; }
+  }
+  @-moz-keyframes movebg {
+    from { background-position: 0 0; }
+    to { background-position: 100% 100%; }
+  }
+  @-o-keyframes movebg {
+    from { background-position: 0 0; }
+    to { background-position: 100% 100%; }
+  }
+  @keyframes movebg {
+    from { background-position: 0 0; }
+    to { background-position: 100% 100%; }
+  }
+}
+
+

@@ -88,7 +88,7 @@ var CopyButton = React.createClass({
 
   render: function() {
     return (
-      <button className="topcoat-button--cta effeckt-button expand-right copy" onClick={this.copyFallback}>
+      <button className="topcoat-button effeckt-button expand-right copy" onClick={this.copyFallback}>
         <span className="label">{this.state.copyText}</span>
         <span className="spinner"></span>
       </button>

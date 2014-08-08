@@ -7,48 +7,16 @@
   height: @footerHeight;
   background: #3B3E40;
   box-sizing: border-box;
-  padding: 10px 20px;
+  line-height: 40px;
+  padding: 0 1em;
   position: relative;
-  .transition(all 300ms);
-  &:hover {
-    background: #fff;
 
-    .ql-logo .logout-button {
-      .opacity(100);
+  small {
+    float: right;
+    a {
+      color: #ccc;
+      text-decoration: none;
     }
-  }
-
-  .ql-logo {
-    color: #000;
-
-    h2 {
-      float: left;
-      line-height: 32px;
-      font-size: 28px;
-      font-family: 'League Script', cursive;
-    }
-
-    .logo {
-      display: inline-block;
-      background: url(/images/ql.png);
-      text-indent: -2000em;
-      height: 26px;
-      width: 164px;
-    }
-
-    .logout-button {
-      float: right;
-      margin-top: 12px;
-      .opacity(50);
-    }
-
   }
 
 }
-
-body.logged-out {
-  .logout-button {
-    display: none;
-  }
-}
-

@@ -3,6 +3,8 @@ var _ = require('lodash');
 var Backbone = require('backdash');
 Backbone.$ = $;
 
+window.Backbone = Backbone;
+
 var User = require('../models/user');
 var Config = require('../models/config');
 var Calendars = require('../collections/calendars');

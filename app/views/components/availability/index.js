@@ -79,7 +79,11 @@ var Availability = React.createClass(_.extend({
           blacklistActive={this.state.blacklist.length > 0}
           removeTimeblock={this.removeTimeblock} />
 
-        <CopyButton times={times} calendars={calendars} />
+        <footer>
+          <button className="topcoat-button--cta">Share these times</button>
+          <span>or</span>
+          <CopyButton times={times} calendars={calendars} />
+        </footer>
       </div>
     )
   },
