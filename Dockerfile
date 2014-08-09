@@ -1,4 +1,5 @@
 FROM node
+MAINTAINER Sam Breed <sam@destroy.email>
 
 ADD . /usr/src/app
 WORKDIR /usr/src/app

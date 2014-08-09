@@ -3,29 +3,42 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
+ENV['VAGRANT_DEFAULT_PROVIDER'] ||= 'docker'
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = 'ubuntu/trusty64'
+  config.vm.define "redis" do |redis|
+    redis.vm.provider 'docker' do |d|
+      d.image  = 'dockerfile/redis'
+      d.name   = 'when_works_web_redis'
+    end
+  end
 
-  config.vm.provision "docker" do |d|
-    d.build_image "/vagrant",
-      args: '-t "app"'
+  config.vm.define "rethinkdb" do |rethinkdb|
+    rethinkdb.vm.provider 'docker' do |d|
+      d.image = 'dockerfile/rethinkdb'
+      d.name  = 'when_works_web_rethinkdb'
+      d.ports  = ['8080:8080']
+    end
 
-    d.pull_images "redis"
-    d.run "redis",
-      args: "-P"
-
-    d.pull_images "dockerfile/rethinkdb"
-    d.run "dockerfile/rethinkdb",
-      args: "-p 8080:8080 -P"
-
-    d.run "app",
-      args: "-v '/vagrant:/usr/src/app' -p 3000:3000 --link redis:redis --link dockerfile-rethinkdb:rethinkdb"
+    rethinkdb.vm.network "forwarded_port", guest: 8080, host: 8080,
+      auto_correct: true
   end
 
   config.vm.define "web" do |web|
-    web.vm.network "forwarded_port", guest: 3000, host: 3000
-    web.vm.network "forwarded_port", guest: 8080, host: 8080,
-      auto_correct: true
+    web.vm.provider 'docker' do |d|
+      d.image           = 'wookiehangover/whenworks'
+      d.name            = 'when_works_web'
+      d.create_args     = ['-i', '-t']
+      d.remains_running = false
+      d.cmd             = ['/bin/bash', '-l']
+      d.ports           = ['3000:3000']
+
+      d.link('when_works_web_redis:redis')
+      d.link('when_works_web_rethinkdb:rethinkdb')
+    end
+
+    web.vm.synced_folder ".", "/usr/src/app"
   end
+
 end

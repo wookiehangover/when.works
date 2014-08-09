@@ -27,4 +27,20 @@ bootstrap:
 	find public/less/bootstrap -name *.less -delete
 	cp app/components/bootstrap/less/*.less public/less/bootstrap
 
-.PHONY: all install deps
+redis:
+	docker run -d --name when_works_redis -p 8080:8080 -t dockerfile/redis
+
+rethinkdb:
+	docker run -d --name when_works_rethinkdb -p 8080:8080 -t dockerfile/rethinkdb
+
+docker:
+	docker run -i -t \
+		-e "GOOGLE_SECRET=HzRW_uyVwOI2UlM1MEqY8KDP" -e "GOOGLE_ID=702998348467.apps.googleusercontent.com" \
+		-p 3000:3000 \
+		-v /Users/sam/dev/repos/when.works:/usr/src/app \
+		--name when_works_web \
+		--link=when_works_redis:redis --link=when_works_rethinkdb:rethinkdb \
+		wookiehangover/whenworks \
+		/bin/bash -l
+
+.PHONY: all install deps docker
