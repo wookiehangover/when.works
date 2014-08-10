@@ -80,8 +80,6 @@ var Availability = React.createClass(_.extend({
           removeTimeblock={this.removeTimeblock} />
 
         <footer>
-          <button className="topcoat-button--cta">Share these times</button>
-          <span>or</span>
           <CopyButton times={times} calendars={calendars} />
         </footer>
       </div>

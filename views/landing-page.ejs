@@ -16,8 +16,8 @@
   </div>
 
   <div class="tout">
-    <h1>Send fewer emails by<br/>
-    telling them when you're free.</h1>
+    <h1>Send fewer emails &amp;<br/>
+    share when you're free.</h1>
     <ul>
       <li>Save time looking for meetings</li>
       <li>Built for Google Calendars</li>
@@ -34,7 +34,7 @@
   <div class="tout2 span7">
     <h2>How it works:</h2>
     <h3><span class="icomatic">nextlight</span> Select a calendar</h3>
-    <h3><span class="icomatic">nextlight</span> Pick the times you want to share</h3>
+    <h3><span class="icomatic">nextlight</span> Narrow down the times you want</h3>
     <h3><span class="icomatic">nextlight</span> Share when you're available</h3>
   </div>
 
@@ -55,6 +55,12 @@
       .on('leave', _.debounce(function(e) {
         $screenshot.addClass('active')
       }, 100))
+
+    $(window).scroll(function(){
+      if ($(window).scrollTop() <= 40) {
+        $screenshot.removeClass('active')
+      }
+    })
 
     $('.screenshot').on('click', '*', function(e) {
       var $img = $screenshot.find('img')
