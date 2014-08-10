@@ -1,7 +1,7 @@
 /*jshint asi:true */
 exports.google = {
-  id: process.env.GOOGLE_ID || 'HzRW_uyVwOI2UlM1MEqY8KDP',
-  secret: process.env.GOOGLE_SECRET || '702998348467.apps.googleusercontent.com'
+  id: process.env.GOOGLE_ID || '702998348467-e12ou78ulm21qb3ro61e3sdobnleg2cg.apps.googleusercontent.com',
+  secret: process.env.GOOGLE_SECRET || 'Y6tZJV_X3Rgz_IB6e7qpLzCP'
 }
 
 exports.secret = process.env.SECRET || 'heynow'

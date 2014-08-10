@@ -61,5 +61,14 @@ module.exports = Backbone.View.extend({
         location.replace('/auth/google');
       }
     });
+  },
+
+  events: {
+    "click #main-header .user": function(e) {
+      if ($(window).width() < 650) {
+        e.stopPropagation();
+        $('.picker').toggleClass('active')
+      }
+    }
   }
 });

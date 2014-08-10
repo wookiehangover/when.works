@@ -61,11 +61,62 @@ body {
     margin-top: 1rem;
   }
 
+}
+
+.landing-page {
+  height: 1600px;
+
   .screenshot {
+    border: 1px solid #414141;
+    padding: 0.5rem;
+    position: absolute;
+    left: 33%;
     float: right;
-    width: 60%;
-    margin-bottom: -300px;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    float: none;
+    display: inline-block;
+
+    .transition(all 400ms ease-in);
+
+    &.active {
+      left: 0;
+      margin-top: 10em;
+      margin-left: 0;
+      .opacity(100);
+    }
+
+    &.playing {
+      .controls {
+        display: none;
+      }
+    }
+
+    .controls {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: #fff;
+      display: block;
+      padding-top: 30%;
+      background: rgb(0,0,0);
+      .opacity(50);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    &:hover {
+      .opacity(100);
+    }
   }
+
+  .tout {
+    margin-top: 700px;
+    color: #8EA3AA;
+  }
+
 }
 
 
@@ -123,7 +174,46 @@ body {
 
 @media (max-width: 767px){
 
-  .span4, .span8 {
+  #main {
+    padding-left: 13px;
+  }
+
+  .picker {
+    position: absolute;
+    top: 50px;
+    height: 80%;
+    overflow: scroll;
+    width: 74%;
+    margin: 0;
+    padding: 1rem;
+    padding-left: 22px;
+    background: #dbdbdb;
+    .translate(150%, 0);
+    .transition(all 400ms ease-in);
+
+    &.active {
+      .translate(20%,0);
+    }
+  }
+
+  .availability footer {
+    button {
+      width: 100%;
+    }
+  }
+
+  .primary-footer {
+    position: fixed;
+    bottom: 0;
+  }
+
+  #main-header {
+    nav {
+      display: none;
+    }
+  }
+
+  .span8 {
     width: 88%;
   }
 

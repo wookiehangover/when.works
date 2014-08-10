@@ -72,6 +72,7 @@
   },
   "browserify": {
     "transform": [
+      "browserify-lodash-template-loader",
       "reactify"
     ]
   }
