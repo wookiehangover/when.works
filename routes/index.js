@@ -4,9 +4,9 @@
  */
 
 exports.index = function(req, res){
-  if( req.headers && String(req.headers.host).indexOf('untaken.herokuapp.com') > - 1 ){
-    return res.redirect('http://unavailable.at');
+  if (req.session && req.session.user) {
+    res.render('index', { user: req.session.user });
+  } else {
+    res.render('landing-page', { user: false })
   }
-  var user = req.session ? req.session.user : false;
-  res.render('index', { user: user });
 }

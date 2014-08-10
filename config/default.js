@@ -1,18 +1,23 @@
 /*jshint asi:true */
 exports.google = {
-  id: process.env.GOOGLE_ID || '702998348467.apps.googleusercontent.com',
-  secret: process.env.GOOGLE_SECRET || 'HzRW_uyVwOI2UlM1MEqY8KDP'
+  id: process.env.GOOGLE_ID || '702998348467-e12ou78ulm21qb3ro61e3sdobnleg2cg.apps.googleusercontent.com',
+  secret: process.env.GOOGLE_SECRET || 'Y6tZJV_X3Rgz_IB6e7qpLzCP'
 }
 
-exports.secret = process.env.SECRET || 'shhh this should be a secret 8FNDSJKFNDUu9889FJDSFJKSDB'
+exports.secret = process.env.SECRET || 'heynow'
 
 exports.less = {
   src: './public/less'
 }
 
 exports.redis = {
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: process.env.REDIS_PORT || 6379
+  host: process.env.REDIS_PORT_6379_TCP_ADDR || '127.0.0.1',
+  port: process.env.REDIS_PORT_6379_TCP_PORT || 6379
+}
+
+exports.rethinkdb = {
+  host: process.env.RETHINKDB_PORT_28015_TCP_ADDR,
+  port: process.env.RETHINKDB_PORT_28015_TCP_PORT,
 }
 
 if( process.env.REDIS_PASS ){

@@ -1,36 +1,23 @@
 <% include _header.ejs %>
 <header id="main-header">
   <h1 class="main">when works</h1>
-
-  <% if( !user ){ %>
-    <a href="/auth/google" class="sign-in"><strong>SIGN IN</strong> with <span class="icomatic">googleplus</span></a>
-  <% } else { %>
-    <div class="user">
-      <span class="icomatic">listview</span>
-      <nav>
-        <p><%= user.data.email %></p>
-        <a href="/logout" class="logout topcoat-button--quiet">LOGOUT</a>
-      </nav>
-    </div>
-  <% } %>
+  <div class="user">
+    <span class="icomatic">listview</span>
+    <nav>
+      <p><%= user.data.email %></p>
+      <a href="/logout" class="logout topcoat-button--quiet">LOGOUT</a>
+    </nav>
+  </div>
 </header>
 
 <div id="main" class="max-width">
-  <% if( !user ){ %>
-    <h1>Find a time for your next meeting, fast.</h1>
-  <p>See of all your free time &mdash; and quit wasting it scheduling your next meeting.</p>
-  <a href="/auth/google" class="signin topcoat-button--large--cta"><span class="icomatic">calendar</span> Check My Availability</a>
-  <% } else { %>
   <section class="row">
     <div class="availability span8"></div>
-    <div class="span4">
-      <div class="picker"></div>
-    </div>
+    <div class="picker span4"></div>
   </section>
-  <script>
-    window.userData = <%- JSON.stringify(user.data) %>
-  </script>
-  <% } %>
 </div>
 
+<script>
+  window.userData = <%- JSON.stringify(user.data) %>
+</script>
 <% include _footer.ejs %>

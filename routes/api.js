@@ -1,10 +1,26 @@
 var request = require('request');
 var moment = require('moment');
 var cache = require('../lib/cacheman');
-
 var urlRoot = 'https://www.googleapis.com/calendar/v3/';
 
+// var Invite = require('../models/invite');
+
 var api = exports;
+
+// api.createInvite = function(req, res) {
+//   var user = req.user
+//   var params = req.body
+//   params.user = user.data.email
+//   var invite = new Invite(params)
+
+//   invite.save()
+//     .then(function(result) {
+//       res.json(201, result)
+//     })
+//     .catch(function(err) {
+//       res.json(500, { error: err })
+//     })
+// };
 
 api.checkCache = cache.checkCache;
 

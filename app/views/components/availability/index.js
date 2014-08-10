@@ -79,7 +79,9 @@ var Availability = React.createClass(_.extend({
           blacklistActive={this.state.blacklist.length > 0}
           removeTimeblock={this.removeTimeblock} />
 
-        <CopyButton times={times} calendars={calendars} />
+        <footer>
+          <CopyButton times={times} calendars={calendars} />
+        </footer>
       </div>
     )
   },

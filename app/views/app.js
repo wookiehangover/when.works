@@ -3,6 +3,8 @@ var _ = require('lodash');
 var Backbone = require('backdash');
 Backbone.$ = $;
 
+window.Backbone = Backbone;
+
 var User = require('../models/user');
 var Config = require('../models/config');
 var Calendars = require('../collections/calendars');
@@ -59,5 +61,14 @@ module.exports = Backbone.View.extend({
         location.replace('/auth/google');
       }
     });
+  },
+
+  events: {
+    "click #main-header .user": function(e) {
+      if ($(window).width() < 650) {
+        e.stopPropagation();
+        $('.picker').toggleClass('active')
+      }
+    }
   }
 });

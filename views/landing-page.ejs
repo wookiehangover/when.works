@@ -1,0 +1,76 @@
+<% include _header.ejs %>
+
+<header id="main-header">
+  <h1 class="main">when works</h1>
+  <a href="/auth/google" class="sign-in"><strong>SIGN IN</strong> with <span class="icomatic">googleplus</span></a>
+</header>
+
+<div id="main" class="max-width landing-page">
+  <h1>Find a time for your next meeting, fast.</h1>
+  <p>See of all your free time &mdash; and quit wasting it scheduling your next meeting.</p>
+  <a href="/auth/google" class="signin topcoat-button--large--cta"><span class="icomatic">calendar</span> See When Works</a>
+
+  <div class="screenshot">
+    <img src="/images/screenshot.png" data-alt="/images/whenworks.mp4.gif"/>
+    <span class="controls">Play Demo <span class="icomatic">nextlight</span></span>
+  </div>
+
+  <div class="tout">
+    <h1>Send fewer emails &amp;<br/>
+    share when you're free.</h1>
+    <ul>
+      <li>Save time looking for meetings</li>
+      <li>Built for Google Calendars</li>
+      <li>Find free time across multiple calendars</li>
+    </ul>
+  </div>
+
+  <hr/>
+
+  <div class="tout3 span4">
+    <a href="/auth/google" class="topcoat-button--cta">Sign Up Today</a>
+  </div>
+
+  <div class="tout2 span7">
+    <h2>How it works:</h2>
+    <h3><span class="icomatic">nextlight</span> Select a calendar</h3>
+    <h3><span class="icomatic">nextlight</span> Narrow down the times you want</h3>
+    <h3><span class="icomatic">nextlight</span> Share when you're available</h3>
+  </div>
+
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="/js/jquery.scrollmagic.min.js"></script>
+<script>
+  $(function(){
+    var controller = new ScrollMagic();
+    var $screenshot = $('.screenshot');
+    var scene = new ScrollScene({ triggerElement: '.signin', duration: 200 })
+      .addTo(controller)
+      .on('end', _.debounce(function(e) {
+        $screenshot.removeClass('active')
+      }, 100))
+      .on('leave', _.debounce(function(e) {
+        $screenshot.addClass('active')
+      }, 100))
+
+    $(window).scroll(function(){
+      if ($(window).scrollTop() <= 40) {
+        $screenshot.removeClass('active')
+      }
+    })
+
+    $('.screenshot').on('click', '*', function(e) {
+      var $img = $screenshot.find('img')
+      var altImg = $img.data('alt')
+      var origImg = $img.attr('src')
+
+      $img.attr('src', altImg).data('alt', origImg)
+      $screenshot.toggleClass('playing');
+    })
+  });
+</script>
+
+<% include _footer.ejs %>

@@ -2,6 +2,7 @@ var $ = require('jquery')
 var _ = require('lodash')
 var Backbone = require('backdash')
 var moment = require('moment-timezone')
+var mergeSort = require('../lib/moment-merge-sort')
 var mixins = require('../lib/mixins')
 
 var DATE_FORMAT = 'YYYY-MM-DD';
@@ -41,7 +42,6 @@ module.exports = Backbone.Collection.extend({
     });
   },
 
-
   reload: function(model) {
     if (model.get('timeMax') && model.get('timeMin') && model.get('calendars')) {
       this.calendars.load.then(this.fetch.bind(this));
@@ -61,37 +61,7 @@ module.exports = Backbone.Collection.extend({
 
   // Returns a presented dayblock in the form ['Monday 6/66, 1 -2pm', ...]
   presentDayblocks: function(dayblocks) {
-    return _.map(_.flatten(this.pruneShortMeetings(dayblocks), true), this.createTimestring);
-  },
-
-  // Returns a merged array of "busy" times, for combining multiple calendars
-  mergeSort: function(times) {
-    var sortedTimes = _.clone(times).sort(function(a, b) {
-      var aStart = moment(a.start);
-      var bStart = moment(b.start);
-
-      if (aStart.isSame(bStart)) {
-        return moment(a.end) - moment(b.end);
-      } else {
-        return aStart - bStart
-      }
-    })
-
-    var mergedTimes = [];
-    mergedTimes.push(sortedTimes.shift());
-    _.each(sortedTimes, function(interval){
-      var last = _.last(mergedTimes);
-
-      if (moment(interval.start).isAfter(moment(last.end))) {
-        return mergedTimes.push(interval);
-      }
-
-      if (moment(interval.end).isAfter(moment(last.end))) {
-        last.end = interval.end
-      }
-    });
-
-    return mergedTimes;
+    return _.map(dayblocks, this.createTimestring);
   },
 
   // Interface for generating and array of availabile times
@@ -107,16 +77,19 @@ module.exports = Backbone.Collection.extend({
       days = this.getDays(calendars[0]);
       dayblocks = _.map(days, this.getAvailabilityFromDay, this);
     } else {
+      // Multiple calendars need to be mergeSorted before building the
+      // availability list
       days = this.getAllDays(calendars);
       dayblocks = _.map(days, function(times, date){
         if (times.length === 0) {
           return [];
         }
-        var timeblock = this.mergeSort(times);
+        var timeblock = mergeSort(times);
         return this.getAvailabilityFromDay(timeblock, date);
       }, this);
     }
 
+    dayblocks = _.flatten(this.pruneShortMeetings(dayblocks), true)
     var timeblock = this.presentDayblocks(dayblocks);
 
     // You jerk
