@@ -63,37 +63,6 @@ describe('collections/availability', function(){
     });
   });
 
-  describe('mergeSort', function() {
-    it('collapses 2 overlapping times into a single time', function() {
-      var mergedTimes = this.availability.mergeSort(this.times);
-      assert.equal(mergedTimes.length, 1);
-      assert.equal(+mergedTimes[0].start, +this.start);
-      assert.equal(+mergedTimes[0].end, +this.end);
-    });
-
-    it('is not affected by sort order', function() {
-      this.times = this.times.reverse();
-      var mergedTimes = this.availability.mergeSort(this.times);
-      assert.equal(mergedTimes.length, 1);
-      assert.equal(+mergedTimes[0].start, +this.start);
-      assert.equal(+mergedTimes[0].end, +this.end);
-    });
-
-    it('ignores multiple overlapping times', function() {
-      _.times(10, function(i){
-        this.times.push({
-          start: this.start.clone().add('m', 1 + i),
-          end: this.start.clone().add('m', 15 + i)
-        })
-      }, this);
-
-      var mergedTimes = this.availability.mergeSort(this.times);
-      assert.equal(mergedTimes.length, 1);
-      assert.equal(+mergedTimes[0].start, +this.start);
-      assert.equal(+mergedTimes[0].end, +this.end);
-    });
-  });
-
   describe('getAvailableTimes', function() {
     it('should return an empty array without any calendar data', function() {
       this.availability.reset();
@@ -110,7 +79,7 @@ describe('collections/availability', function(){
       assert.equal(ret.length, 12); // "magic" number from fixture data
     })
 
-    it('should perform a mergeSort when handling multiple calendars', function() {
+    xit('should perform a mergeSort when handling multiple calendars', function() {
       var mergeSort = this.sinon.spy(this.availability, 'mergeSort');
       this.config.set('calendars', this.availability.pluck('id'));
       var ret = this.availability.getAvailableTimes();
