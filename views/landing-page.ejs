@@ -6,9 +6,10 @@
 </header>
 
 <div id="main" class="max-width landing-page">
-  <h1>Find a time for your next meeting, fast.</h1>
-  <p>See of all your free time &mdash; and quit wasting it scheduling your next meeting.</p>
-  <a href="/auth/google" class="signin topcoat-button--large--cta"><span class="icomatic">calendar</span> See When Works</a>
+  <h1>Find a time for your next meeting. Fast.</h1>
+  <p>When.Works instantly shows all the times you’re not booked, so you don’t have to dig through your messy calendar.</p>
+  <!--<p>See of all your free time &mdash; and quit wasting it scheduling your next meeting.</p>-->
+  <a href="/auth/google" class="signin topcoat-button--large--cta"><span class="icomatic">calendar</span> Show my unbooked time now</a>
 
   <div class="screenshot">
     <img src="/images/screenshot.png" data-alt="/images/whenworks.mp4.gif"/>
@@ -19,23 +20,27 @@
     <h1>Send fewer emails &amp;<br/>
     share when you're free.</h1>
     <ul>
-      <li>Save time looking for meetings</li>
-      <li>Built for Google Calendars</li>
-      <li>Find free time across multiple calendars</li>
+      <li>Stop digging through your messy calendar</li>
+      <li>Works with Google Calendars</li>
+      <li>Search across multiple calendars</li>
     </ul>
+
+    <img src="/images/sad-calendar.png" data-alt="/images/happy-calendar.png" />
   </div>
 
   <hr/>
 
-  <div class="tout3 span4">
-    <a href="/auth/google" class="topcoat-button--cta">Sign Up Today</a>
+  <div class="tout2 span6">
+    <h2>How it works:</h2>
+    <ol>
+      <li>Select a calendar</li>
+      <li>Narrow down the times you want</li>
+      <li>Share when you're available. That's it!</li>
+    </ol>
   </div>
 
-  <div class="tout2 span7">
-    <h2>How it works:</h2>
-    <h3><span class="icomatic">nextlight</span> Select a calendar</h3>
-    <h3><span class="icomatic">nextlight</span> Narrow down the times you want</h3>
-    <h3><span class="icomatic">nextlight</span> Share when you're available</h3>
+  <div class="tout3 span6">
+    <a href="/auth/google" class="signin topcoat-button--large--cta"><span class="icomatic">calendar</span> See when I’m available now</a>
   </div>
 
 </div>
@@ -71,6 +76,8 @@
       $screenshot.toggleClass('playing');
     })
   });
+
+
 </script>
 
 <% include _footer.ejs %>
