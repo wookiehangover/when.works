@@ -48,8 +48,22 @@
 <script src="/js/jquery.scrollmagic.min.js"></script>
 <script>
   $(function(){
-    var controller = new ScrollMagic();
     var $screenshot = $('.screenshot');
+    $screenshot.on('click', '*', function(e) {
+      var $img = $screenshot.find('img')
+      var altImg = $img.data('alt')
+      var origImg = $img.attr('src')
+
+      $img.attr('src', altImg).data('alt', origImg)
+      $screenshot.toggleClass('playing');
+    })
+
+    if ($(window).width() < 767) {
+      $screenshot.addClass('active');
+      return;
+    }
+
+    var controller = new ScrollMagic();
     var scene = new ScrollScene({ triggerElement: '.signin', duration: 200 })
       .addTo(controller)
       .on('end', _.debounce(function(e) {
@@ -65,14 +79,6 @@
       }
     })
 
-    $('.screenshot').on('click', '*', function(e) {
-      var $img = $screenshot.find('img')
-      var altImg = $img.data('alt')
-      var origImg = $img.attr('src')
-
-      $img.attr('src', altImg).data('alt', origImg)
-      $screenshot.toggleClass('playing');
-    })
   });
 
 
