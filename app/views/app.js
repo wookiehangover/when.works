@@ -15,6 +15,7 @@ window.React = React;
 
 var Settings = require('./components/settings');
 var AvailabilityComponent = require('./components/availability');
+var Search = require('./components/search');
 
 var Router = require('../router');
 
@@ -43,6 +44,11 @@ module.exports = Backbone.View.extend({
       availability: this.availability
     }
 
+    this.search = React.renderComponent(
+      Search(injector),
+      this.$('.calendar-search').get(0)
+    )
+
     this.settings = React.renderComponent(
       Settings(injector),
       this.$('.picker').get(0)
@@ -67,6 +73,7 @@ module.exports = Backbone.View.extend({
     "click #main-header .user": function(e) {
       if ($(window).width() < 650) {
         e.stopPropagation();
+        this.$el.toggleClass('menu-open')
         $('.picker').toggleClass('active')
       }
     }
