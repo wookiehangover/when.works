@@ -1,0 +1,47 @@
+.calendar-search {
+  margin-bottom: 1rem;
+
+  .typeahead-token {
+    margin-right: 4px;
+    padding-right: 28px;
+    position: relative;
+
+    .typeahead-token-close {
+      text-decoration: none;
+      position: absolute;
+      right: 10px;
+      line-height: 50px;
+    }
+  }
+
+  .typeahead input {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .typeahead-selector {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+
+    li {
+      float: left;
+      width: 100%;
+      padding: 1rem 0;
+      text-indent: 0.5rem;
+      border-top: 1px solid @light;
+
+      &.hover {
+        background: @light;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px){
+  .calendar-search {
+    .typeahead-token + .typeahead-token {
+      margin-top: 4px;
+    }
+  }
+}
