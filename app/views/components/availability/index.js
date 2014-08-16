@@ -66,12 +66,6 @@ var Availability = React.createClass(_.extend({
     var calendars = this.props.config.get('calendars');
     return (
       <div>
-        <AvailabilityHeader
-          user={this.props.user}
-          activeCalendars={calendars}
-          removeCalendar={this.removeCalendar}
-          calendars={this.props.calendars} />
-
         <CalendarList
           ref="list"
           times={times}
