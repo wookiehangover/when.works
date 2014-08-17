@@ -55,16 +55,33 @@
 }
 
 .availability .topcoat-list__header {
+  .avatar {
+    line-height: 30px;
+
+    img {
+      width: 30px;
+      height: 30px;
+      padding-right: 2px;
+      .border-radius(15px);
+    }
+  }
+
+  .calendar-name {
+    margin-left: 2px;
+  }
+
   a {
-    float: right;
     color: @dark;
     text-decoration: none;
-    .transition(color 400ms ease-in-out);
+    .transition(background 400ms ease-in-out);
 
     &:hover {
-      color: #00F5FF;
+      background: @light;
     }
+  }
 
+  .reset {
+    float: right;
   }
 }
 

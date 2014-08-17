@@ -52,6 +52,12 @@ var Availability = React.createClass(_.extend({
       'change:minDuration'
     ].join(' ');
 
+    this.listenTo(this.props.config, 'change:calendars', function(config) {
+      if (config.get('calendars').length === 0) {
+        update();
+      }
+    });
+
     this.listenTo(this.props.config, changeEvents, update)
     this.listenTo(this.props.calendars, 'sync', update)
     this.listenTo(this.props.availability, 'sync', update)
@@ -63,18 +69,22 @@ var Availability = React.createClass(_.extend({
 
   render: function() {
     var times = this.props.availability.getAvailableTimes(this.state.blacklist);
-    var calendars = this.props.config.get('calendars');
+    var activeCalendars = this.props.config.get('calendars');
+    var calendars = this.props.calendars.filter(function(cal) {
+      return _.contains(activeCalendars, cal.id);
+    });
     return (
       <div>
         <CalendarList
           ref="list"
           times={times}
           reset={this.reset}
+          calendars={calendars}
           blacklistActive={this.state.blacklist.length > 0}
           removeTimeblock={this.removeTimeblock} />
 
         <footer>
-          <CopyButton times={times} calendars={calendars} />
+          <CopyButton times={times} calendars={activeCalendars} />
         </footer>
       </div>
     )

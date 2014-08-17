@@ -19,7 +19,7 @@ module.exports = Backbone.Collection.extend({
     this.listenTo(
       this.config,
       'change:calendars change:timeMax change:timeMin',
-      this.reload
+      _.debounce(this.reload.bind(this), 200)
     );
   },
 
@@ -43,7 +43,7 @@ module.exports = Backbone.Collection.extend({
   },
 
   reload: function(model) {
-    if (model.get('timeMax') && model.get('timeMin') && model.get('calendars')) {
+    if (model.get('timeMax') && model.get('timeMin') && model.get('calendars') && this.config.get('calendars').length > 0) {
       this.calendars.load.then(this.fetch.bind(this));
     }
   },

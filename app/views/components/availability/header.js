@@ -9,7 +9,6 @@ var crypto = require('crypto')
 var AvailabilityHeader = React.createClass({
 
   getImage: function(calendar) {
-
     if (calendar === this.props.user.get('email')) {
       return this.props.user.get('picture')
     }
