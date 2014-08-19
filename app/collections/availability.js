@@ -25,6 +25,8 @@ module.exports = Backbone.Collection.extend({
 
   url: function() {
     var min = this.moment(this.config.get('timeMin')).format();
+    // This stupid addition is because the time you'll get from the use is
+    // local and the server wants z time
     var max = this.moment(this.config.get('timeMax')).add('days', 1).format();
 
     var query = $.param({
@@ -51,9 +53,16 @@ module.exports = Backbone.Collection.extend({
   // Removes any free time that is shorter than the minimum meeting duration
   pruneShortMeetings: function(dayblocks) {
     var minDuration = parseInt(this.config.get('minDuration'), 10);
+    var max = this.moment(this.config.get('timeMax'));
 
     return _.map(dayblocks, function(times){
       return _.reject(times, function(time){
+        // Fix edge cases where you'll get an out of range event because
+        // z time. This is just the best place to throw out the result.
+        if (time[1].isAfter(max)) {
+          return true;
+        }
+
         return (moment.duration(time[1] - time[0]).as('minutes') < minDuration);
       });
     });
