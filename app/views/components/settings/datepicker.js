@@ -122,12 +122,15 @@ var Datepicker = React.createClass({
     this.$('input').off('change');
   },
 
+
   render: function() {
+    var expand = (<span className="icomatic">expand</span>)
+
     return (
       <div className="control-group calendar-range">
-        <Button action={this.setCalendarRange} active={this.state.activeRange} id="current" label="This Week" />
-        <Button action={this.setCalendarRange} active={this.state.activeRange} id="next" label="Next Week" />
-        <Button action={this.setCalendarRange} active={this.state.activeRange} id="custom" label={['Custom Range ', <span className="icomatic">expand</span>]} />
+        <Button action={this.setCalendarRange} active={this.state.activeRange} id="current" key="current" label="This Week" />
+        <Button action={this.setCalendarRange} active={this.state.activeRange} id="next" key="next" label="Next Week" />
+        <Button action={this.setCalendarRange} active={this.state.activeRange} id="custom" key="custom" label={['Custom Range ', expand]} />
         <div className="custom-range">
           <input type="text" name="timeMin" defaultValue={this.props.config.get('timeMin')} className="datepicker topcoat-text-input" />
           <input type="text" name="timeMax" defaultValue={this.props.config.get('timeMax')} className="datepicker topcoat-text-input" />
