@@ -89,12 +89,15 @@ var Availability = React.createClass(_.extend({
         <tbody>
           {_.map(options.rows, function(dayblock, i) {
             var label = /30/.test(intervals[i]) ? '': intervals[i];
+            var rowKey = _.uniqueId('row' + i);
+            var labelKey = _.uniqueId(label);
             return (
-              <tr>
-                <td className="label">{label}</td>
-                {_.map(dayblock, function(booked) {
+              <tr key={rowKey}>
+                <td className="label" key={labelKey}>{label}</td>
+                {_.map(dayblock, function(booked, j) {
+                  var key = _.uniqueId("cell" + i + j );
                   var className = booked ? "booked" : "";
-                  return <td className={className}></td>
+                  return <td className={className} key={key}></td>
                 })}
               </tr>
             )
