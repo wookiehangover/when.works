@@ -3,6 +3,7 @@
 @import 'bootstrap/mixins.less';
 
 @import 'bootstrap/grid.less';
+@import 'bootstrap/tables.less';
 
 @import 'topcoat.less';
 @import 'components/topcoat-overlay.less';
@@ -126,6 +127,41 @@ body.alt {
 @import 'pages/footer.less';
 @import 'pages/header.less';
 @import 'pages/welcome.less';
+
+
+.calendar-grid {
+  width: 100%;
+
+  tbody {
+    border-right: none;
+  }
+
+  tbody td {
+    height: 10px;
+    border-right: 1px solid #ddd;
+    .transition(background 400ms ease-in);
+
+    &:hover {
+      background: #1F2122;
+    }
+
+    &.booked {
+      background: #BABABA;
+    }
+
+    &.disabled {
+      background: #aaa;
+    }
+
+    &.label {
+      font-size: 8px;
+      width: 20px;
+      background: none;
+    }
+  }
+}
+
+
 
 @media screen and (min-width: 650px) {
   select {

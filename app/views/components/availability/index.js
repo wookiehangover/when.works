@@ -67,14 +67,57 @@ var Availability = React.createClass(_.extend({
     this.stopListening();
   },
 
+  renderTable: function(options) {
+    var intervals = options.intervals
+
+    if (this.props.availability.length === 0) {
+      return '';
+    }
+
+    return (
+      <table className="calendar-grid">
+        <thead>
+          <tr>
+            <td></td>
+            <td>{options.days[0]}</td>
+            <td>{options.days[1]}</td>
+            <td>{options.days[2]}</td>
+            <td>{options.days[3]}</td>
+            <td>{options.days[4]}</td>
+          </tr>
+        </thead>
+        <tbody>
+          {_.map(options.rows, function(dayblock, i) {
+            var label = /30/.test(intervals[i]) ? '': intervals[i];
+            return (
+              <tr>
+                <td className="label">{label}</td>
+                {_.map(dayblock, function(booked) {
+                  var className = booked ? "booked" : "";
+                  return <td className={className}></td>
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    )
+  },
+
   render: function() {
     var times = this.props.availability.getAvailableTimes(this.state.blacklist);
     var activeCalendars = this.props.config.get('calendars');
     var calendars = this.props.calendars.filter(function(cal) {
       return _.contains(activeCalendars, cal.id);
     });
+
+    var calendarTable = this.props.availability.presentCalendar(
+      this.props.availability.getDayblocks(activeCalendars)
+    );
+
     return (
       <div>
+        {this.renderTable(calendarTable)}
         <CalendarList
           ref="list"
           times={times}

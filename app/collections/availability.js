@@ -64,14 +64,62 @@ module.exports = Backbone.Collection.extend({
     return _.map(dayblocks, this.createTimestring);
   },
 
-  // Interface for generating and array of availabile times
-  getAvailableTimes: function(blacklist) {
+  presentCalendar: function(dayblocks) {
+    // {
+    //   '10am': [Mon, Tues, Wed, Thurs, Fri],
+    //   '10:30am': [Mon, Tues, Wed, Thurs, Fri],
+    // }
+
+    var intervals = [
+      '10am', '10:30am',
+      '11am', '11:30am',
+      '12pm', '12:30pm',
+      '1pm', '1:30pm',
+      '2pm', '2:30pm',
+      '3pm', '3:30pm',
+      '4pm', '4:30pm',
+      '5pm', '5:30pm'
+    ]
+
+    var days = [];
+
+    var rows = _.map(intervals, function(t) {
+      if (/:00/.test(t) === false) {
+        t = t.replace(/(am|pm)/, ":00$1")
+      }
+
+      var fmt = 'YYYY-MM-DD h:mm' + (/am/.test(t) ? 'a' : 'A');
+
+      return _.values(_.reduce(dayblocks, function(result, dayblock) {
+        var day = dayblock[0].format('ddd M/D');
+        var time = moment(dayblock[0].format('YYYY-MM-DD') + ' ' + t, fmt);
+        days.push(day);
+
+        var afterStart = time.isSame(dayblock[0]) || time.isAfter(dayblock[0]);
+
+        if (afterStart && time.isBefore(dayblock[1])) {
+          result[day] = false;
+
+        } else if (result[day] !== false) {
+          result[day] = true
+        }
+        return result;
+      }, {}));
+    });
+
+    return {
+      intervals: intervals,
+      rows: rows,
+      days: _.unique(days)
+    }
+
+  },
+
+  getDayblocks: function(calendars) {
     if (this.length === 0) {
       return [];
     }
-
     var days, dayblocks;
-    var calendars = this.config.get('calendars');
 
     if (calendars.length === 1) {
       days = this.getDays(calendars[0]);
@@ -89,7 +137,16 @@ module.exports = Backbone.Collection.extend({
       }, this);
     }
 
-    dayblocks = _.flatten(this.pruneShortMeetings(dayblocks), true)
+    return _.flatten(this.pruneShortMeetings(dayblocks), true);
+  },
+
+  // Interface for generating and array of availabile times
+  getAvailableTimes: function(blacklist) {
+    if (this.length === 0) {
+      return [];
+    }
+
+    var dayblocks = this.getDayblocks(this.config.get('calendars'));
     var timeblock = this.presentDayblocks(dayblocks);
 
     // You jerk
