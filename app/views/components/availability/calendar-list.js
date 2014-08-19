@@ -38,7 +38,7 @@ var CalendarList = React.createClass({
           {calendars}
           <a href="#" className="reset" onClick={this.props.reset} style={style}>Reset</a>
         </div>
-        <CSSTransitionGroup transitionName="fadeIn" className="topcoat-list" component={React.DOM.ul}>
+        <ul className="topcoat-list">
           {this.props.times.map(function(time) {
             return (
               <li className="topcoat-list__item" key={time}>
@@ -47,7 +47,7 @@ var CalendarList = React.createClass({
               </li>
             )
           }.bind(this))}
-        </CSSTransitionGroup>
+        </ul>
       </div>
     )
   }
