@@ -97,7 +97,7 @@ module.exports = Backbone.Collection.extend({
         t = t.replace(/(am|pm)/, ":00$1")
       }
 
-      var fmt = 'YYYY-MM-DD h:mm' + (/am/.test(t) ? 'a' : 'A');
+      var fmt = 'YYYY-MM-DD h:mma';
 
       return _.values(_.reduce(dayblocks, function(result, dayblock) {
         var day = dayblock[0].format('ddd M/D');
@@ -311,6 +311,7 @@ module.exports = Backbone.Collection.extend({
       }
 
       if (meetingEnd.isSame(dayStart) || meetingEnd.isBefore(dayStart)) {
+        nextAvailableStart = this.moment(timeEntry.end);
         return;
       }
 
