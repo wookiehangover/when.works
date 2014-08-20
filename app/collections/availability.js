@@ -107,10 +107,16 @@ module.exports = Backbone.Collection.extend({
         var afterStart = time.isSame(dayblock[0]) || time.isAfter(dayblock[0]);
 
         if (afterStart && time.isBefore(dayblock[1])) {
-          result[day] = false;
-
-        } else if (result[day] !== false) {
-          result[day] = true
+          result[day] = {
+            booked: false,
+            time: time
+          };
+          // (res[day] !== false)
+        } else if (!result[day]) {
+          result[day] = {
+            booked: true,
+            time: time
+          }
         }
         return result;
       }, {}));
@@ -129,6 +135,10 @@ module.exports = Backbone.Collection.extend({
       return [];
     }
     var days, dayblocks;
+
+    if (this.get('blacklist')) {
+      calendars.push('blacklist')
+    }
 
     if (calendars.length === 1) {
       days = this.getDays(calendars[0]);
