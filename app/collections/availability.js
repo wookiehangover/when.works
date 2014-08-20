@@ -130,11 +130,12 @@ module.exports = Backbone.Collection.extend({
 
   },
 
-  getDayblocks: function(calendars) {
+  getDayblocks: function(cals) {
     if (this.length === 0) {
       return [];
     }
     var days, dayblocks;
+    var calendars = _.clone(cals);
 
     if (this.get('blacklist')) {
       calendars.push('blacklist')
