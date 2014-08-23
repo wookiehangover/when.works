@@ -1,3 +1,14 @@
-node_modules/mocha
-node_modules/grunt
-node_modules/grunt-contrib
+lib
+models
+routes
+test
+views
+Dockerfile
+Gruntfile
+Makefile
+Procfile
+server.js
+setup.sh
+Vagrantfile
+wercker.yml
+whenworks.js
