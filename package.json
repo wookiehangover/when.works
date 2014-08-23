@@ -3,6 +3,7 @@
   "version": "0.4.0",
   "description": "take back your calendar or whatever",
   "main": "server.js",
+  "browser": "app/index.js",
   "dependencies": {
     "authom": "^0.4.8",
     "body-parser": "^1.6.5",
@@ -64,8 +65,11 @@
     "build": "browserify app -o public/js/untaken.js -d && NODE_PATH=./app:$NODE_PATH browserify test/app -o test/app/bundle.js -d",
     "build-production": "NODE_ENV=production browserify app | uglifyjs -cm > public/js/untaken.min.js"
   },
-  "repository": "",
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wookiehangover/when.works.git"
+  },
+  "author": "wookiehangover",
   "license": "BSD",
   "subdomain": "untaken",
   "engines": {
@@ -76,5 +80,9 @@
       "browserify-lodash-template-loader",
       "reactify"
     ]
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/wookiehangover/when.works/issues"
+  },
+  "homepage": "https://github.com/wookiehangover/when.works"
 }
