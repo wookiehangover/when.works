@@ -1,7 +1,8 @@
 var Backbone = require('backdash');
+var BASE_URL = process.env.BASE_URL || '';
 
 module.exports = Backbone.Collection.extend({
-  url: '/api/calendars',
+  url: BASE_URL + '/api/calendars',
 
   initialize: function() {
     this.load = this.fetch();

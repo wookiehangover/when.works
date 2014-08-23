@@ -7,6 +7,8 @@ var mixins = require('../lib/mixins')
 
 var DATE_FORMAT = 'YYYY-MM-DD';
 
+var BASE_URL = process.env.BASE_URL || '';
+
 module.exports = Backbone.Collection.extend({
 
   dependencies: {
@@ -35,7 +37,7 @@ module.exports = Backbone.Collection.extend({
       timeMax: max
     });
 
-    return '/api/freebusy?' + query;
+    return BASE_URL + '/api/freebusy?' + query;
   },
 
   parse: function(obj) {
