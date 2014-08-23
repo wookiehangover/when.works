@@ -5,29 +5,36 @@
   "main": "server.js",
   "dependencies": {
     "authom": "^0.4.8",
+    "backdash": "^1.1.2-2.4.1",
     "body-parser": "^1.6.5",
+    "browserify-lodash-template-loader": "git://github.com/wookiehangover/browserify-lodash-template-loader",
     "compression": "^1.0.11",
     "config": "^0.4.37",
     "connect-redis": "2.x",
     "cookie-parser": "^1.1.0",
     "ejs": "1.0.0",
+    "envify": "^3.0.0",
     "express": "^4.8.4",
     "express-session": "^1.7.5",
+    "jquery": "^2.1.1",
     "less": "^1.3.3",
     "lodash": "^2.4.1",
     "moment": "^2.7.0",
+    "moment-timezone": "^0.2.1",
     "morgan": "^1.2.3",
     "nodetime": "^0.8.15",
+    "pickadate": "^3.5.1",
+    "random-token": "0.0.8",
+    "react": "^0.11.1",
+    "react-typeahead": "git://github.com/fmoo/react-typeahead",
+    "reactify": "^0.13.1",
     "redis": "^0.10.3",
     "request": "^2.36.0",
     "thinky": "^1.13.9"
   },
   "devDependencies": {
-    "backdash": "^1.1.2-2.4.1",
     "browserify": "^4.2.3",
-    "browserify-lodash-template-loader": "git://github.com/wookiehangover/browserify-lodash-template-loader.git",
     "chai": "^1.6.1",
-    "envify": "^1.2.1",
     "grunt": "~0.4.0",
     "grunt-cli": "~0.1.8",
     "grunt-contrib-cssmin": "^0.4.2",
@@ -36,15 +43,7 @@
     "grunt-contrib-watch": "^0.4.4",
     "grunt-mocha-phantomjs": "^0.5.0",
     "grunt-requirejs": "~0.4.0",
-    "jquery": "^2.1.1",
     "mocha": "^1.9.0",
-    "moment-timezone": "^0.2.1",
-    "nodemon": "^1.2.0",
-    "pickadate": "^3.5.1",
-    "react": "^0.11.1",
-    "react-autocomplete": "0.0.2",
-    "react-typeahead": "git://github.com/fmoo/react-typeahead",
-    "reactify": "^0.13.1",
     "rewire": "^1.1.3",
     "sinon": "^1.9.1",
     "topcoat": "^0.7.5",
@@ -58,7 +57,6 @@
   },
   "scripts": {
     "test": "mocha test && grunt mocha_phantomjs",
-    "start": "nodemon -i app -i public -i test/app server",
     "watch": "watchify app -o public/js/untaken.js -v -d",
     "watch-test": "NODE_PATH=./app:$NODE_PATH watchify test/app -o test/app/bundle.js -v -d",
     "build": "browserify app -o public/js/untaken.js -d && NODE_PATH=./app:$NODE_PATH browserify test/app -o test/app/bundle.js -d",
@@ -77,7 +75,8 @@
   "browserify": {
     "transform": [
       "browserify-lodash-template-loader",
-      "reactify"
+      "reactify",
+      "envify"
     ]
   },
   "bugs": {
