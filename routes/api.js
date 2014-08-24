@@ -63,12 +63,16 @@ api.freebusy = function(req, res){
 // Middleware to check that the current user is authenticated
 api.requireUser = function(req, res, next){
   var user = req.session.user;
-
-  if( !user ){
-    res.json({ error: 'Forbidden'}, 403);
-  } else {
+  if(user){
     req.user = user;
     next();
+  } else if (req.headers.auth_token) {
+    req.client.hgetall('chrome_token:'+ req.headers.auth_token, function(err, user) {
+      req.user = user;
+      next();
+    })
+  } else {
+    res.json({ error: 'Forbidden'}, 403);
   }
 };
 

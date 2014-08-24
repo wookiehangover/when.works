@@ -7,16 +7,24 @@ var request = require('request');
  * GET users listing.
  */
 
+function sendUser(req, res, user) {
+  var presentedUser = _.omit( user, 'id' );
+  cache.cacheResponse(req.client, req.url, presentedUser);
+  res.json(presentedUser);
+}
+
 exports.me = function(req, res){
   var user = req.session.user;
-  if(!user){
+  if(user){
+    sendUser(req, res, user.data);
+  } else if (req.headers.auth_token) {
+      req.client.hgetall(req.headers.auth_token, function(err, user) {
+        sendUser(req, res, user)
+      })
+  } else {
     return res.json({ error: 'Forbidden' }, 403);
   }
 
-  var presentedUser = _.omit( user.data, 'id' );
-
-  cache.cacheResponse(req.client, req.url, presentedUser);
-  res.json(presentedUser);
 };
 
 /*
@@ -33,15 +41,21 @@ exports.logout = function(req, res){
   });
 };
 
+exports.chromeLogin = function(req, res, next){
+  req.session.chrome = req.query.redirect;
+  req.url = res.url = '/auth/google'
+  next();
+}
+
 /*
  * Asks the Google API for a new token
  */
 
 exports.refreshToken = function(req, res){
-  var user = req.session.user;
+  var user = req.user;
 
   if (!user) {
-    return res.send(403);
+    return res.send(403)
   }
 
   res.client.get('token:' + user.data.email, function(err, data){
@@ -74,9 +88,7 @@ exports.refreshToken = function(req, res){
         return res.send(500);
       }
 
-      req.session.user.token = json.access_token;
-
-      req.session.save(function(err){
+      function onSave(err) {
         if (err) {
           // console.log('Error: ' + err);
           return res.send(403);
@@ -87,7 +99,14 @@ exports.refreshToken = function(req, res){
         } else {
           res.send(200);
         }
-      });
+      }
+
+      if (req.headers.auth_token) {
+        req.client.hmset('chrome_token:' + req.headers.auth_token, 'token', json.access_token, onSave)
+      } else {
+        req.session.user.token = json.access_token;
+        req.session.save(onSave);
+      }
     });
 
   });

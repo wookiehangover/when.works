@@ -30,13 +30,13 @@ describe('User routes', function(){
     });
 
     it('responds with a 403 without a valid user', function(){
-      user.refreshToken({ session: {} }, this.res);
+      user.refreshToken({}, this.res);
       assert.ok(this.res.send.calledWith(403));
     });
 
     context('error getting token', function(){
       beforeEach(function() {
-        this.req.session = { user: { data: fixtures.user } };
+        this.req.user = { data: fixtures.user };
       })
       it('responds with a 403 if redis errors', function(){
         this.res.client.get.callsArgWith(1, true);
@@ -52,7 +52,7 @@ describe('User routes', function(){
     });
 
     it('initiates a request for a new token when a valid token is present', function(){
-      this.req.session = { user: { data: fixtures.user } };
+      this.req.user = { data: fixtures.user };
       this.res.client.get.callsArgWith(1, null, 'helloworld');
       user.refreshToken(this.req, this.res);
       assert.ok(this.request.called);
@@ -63,7 +63,7 @@ describe('User routes', function(){
     context('error requesting refresh_token', function(){
       beforeEach(function(){
         this.res.client.get.callsArgWith(1, null, 'helloworld');
-        this.req.session = { user: { data: fixtures.user } };
+        this.req.user = { data: fixtures.user };
       });
 
       it('responds with a 403 request errors', function(){
@@ -81,6 +81,8 @@ describe('User routes', function(){
 
     context('successful token refresh', function(){
       beforeEach(function(){
+        this.req.headers = {};
+        this.req.user = { data: fixtures.user };
         this.req.session = { user: { data: fixtures.user } };
         this.res.client.get.callsArgWith(1, null, 'foobar');
         this.request.callsArgWith(1, null, {}, '{ "access_token": "foobar"}');
