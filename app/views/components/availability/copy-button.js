@@ -22,6 +22,9 @@ var CopyButton = React.createClass({
 
   setupClipboard: function() {
     var node = this.getDOMNode();
+    if (!ZeroClipboard) {
+      return this.removeOverlay();
+    }
     var clip = new ZeroClipboard(node, {
       moviePath: '/js/ZeroClipboard.swf',
       activeClass: 'is-active'
@@ -59,14 +62,19 @@ var CopyButton = React.createClass({
 
   copyFallback: function(e) {
     e.preventDefault();
+    var times = this.presentTimeblockList()
+
     var modal = new Modal({
       id: 'copy-modal',
       title: this.props.calendars.join(', '),
-      body: this.presentTimeblockList()
+      body: times
     });
 
     setTimeout(function() {
       modal.$('textarea').select();
+      if (window.chrome) {
+        return document.execCommand('copy', times);
+      }
     }, 1000)
   },
 

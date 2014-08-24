@@ -5,7 +5,7 @@
 var $ = require('jquery');
 var React = require('react');
 var addons = require('react/addons');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var picker = require('../../../lib/pickadate');
 
 // Helpers

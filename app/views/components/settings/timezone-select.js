@@ -3,7 +3,6 @@
  */
 
 var React = require('react')
-var moment = require('moment-timezone')
 var tzData = require('../../../lib/timezone-data');
 var _ = require('lodash');
 
