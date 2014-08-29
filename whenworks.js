@@ -1,20 +1,16 @@
 var express = require('express');
-var path = require('path');
-var config = require('config');
 var authom = require('./lib/authom');
 var middleware = require('./lib/middleware');
-
 var app = express();
+var routes = require('./routes');
+var user = require('./routes/user');
+var api = require('./routes/api');
 
 middleware(app);
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-
-var routes = require('./routes');
-var user = require('./routes/user');
-var api = require('./routes/api');
 
 app.get('/', routes.index);
 app.get('/for/:email', routes.index);
