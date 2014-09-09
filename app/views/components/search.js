@@ -36,7 +36,7 @@ var Search = React.createClass({
         maxResults: 4,
         onTokenAdd: this.updateCalendars,
         onTokenRemove: this.updateCalendars,
-        placeholder: 'Add another calendar'
+        placeholder: 'Add another calendar',
         options: this.props.calendars.pluck('summary'),
         defaultSelected: this.props.config.get('calendars'),
         customClasses: {
