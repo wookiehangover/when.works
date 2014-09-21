@@ -1,23 +1,27 @@
-var $ = require('jquery')
 var _ = require('lodash')
 var Backbone = require('backdash')
 var moment = require('moment-timezone')
 var mergeSort = require('../lib/moment-merge-sort')
-var mixins = require('../lib/mixins')
+var deps = require('ampersand-dependency-mixin');
+var qs = require('querystring');
 
 var DATE_FORMAT = 'YYYY-MM-DD';
 
 var BASE_URL = process.env.BASE_URL || '';
 
-module.exports = Backbone.Collection.extend({
+var Availability = Backbone.Collection.extend({
 
   dependencies: {
     config: 'config model',
     calendars: 'calendars collection'
   },
 
+  constructor: function(models, params) {
+    this.attachDeps(params)
+    Backbone.Collection.apply(this, arguments);
+  },
+
   initialize: function(models, params) {
-    mixins.attachDependencies.call(this, params)
     this.listenTo(
       this.config,
       'change:calendars change:timeMax change:timeMin',
@@ -29,9 +33,9 @@ module.exports = Backbone.Collection.extend({
     var min = this.moment(this.config.get('timeMin')).format();
     // This stupid addition is because the time you'll get from the use is
     // local and the server wants z time
-    var max = this.moment(this.config.get('timeMax')).add('days', 1).format();
+    var max = this.moment(this.config.get('timeMax')).add(1, 'days').format();
 
-    var query = $.param({
+    var query = qs.stringify({
       calendars: this.config.get('calendars'),
       timeMin: min,
       timeMax: max
@@ -209,7 +213,7 @@ module.exports = Backbone.Collection.extend({
     var end = this.moment(this.config.get('timeMax'));
 
     _.times(moment.duration(end - start).days(), function(i) {
-      var date = start.clone().add('d', i);
+      var date = start.clone().add(i, 'd');
       var dayIndex = +date.format('d');
       var dateKey = date.format(DATE_FORMAT);
       if (dayIndex === 0 || dayIndex === 6) {
@@ -361,3 +365,7 @@ module.exports = Backbone.Collection.extend({
     return dayblock;
   }
 });
+
+_.extend(Availability.prototype, deps);
+
+module.exports = Availability;

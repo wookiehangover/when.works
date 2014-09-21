@@ -3,11 +3,11 @@ var moment = require('moment');
 var jstz = require('../lib/jstz').jstz;
 
 function getFormat() {
-  if (window.Intl === undefined || window.Intl.DateTimeFormat === undefined) {
+  if (this.Intl === undefined || this.Intl.DateTimeFormat === undefined) {
     return;
   }
 
-  var format = window.Intl.DateTimeFormat();
+  var format = this.Intl.DateTimeFormat();
 
   if (format === undefined || format.resolvedOptions === undefined) {
     return

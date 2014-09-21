@@ -7,7 +7,6 @@ var _ = require('lodash');
 var Backbone = require('backdash');
 var CalendarList = require('./calendar-list');
 var CalendarTable = require('./calendar-table');
-var AvailabilityHeader = require('./header');
 var CopyButton = require('./copy-button');
 
 var Availability = React.createClass({
