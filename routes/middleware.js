@@ -5,10 +5,10 @@
 var express = require('express');
 var path = require('path');
 var config = require('config');
-var redisClient = require('./database').redis;
+var redisClient = require('../lib/database').redis;
 
-var lessMiddleware = require('./process-less')(config.less);
-var jsMiddleware = require('./process-js');
+var lessMiddleware = require('../lib/process-less')(config.less);
+var jsMiddleware = require('../lib/process-js');
 
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
