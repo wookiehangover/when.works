@@ -1,6 +1,6 @@
 var request = require('request');
-var moment = require('moment');
 var cache = require('../lib/cacheman');
+var formatPostBody = require('../lib/format-api-post');
 var urlRoot = 'https://www.googleapis.com/calendar/v3/';
 
 // var Invite = require('../models/invite');
@@ -102,21 +102,4 @@ function responseHandler(err, resp, body){
   cache.cacheResponse(this.req.client, this.req.url, body);
 
   this.res.json(body);
-}
-
-// Takes the following query parameters:
-//
-//  calendar - `string`
-//  timeMin  - `date` (or anything remotely date-like)
-//  timeMax  - `date`
-function formatPostBody( query ){
-  var json = {
-    timeMin: moment( query.timeMin ).format(),
-    timeMax: moment( query.timeMax ).format(),
-    items: query.calendars.map(function(cal) {
-      return { id: cal };
-    })
-  };
-
-  return json;
 }
