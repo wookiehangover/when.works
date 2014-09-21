@@ -21,7 +21,7 @@ var Availability = Backbone.Collection.extend({
     Backbone.Collection.apply(this, arguments);
   },
 
-  initialize: function(models, params) {
+  initialize: function() {
     this.listenTo(
       this.config,
       'change:calendars change:timeMax change:timeMin',

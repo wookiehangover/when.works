@@ -24,6 +24,7 @@
     "before": false,
     "after": false,
     "beforeEach": false,
-    "afterEach": false
+    "afterEach": false,
+    "Promise": true
   }
 }
