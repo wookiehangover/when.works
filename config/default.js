@@ -16,8 +16,8 @@ exports.redis = {
 }
 
 exports.rethinkdb = {
-  host: process.env.RETHINKDB_PORT_28015_TCP_ADDR,
-  port: process.env.RETHINKDB_PORT_28015_TCP_PORT,
+  host: process.env.RETHINKDB_HOST,
+  port: process.env.RETHINKDB_PORT,
 }
 
 if( process.env.REDIS_PASS ){
