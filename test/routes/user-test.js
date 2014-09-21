@@ -17,9 +17,6 @@ describe('User routes', function(){
 
   describe('refreshToken', function(){
     beforeEach(function(){
-      this.request = this.sinon.stub();
-      user.__set__('request', this.request);
-
       this.req = {
         session: fixtures.userSessionData.session
       };
@@ -38,42 +35,14 @@ describe('User routes', function(){
       beforeEach(function() {
         this.req.user = { data: fixtures.user };
       })
-      it('responds with a 403 if redis errors', function(){
+      it('responds with a 500 if redis errors', function(){
         this.res.client.get.callsArgWith(1, true);
         user.refreshToken(this.req, this.res);
-        assert.ok(this.res.send.calledWith(403));
+        assert.ok(this.res.send.calledWith(500));
       });
 
-      it('responds with a 403 if the token is falsy', function(){
+      it('responds with a 500 if the token is falsy', function(){
         this.res.client.get.callsArgWith(1, null, false);
-        user.refreshToken(this.req, this.res);
-        assert.ok(this.res.send.calledWith(403));
-      });
-    });
-
-    it('initiates a request for a new token when a valid token is present', function(){
-      this.req.user = { data: fixtures.user };
-      this.res.client.get.callsArgWith(1, null, 'helloworld');
-      user.refreshToken(this.req, this.res);
-      assert.ok(this.request.called);
-      var args = this.request.getCall(0).args;
-      assert.ok(args[0].form.refresh_token, 'helloworld');
-    });
-
-    context('error requesting refresh_token', function(){
-      beforeEach(function(){
-        this.res.client.get.callsArgWith(1, null, 'helloworld');
-        this.req.user = { data: fixtures.user };
-      });
-
-      it('responds with a 403 request errors', function(){
-        this.request.callsArgWith(1, true);
-        user.refreshToken(this.req, this.res);
-        assert.ok(this.res.send.calledWith(403));
-      });
-
-      it('responds with a 403 if the body cannot be parsed', function(){
-        this.request.callsArgWith(1, null, {}, 'invali\\d{json');
         user.refreshToken(this.req, this.res);
         assert.ok(this.res.send.calledWith(500));
       });
@@ -85,7 +54,9 @@ describe('User routes', function(){
         this.req.user = { data: fixtures.user };
         this.req.session = { user: { data: fixtures.user } };
         this.res.client.get.callsArgWith(1, null, 'foobar');
-        this.request.callsArgWith(1, null, {}, '{ "access_token": "foobar"}');
+        this.renew = this.sinon.stub();
+        user.__set__('renew', this.renew);
+        this.renew.callsArgWith(2, null, { "access_token": "foobar"});
         this.req.session.save = this.sinon.stub();
         this.req.query = {};
       });
