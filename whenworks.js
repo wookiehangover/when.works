@@ -1,6 +1,6 @@
 var express = require('express');
 var authom = require('./lib/authom');
-var middleware = require('./lib/middleware');
+var middleware = require('./routes/middleware');
 var app = express();
 var routes = require('./routes');
 var user = require('./routes/user');
