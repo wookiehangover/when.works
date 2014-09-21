@@ -33,7 +33,7 @@
     "reactify": "^0.13.1",
     "redis": "^0.10.3",
     "request": "^2.36.0",
-    "thinky": "^1.13.9"
+    "thinky": "^1.14.1"
   },
   "devDependencies": {
     "browserify": "^4.2.3",
