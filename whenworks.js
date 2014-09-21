@@ -24,6 +24,9 @@ app.get('/api/freebusy', api.requireUser, api.checkCache, api.freebusy);
 
 app.get('/me', api.checkCache, user.me);
 app.get('/logout', user.logout);
+app.get('/login', function(req, res) {
+  res.redirect('/auth/google')
+});
 app.get('/refresh-token', api.requireUser, user.refreshToken);
 
 module.exports = app;

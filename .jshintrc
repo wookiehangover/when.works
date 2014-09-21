@@ -19,6 +19,11 @@
     "ZeroClipboard": false,
     "Modernizr": false,
     "define": false,
-    "require": false
+    "require": false,
+    "describe": false,
+    "before": false,
+    "after": false,
+    "beforeEach": false,
+    "afterEach": false
   }
 }

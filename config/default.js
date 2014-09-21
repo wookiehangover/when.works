@@ -34,4 +34,6 @@ exports.browserify = {
   prod: '/js/untaken.min.js'
 }
 
+exports.mandrill = process.env.MANDRILL_KEY;
+
 exports.cacheExpires = parseInt(process.env.CACHE_EXPIRES, 10) || 1;
