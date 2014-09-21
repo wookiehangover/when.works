@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var cache = require('../lib/cacheman');
-var config = require('config');
-var request = require('request');
+var renew = require('../lib/renew-token');
 
 /*
  * GET users listing.
@@ -58,64 +57,30 @@ exports.refreshToken = function(req, res){
     return res.send(403)
   }
 
-  res.client.get('token:' + user.data.email, function(err, data){
-    if (err || !data) {
-      // console.log('Error: ' + err);
-      return res.send(403);
+  renew(res.client, user, function(err, json) {
+    if (err) {
+      console.error('Error: ' + err);
+      return res.send(500);
     }
 
-    var params = {
-      url: 'https://accounts.google.com/o/oauth2/token',
-      method: 'post',
-      form: {
-        client_id: config.google.id,
-        client_secret: config.google.secret,
-        refresh_token: data,
-        grant_type: 'refresh_token'
-      }
-    };
-
-    request(params, function(err, resp, body) {
+    function onSave(err) {
       if (err) {
         // console.log('Error: ' + err);
         return res.send(403);
       }
 
-      var json = parseBody(body);
-
-      if (!json) {
-        // console.log('Error parsing response body');
-        return res.send(500);
-      }
-
-      function onSave(err) {
-        if (err) {
-          // console.log('Error: ' + err);
-          return res.send(403);
-        }
-
-        if (req.query.redirect) {
-          res.redirect(req.query.redirect);
-        } else {
-          res.send(200);
-        }
-      }
-
-      if (req.headers.auth_token) {
-        req.client.hmset('chrome_token:' + req.headers.auth_token, 'token', json.access_token, onSave)
+      if (req.query.redirect) {
+        res.redirect(req.query.redirect);
       } else {
-        req.session.user.token = json.access_token;
-        req.session.save(onSave);
+        res.send(200);
       }
-    });
+    }
 
+    if (req.headers.auth_token) {
+      req.client.hmset('chrome_token:' + req.headers.auth_token, 'token', json.access_token, onSave)
+    } else {
+      req.session.user.token = json.access_token;
+      req.session.save(onSave);
+    }
   });
 };
-
-function parseBody(body) {
-  try {
-    return JSON.parse(body);
-  } catch(e) {
-    return false;
-  }
-}
