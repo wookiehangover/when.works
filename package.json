@@ -58,6 +58,7 @@
     "test": "test"
   },
   "scripts": {
+    "daily-digest": "./bin/daily-digest.js",
     "test": "mocha test && grunt mocha_phantomjs",
     "watch": "watchify app -o public/js/untaken.js -v -d",
     "watch-test": "NODE_PATH=./app:$NODE_PATH watchify test/app -o test/app/bundle.js -v -d",

@@ -5,8 +5,8 @@ var User = require('../models/user')
 var Promise = require('bluebird')
 
 User.filter({ daily_digest: true }).withFields('id', 'email').run()
+  .delay(1e3) // give redis auth some breating room
   .then(function(res) {
-
     Promise.all(res.map(function(user) {
       var email = mailer(user.id)
       return email.init()
