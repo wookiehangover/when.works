@@ -23,7 +23,7 @@
     "lodash": "^2.4.1",
     "mandrill-api": "^1.0.40",
     "moment": "^2.7.0",
-    "moment-timezone": "^0.2.1",
+    "moment-timezone": "^0.2.2",
     "morgan": "^1.2.3",
     "nodetime": "^0.8.15",
     "pickadate": "^3.5.1",
