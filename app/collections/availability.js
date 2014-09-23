@@ -76,7 +76,7 @@ var Availability = Backbone.Collection.extend({
 
   // Returns a presented dayblock in the form ['Monday 6/66, 1 -2pm', ...]
   presentDayblocks: function(dayblocks) {
-    return _.map(dayblocks, this.createTimestring);
+    return _.map(dayblocks, this.createTimestring, this);
   },
 
   presentCalendar: function(dayblocks) {
@@ -246,8 +246,10 @@ var Availability = Backbone.Collection.extend({
       startFormat += 'a';
     }
 
+    var tz = this.config.get('timezone');
+
     // Format that shit
-    return start.format('dddd M/D, ' + startFormat + ' - ') + end.format(endFormat);
+    return start.tz(tz).format('dddd M/D, ' + startFormat + ' - ') + end.tz(tz).format(endFormat);
   },
 
   // Returns a Moment object with the correct timezone offset.
@@ -265,11 +267,22 @@ var Availability = Backbone.Collection.extend({
   getAvailabilityFromDay: function(times, date) {
     var dayblock = [];
     // Set the beginning and end of the Day from the user settings
-    var startTime = moment(this.config.get('start'), 'hha').hours();
-    var endTime = moment(this.config.get('end'), 'hha').hours();
+    var tz = this.config.get('timezone');
+    var startTime, endTime;
+    if (_.isNumber(this.config.get('start'))) {
+      startTime = this.config.get('start');
+    } else {
+      startTime = moment(this.config.get('start'), 'hha').hours();
+    }
+
+    if (_.isNumber(this.config.get('end'))) {
+      endTime = this.config.get('end');
+    } else {
+      endTime = moment(this.config.get('end'), 'hha').hours();
+    }
     // Set the Beginning and the End of the current day
-    var dayStart = this.moment(moment(date).hour(startTime));
-    var dayEnd = this.moment(moment(date).hour(endTime));
+    var dayStart = moment(date).hour(startTime).tz(tz);
+    var dayEnd = moment(date).hour(endTime).tz(tz);
 
     function addToDayblock(start, end) {
       // Guard against meeting times outside of your desired time range
