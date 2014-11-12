@@ -15,7 +15,9 @@ var DayLength = require('./day-length');
 var TimezoneSelect = require('./timezone-select');
 var Toggle = require('./toggle');
 
-var Settings = React.createClass(_.extend({
+var Settings = React.createClass({
+
+  mixins: [Backbone.Events],
 
   componentDidMount: function() {
     var update = function update(){
@@ -45,6 +47,6 @@ var Settings = React.createClass(_.extend({
     )
   }
 
-}, Backbone.Events));
+});
 
 module.exports = Settings;
